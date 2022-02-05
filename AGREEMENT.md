@@ -1,6 +1,6 @@
 # Agreement
 
-### Questions to answer
+### Sample questions to answer
 
 - How often will you be actively working on the project and communicating with the team?
 - Which tasks do you commit to work on? (we can flesh this out further once we have a project chosen)
@@ -8,7 +8,9 @@
 
 ### Greg's agreement
 
-I, Greg, will be actively working on the project for at least 2 days a week, 4-5 hours a day. I agree to check in with Discord every other day at minimum. I will listen to, ask for, and respect all viewpoints and opinions and do my best to take everyone's needs into consideration and make the project as educational and fun as possible.
+I, Greg, will be actively working on the project for days a week, 4-5 hours a day. I agree to check in with Discord and merge pull requests every other day at minimum (likely, I'll be available daily).
+
+I will listen to, ask for, and respect all viewpoints and opinions and do my best to take everyone's needs into consideration and make the project as educational and fun as possible.
 
 If conflict arises, I will take an active role in resolving it by being solution-oriented and avoiding any personal remarks or passive-aggressive or controlling behavior.
 
