@@ -50,7 +50,7 @@ As a potential stretch goal, I'd be interested in adding a socket.io-based multi
 #### Architecture diagram
 
 ```
-                   BACKEND
+           BACKEND (game engine)
 
 .-----------------------.
 | Criterion/Google Test |
@@ -61,14 +61,16 @@ As a potential stretch goal, I'd be interested in adding a socket.io-based multi
 | C/C++ game engine |--------+--+
 `-------------------`           |
                                 |
-..............................................
+................................|.............
                                 |
-                   FRONTEND     |
-                                |
-                [click events]  |
-                       |        v
-       .----------.~~~~+~~~>.------.
-       | HTML5 UI |         | WASM |<--compiled backend engine
+.------.   FRONTEND (browser)   |
+| User |                        |
+`------`                        |
+   |                            |
+[click events]    [API calls]   |
+   |                   |        v
+   |   .----------.~~~~+~~~>.------.
+   +-->| HTML5 UI |         | WASM |<--compiled backend engine
        `----------`<~~~+~~~~`------`
             ^          |
             |     [game state]
@@ -79,7 +81,15 @@ As a potential stretch goal, I'd be interested in adding a socket.io-based multi
 `----------------------`
 ```
 
-If we decide to integrate a server and multiplayer, then WASM can run in NodeJS/Express and we can use Socket.io for client/server communication.
+If we decide to integrate a server and multiplayer, then WASM can run the game logic in NodeJS and we can use Express and Socket.io for client/server communication.
+
+### Potential issues/downsides
+
+The technology stack with everything from C to Puppeteer is relatively broad, so getting libraries set up on everyone's machine and making sure everyone understands the overall design workflow could take a bit of time. I'm happy to jump on Zoom to get everyone up and running.
+
+On the other hand, even with SDL2 and SFML, there'd probably still be a fair amount of up-front effort. Taking a console-only apprach would likely offer the lowest bar of entry for setup, but it'd also be pretty restrictive in terms of what we can build.
+
+I'm fully prepared to handle all of the library glue if necessary. Theoretically, if one wanted to do C/C++ exclusively and work with a console UI for development, that'd be fine, because the HTML5/WASM frontend is in a totally different module.
 
 ---
 
