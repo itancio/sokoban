@@ -26,3 +26,16 @@ Only a serious, unforseen life adjustment should prevent me from fulfilling thes
 I, Severin, will be working on this project at least 2 hours a day, for a total of at least 9 hours a week. I also agree that I will be checking discord daily and will attend team meetings.
 I will respect and listen to everyone's opinions and keep an open mind when working on this project with my team.
 In regards to conflict, I will do my best to help resolve any that arise in a friendly manner. I will be positive with my team and give or be happy to receive friendly feedback. 
+
+
+### Irvin's agreement
+
+I, Irvin, will be working on the project for at least 5 days a week, 2-3 hours a day. I agree to actively check and participate in the team's communication media. I agree to attend all scheduled team meetings, and provide advance notice if I am unable to attend.
+
+I will treat my team with respect and fairness, and will keep an open mind and ears to everyone's ideas, opinions and suggestions.
+
+I promise to provide valuable critique necessary for the improvement of the project.
+
+I plan to take an active role in learning and contributing to all areas of the project. I will ensure to collaborate with the team on every deliverables required for the goals, sprints and milestone for this project and for the class.
+
+If conflict arises, I will ensure that all perspectives are heard and work on a solution-based resolution.
