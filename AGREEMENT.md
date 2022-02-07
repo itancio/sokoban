@@ -20,3 +20,9 @@ I plan to take an active role in contributing to all areas of the project and wi
 
 Only a serious, unforseen life adjustment should prevent me from fulfilling these goals.
 
+
+### Severin's agreement
+
+I, Severin, will be working on this project at least 2 hours a day, for a total of at least 9 hours a week. I also agree that I will be checking discord daily and will attend team meetings.
+I will respect and listen to everyone's opinions and keep an open mind when working on this project with my team.
+In regards to conflict, I will do my best to help resolve any that arise in a friendly manner. I will be positive with my team and give or be happy to receive friendly feedback. 
