@@ -33,11 +33,11 @@ We can divide responsibilities up for the project roughly as follows (feel free 
 - Juan will focus on C++ game engine mechanics and assets
 - Irvin will focus on C++ game engine mechanics and assets
 
-#### Further details
+### Further details
 
 We've decided on a one-player [puzzle game](https://en.wikipedia.org/wiki/List_of_puzzle_video_games) like Sokoban or Qualio.
 
-#### Architecture diagram
+### Architecture diagram
 
 ```
            BACKEND (game engine)
