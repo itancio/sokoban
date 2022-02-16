@@ -1,6 +1,6 @@
 {
   "exec": "npm run build && npm run test",
-  "ext": "html js h c cpp cc",
+  "ext": "html js css hpp cpp cc c h",
   "ignore": [
     ".git",
     "dist",
