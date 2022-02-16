@@ -10,7 +10,7 @@ Our proposal is to create an implementation of the puzzle game [Sokoban](https:/
 
 ## Technical Architecture
 
-The game engine back-end will be written in C++ and the UI front-end will be written in browser languages, HTML5/JavaScript/CSS. Optionally, we could use a framework such as React or TypeScript for the front-end, but since the application will be small, plain HTML/CSS/JS without a build stage may be simplest.
+The game engine back-end will be written in C++ and the UI front-end will be written in browser languages, HTML5/JavaScript/CSS. Optionally, we could use a component framework such as React or a typing system like TypeScript for the front-end, but since the application will be small, plain HTML/CSS/JS without a build stage may be simplest for starters.
 
 Unit testing will be performed on the C++ game engine code using [`utest.h`](https://github.com/sheredom/utest.h).
 
@@ -59,8 +59,17 @@ Greg has built a simple proof-of-concept that illustrates the concept/workflow a
 The Sokoban game engine will consist of a top-level C++ class, `Sokoban`, which will expose the following interface:
 
 ```
-// one of the possible objects that can exist on a cell
-enum Cell {
+// class constructor
+Sokoban constructor(const vec<vec<string>> levels)
+
+// class properties
+const vec<vec<string>> levels, read-only
+uint current_level // index into levels
+uint moves
+vec<string> board // the current board state which is mutated on move/undo/reset
+
+// one of the possible states a cell can be in (could be char or enum)
+char (or enum?) {
    ' ': empty space
    '#': impassable wall
    '.': goal cell
@@ -71,13 +80,13 @@ enum Cell {
 }
 
 // one of the possible movement directions for the player
-enum Direction {UP, DOWN, LEFT, RIGHT}
+enum Direction {U, D, L, R}
 
-// attempt a player move in direction (up/down/left/right) and return true/false to indicate if it was successful
+// attempt a player move in direction (up/down/left/right) and return true/false to indicate if it was successful. internally, append to the history of moves made.
 bool move(Direction direction)
 
 // switch to level level_number if possible, throw otherwise
-void change_level(int level_number)
+void change_level(uint level_number)
 
 // reset the current level to its original state (could be replaced by change_level by passing in the current level number)
 void reset()
@@ -85,14 +94,14 @@ void reset()
 // undo the last move
 void undo()
 
-// return the current board position as a 2d vector of characters
-vector<vector<Cell>> board()
+// return the current board position as a 2d vector of characters or a vector of strings representing each row
+vector<string> board()
 
 // return the number of moves made on the current board
-int moves()
+uint moves()
 
 // return the current level number
-int level()
+uint level()
 
 // return whether the current board is solved
 bool solved()
@@ -110,7 +119,7 @@ The user JS code will be responsible for handling user actions, calling the comp
 
 ### API layer ("glue" between the front and back ends)
 
-We'll use a wrapper on the game engine to instantate a game at runtime and expose WASM-friendly functions for JS to call to avoid putting burden on the game class.
+We'll use a wrapper on the game engine to instantate a Sokoban game at runtime and expose WASM-friendly functions for JS to call. This avoids putting burden on the game class to closely match the possibly strangely-defined WASM interface.
 
 ## Rough timeline
 
