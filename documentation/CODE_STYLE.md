@@ -17,14 +17,15 @@
 - `return foo` instead of `if (foo) return true else return false`
 - Use `if (something)`, not `if (something == true)`
 - Avoid using comments when a block of code should be a function, or re-explaining obvious code.
+  
   Too obvious:
   ```cpp
   // store the length of the string in a variable
   const length = string.length;
   ```
-  Good:
+  Better:
   ```cpp
-  // storing the length improves cache hit rates somehow
+  // storing the length improves cache hit rates
   const length = string.length;
   ```
 - Limit functions and constructors to no more than 3 parameters, else consider using a config hash/object
@@ -55,9 +56,8 @@
 - Use `const` wherever possible
 - Avoid `new`/`delete` where possible
 - Avoid iterators and counter-based loops where possible (use range loops or `std::algorithm` functions)
-- Use `auto` only when the type is pretty obvious from context
 - Whitespace/braces:
-
+  
   ```cpp
   class Foo {
       const std::vector<std::string>> foobar;
@@ -80,6 +80,7 @@
       }
   }
   ```
+- Use `auto` only when the type is pretty obvious from context
 
 ## JS
 
