@@ -17,7 +17,6 @@
 - `return foo` instead of `if (foo) return true else return false`
 - Use `if (something)`, not `if (something == true)`
 - Avoid using comments when a block of code should be a function, or re-explaining obvious code.
-  
   Too obvious:
   ```cpp
   // store the length of the string in a variable
@@ -57,7 +56,6 @@
 - Avoid `new`/`delete` where possible
 - Avoid iterators and counter-based loops where possible (use range loops or `std::algorithm` functions)
 - Whitespace/braces:
-  
   ```cpp
   class Foo {
       const std::vector<std::string>> foobar;
