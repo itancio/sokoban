@@ -42,7 +42,8 @@
 
 ## C++
 
-- No `using namespace std;`
+- No [`using namespace std;`](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice)
+- No [`#include <bits/stdc++.h>`](https://stackoverflow.com/questions/31816095/why-should-i-not-include-bits-stdc-h)
 - 4 space indentation
 - Functions, vars `snake_case`
 - Classes, structs `PascalCase`
