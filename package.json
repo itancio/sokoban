@@ -1,0 +1,19 @@
+{
+  "name": "cs195-project",
+  "version": "1.0.0",
+  "description": "yet another sokoban clone, this time with Emscripten",
+  "scripts": {
+    "build": "node scripts/build",
+    "deploy": "node scripts/deploy",
+    "start": "python -m http.server 8000",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "nodemon": "^2.0.15",
+    "puppeteer": "^13.3.1"
+  },
+  "author": "ggorlen",
+  "license": "unlicense"
+}
+
