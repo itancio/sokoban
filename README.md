@@ -12,11 +12,11 @@ The main dependency is [Emscripten](https://emscripten.org/), which happens to d
 C:\Users\<your user name>\AppData\Local\emsdk\emsdk_env.ps1
 ```
 
-Once you have a prompt with the exported path using `emsdk_env.ps1`, clone or download this repo and run `cd ~/path/to/wasm-click-counter`.
+Once you have a prompt with the exported path using `emsdk_env.ps1`, clone or download this repo and run `cd ~/path/to/cs195-project`.
 
 Download `doctest.h`, e.g. `wget https://raw.githubusercontent.com/doctest/doctest/master/doctest/doctest.h -O tests/unit/doctest.h`. You'll need `make` and `gcc`.
 
-Finally, run `npm i` from the `wasm-click-counter` directory to install Jest, Nodemon and Puppeteer to `node_modules`.
+Finally, run `npm i` from the `cs195-project` directory to install Jest, Nodemon and Puppeteer to `node_modules`.
 
 ## Windows build/run/test
 
@@ -35,4 +35,4 @@ These are the build/run/test commands from `package.json`:
 The typical development workflow is to run `npm run start`, then run `nodemon` to automatically execute `npm run build && npm run test` whenever a source file changes.
 
 ## Deploying to GitHub pages
-I'm using the `gh-pages` branch and the `docs` folder to deploy to <https://ggorlen.github.io/wasm-click-counter>. Run `git checkout gh-pages && git merge master`, build the project if needed and run `npm run deploy` to copy `dist` to `docs` (`docs` is a special name that GitHub can use as a root pages directory). Then push up to GitHub.
+I'm using the `gh-pages` branch and the `docs` folder to deploy to <https://ggorlen.github.io/cs195-project>. Run `git checkout gh-pages && git merge master`, build the project if needed and run `npm run deploy` to copy `dist` to `docs` (`docs` is a special name that GitHub can use as a root pages directory). Then push up to GitHub.
