@@ -14,7 +14,7 @@ C:\Users\<your user name>\AppData\Local\emsdk\emsdk_env.ps1
 
 Once you have a prompt with the exported path using `emsdk_env.ps1`, clone or download this repo and run `cd ~/path/to/cs195-project`.
 
-Download `doctest.h`, e.g. `wget https://raw.githubusercontent.com/doctest/doctest/master/doctest/doctest.h -O tests/unit/doctest.h`. You'll need `make` and `gcc`.
+Download `doctest.h`, e.g. `wget https://raw.githubusercontent.com/doctest/doctest/master/doctest/doctest.h -O tests/unit/doctest.h`. You'll need `make` and `g++` (we had success with MinGW 8.1.0 and 8.3.0).
 
 Finally, run `npm i` from the `cs195-project` directory to install Jest, Nodemon and Puppeteer to `node_modules`.
 

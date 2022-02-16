@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "yet another sokoban clone, this time with Emscripten",
   "scripts": {
+    "watch-backend": "cd tests/unit && nodemon -w ../../src -e cpp,hpp,cc -x make test",
     "build": "node scripts/build",
     "deploy": "node scripts/deploy",
     "start": "python -m http.server 8000",
