@@ -2,7 +2,7 @@
 
 ## What's the proposal?
 
-Our proposal is to create an implementation of the classic warehouse organization puzzle game Sokoban.
+Our proposal is to create an implementation of the classic warehouse organization puzzle game [Sokoban](https://en.wikipedia.org/wiki/Sokoban).
 
 ## How will it be helpful or enjoyable?
 
