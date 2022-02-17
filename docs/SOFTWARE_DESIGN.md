@@ -12,7 +12,7 @@ Our proposal is to create an implementation of the puzzle game [Sokoban](https:/
 
 The game engine back-end will be written in C++ and the UI front-end will be written in browser languages, HTML5/JavaScript/CSS. Optionally, we could use a component framework such as React or a typing system like TypeScript for the front-end, but since the application will be small, plain HTML/CSS/JS without a build stage may be simplest for starters.
 
-Unit testing will be performed on the C++ game engine code using [`utest.h`](https://github.com/sheredom/utest.h).
+Unit testing will be performed on the C++ game engine code using [`doctest.h`](https://github.com/doctest/doctest).
 
 The browser user interface will be tested with [Jest](https://github.com/facebook/jest) and [Puppeteer](https://github.com/puppeteer/puppeteer/).
 
