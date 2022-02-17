@@ -10,5 +10,5 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 
 ## What technology will we use?
 
-The game engine will be written in C++ and will be compiled to [WASM](https://en.wikipedia.org/wiki/WebAssembly) with [Emscripten](https://en.wikipedia.org/wiki/Emscripten) to power a HTML5/JS/CSS user interface. Unit testing will be done with [`doctest.h`](https://github.com/sheredom/utest.h) and end-to-end/integration testing will be done with [Puppeteer](https://github.com/puppeteer/puppeteer). We may use a front-end build or framework such as [React](https://reactjs.org/).
+The game engine will be written in C++ and will be compiled to [WASM](https://en.wikipedia.org/wiki/WebAssembly) with [Emscripten](https://en.wikipedia.org/wiki/Emscripten) to power a HTML5/JS/CSS user interface. Unit testing will be done with [`doctest.h`](https://github.com/doctest/doctest) and end-to-end/integration testing will be done with [Puppeteer](https://github.com/puppeteer/puppeteer). We may use a front-end build or framework such as [React](https://reactjs.org/).
 
