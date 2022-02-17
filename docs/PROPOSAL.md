@@ -2,11 +2,12 @@
 
 ## What's the proposal?
 
-Our proposal is to create an implementation of the classic warehouse organization puzzle game Sokoban.
+Our proposal is to create an implementation of the classic warehouse organization puzzle game [Sokoban](https://en.wikipedia.org/wiki/Sokoban).
 
 ## How will it be helpful or enjoyable?
 
-Our web-based Sokoban game will have greater user reachability compared to a more esoteric interface like the consoles or SDL2. The game will have both entertainment and educational value for developing logical reasoning and problem solving skills to a wide-range of audience who basically has a browser and an Internet.
+Our web-based Sokoban game will have greater user reachability compared to a more esoteric interface like the console or SDL2. The game will have both entertainment and educational value for developing logical reasoning and problem-solving skills. It should appeal to a wide audience who might only have a browser and Internet access.
+
 
 ## What technology will we use?
 
