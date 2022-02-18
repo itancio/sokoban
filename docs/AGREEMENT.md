@@ -51,5 +51,5 @@ I, Juan (Does it have to be this formal?), agree to the following:
 
 3) I will commit to working and learning needed software skills and other abilities in accordance with agreements and deadlines set by the team. 
 
-4) If I do or don't know something about the software or technology used throughout the project, I will let everyone know, so I can set up and guided on what to do next to keep up to date 
+4. If I do or don't know something about the software or technology used throughout the project, I will let everyone know, so I can set up and guided on what to do next to keep up to date 
    with everyone.
