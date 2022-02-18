@@ -44,7 +44,7 @@ If conflict arises, I will ensure that all perspectives are heard and work on a 
 ### Juan's Agreement
 I, Juan (Does it have to be this formal?), agree to the following:
 
-1) I hope to make a contributions in coding and working on game design for the application.
+1. I hope to make a contributions in coding and working on game design for the application.
 
 2. If a conflict were to arise, I'd like to go over what started said conflict to see what we can do to resolve it. If for some reason it can't be resolved whether, technical or personal,
    I will put said issues aside for the sake of the team and project.
