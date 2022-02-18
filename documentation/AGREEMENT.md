@@ -39,3 +39,15 @@ I promise to provide valuable critique necessary for the improvement of the proj
 I plan to take an active role in learning and contributing to all areas of the project. I will ensure to collaborate with the team on every deliverables required for the goals, sprints and milestone for this project and for the class.
 
 If conflict arises, I will ensure that all perspectives are heard and work on a solution-based resolution.
+
+
+### Juan's Agreement
+I, Juan, agree to the following:
+
+I hope to make a contributions in coding and working on game design for the application.
+
+If a conflict were to arise, I'd like to go over what started said conflict to see what we can do to resolve it. If for some reason it can't be resolved whether, technical or personal, I will put said issues aside for the sake of the team and project.
+
+I will commit to working and learning needed software skills and other abilities in accordance with agreements and deadlines set by the team. 
+
+If I do or don't know something about the software or technology used throughout the project, I will let everyone know, so I can set up and guided on what to do next to keep up to date with everyone.
