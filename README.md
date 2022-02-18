@@ -35,4 +35,4 @@ These are the build/run/test commands from `package.json`:
 The typical development workflow is to run `npm run start`, then run `nodemon` to automatically execute `npm run build && npm run test` whenever a source file changes.
 
 ## Deploying to GitHub pages
-I'm using the `gh-pages` branch and the `docs` folder to deploy to <https://ggorlen.github.io/cs195-project>. Run `git checkout gh-pages && git merge master`, build the project if needed and run `npm run deploy` to copy `dist` to `docs` (`docs` is a special name that GitHub can use as a root pages directory). Then push up to GitHub.
+I'm using the `gh-pages` branch and the `docs` folder to deploy to <https://ggorlen.github.io/cs195-project>. Run `git checkout gh-pages && git merge main`, build the project if needed and run `npm run deploy` to copy `dist` to `docs` (`docs` is a special name that GitHub can use as a root pages directory). Then push up to GitHub.
