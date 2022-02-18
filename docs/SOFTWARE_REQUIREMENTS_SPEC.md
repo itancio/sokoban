@@ -5,7 +5,7 @@ Our proposal is to create an implementation of the puzzle game [Sokoban](https:/
 Our web-based Sokoban game will have greater user reachability compared to a more esoteric interface like the console or SDL2. The game will have both entertainment and educational value for developing logical reasoning and problem-solving skills. It should appeal to a wide audience who might only have a browser and Internet access.
 
 ## Glossary
-*Unobstructed path*
+*Unobstructed path:  *
 A path is unobstructed if the cell adjacent to the character or the box that the character is pushing is an empty cell.
 
 ## Requirements
@@ -30,7 +30,7 @@ A path is unobstructed if the cell adjacent to the character or the box that the
     - goal cells
 
 #### Main Character
-* The main character's appearance sh
+* The main character's appearance shall have a dimension of 20 pixels by 20 pixels.
 * The main character shall have four main movements: Upward(U), Downward (D), Left (L) and Right (R).
 * These movements shall be controlled by key presses. For example: if the user presses the UP button, the character will move one cell to the north, or if the user presses the DOWN button, the character will move one cell to the south. 
 * The character shall be allowed to move one tile at a time if its path is [unobstructed](#glossary). 
