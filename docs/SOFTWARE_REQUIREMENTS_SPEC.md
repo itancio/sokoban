@@ -2,7 +2,7 @@
 
 ## Project title and authors
 
-Sokoban by Greg Gorlen, Irvin Tancioco
+Sokoban by Greg Gorlen, Severin Light, Juan Rangel Espinoza, Irvin Tancioco 
 
 ## Overview
 
@@ -10,8 +10,23 @@ Our proposal is to create an implementation of the puzzle game [Sokoban](https:/
 
 ## Goals and Purpose
 
+Our web-based Sokoban game will have greater user reachability compared to a more esoteric interface like the console or SDL2. The game will have both entertainment and educational value for developing logical reasoning and problem-solving skills. It should appeal to a wide audience who might only have a browser and Internet access.
 
-## Functional Requirements
+## Requirements
+### Gameplay Requirements
+#### World
+
+The world shall be approxima
+
+#### Main Character
+
+
+
+#### Win / Loss / Score
+
+
+### System Requirements
+The 
 
 
 ## Use Cases
