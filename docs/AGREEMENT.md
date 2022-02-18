@@ -42,7 +42,7 @@ If conflict arises, I will ensure that all perspectives are heard and work on a 
 
 
 ### Juan's Agreement
-I, Juan (Does it have to be this formal?), agree to the following:
+I, Juan, agree to the following:
 
 1. I hope to make a contributions in coding and working on game design for the application.
 
