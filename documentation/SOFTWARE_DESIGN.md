@@ -23,9 +23,9 @@ There is a very clear separation between front- and back-ends, so we can delegat
 ```
            BACKEND (game engine)
 
-       .-------.
-       | docTest |
-       `-------`
+     .-----------.
+     | doctest.h |
+     `-----------`
            |
            v        [emscripten compilation]
 .-----------------.          |
