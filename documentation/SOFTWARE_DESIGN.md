@@ -65,7 +65,9 @@ Sokoban constructor(const vec<vec<string>> levels)
 // class properties
 const vec<vec<string>> levels, read-only
 uint current_level // index into levels
-uint moves
+vector<Direction> moves // history of moves made by the player
+unit player_x // the player's column position
+unit player_y // the player's row position
 vec<string> board // the current board state which is mutated on move/undo/reset
 
 // one of the possible states a cell can be in (could be char or enum)
@@ -97,7 +99,7 @@ void undo()
 // return the current board position as a 2d vector of characters or a vector of strings representing each row
 vector<string> board()
 
-// return the number of moves made on the current board
+// return the number of moves made on the current board (or the moves themselves)
 uint moves()
 
 // return the current level number
