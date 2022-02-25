@@ -63,12 +63,12 @@ The Sokoban game engine will consist of a top-level C++ class, `Sokoban`, which 
 Sokoban constructor(const vec<vec<string>> levels)
 
 // class properties
-const vec<vec<string>> levels, read-only
+const vec<vec<string>> levels, read-only (could also be vec<vec<vec<Cell>>>)
 uint current_level // index into levels
-vector<Direction> moves // history of moves made by the player
+vec<string> board // the current board state which is mutated on move/undo/reset (could also be vec<vec<Cell>>)
 unit player_x // the player's column position
 unit player_y // the player's row position
-vec<string> board // the current board state which is mutated on move/undo/reset
+Sokoban *prev_state // linked list of game states to support undoing moves (could also be a vector, and could be more efficient but harder to implement as direction only)
 
 // one of the possible states a cell can be in (could be char or enum)
 char (or enum?) {
@@ -97,7 +97,7 @@ void reset()
 void undo()
 
 // return the current board position as a 2d vector of characters or a vector of strings representing each row
-vector<string> board()
+vec<string> board()
 
 // return the number of moves made on the current board (or the moves themselves)
 uint moves()
@@ -109,7 +109,7 @@ uint level()
 bool solved()
 ```
 
-Internally, levels will be a `vector<vector<vector<Cell>>>`, that is, a vector of sequential levels, each of which is a 2d vector representing the game board, with each cell being a character.
+Internally, levels will be a `vec<vec<vec<Cell>>>`, that is, a vector of sequential levels, each of which is a 2d vector representing the game board, with each cell being a character. If easier, this could also be a `vec<vec<string>>`. We need to determine if conversions back and forth between enums and strings are worth it or if it's easiest just to use strings/chars throughout.
 
 ### User interface front-end
 
