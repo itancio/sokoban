@@ -2,7 +2,7 @@
 
 ## Project title and authors
 
-Sokoban by Greg Gorlen
+Sokoban by Greg Gorlen, Severin Light
 
 ## Overview
 
