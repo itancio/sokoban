@@ -55,6 +55,6 @@ The game shall be run on any browser that supports WASM (Safari, Chrome, Firefox
 ### Use Cases
 * The user presses the start button to initiate the game. A prompt will display asking for the user to enter level. A static world elements will be displayed on the screen.
 * The user can press any directional keys to move around the board. When the user preses UP on the keyboard, the character will move one cell up if the cell is empty or if there is a box and the adjacent cell of the box is empty. The user uses the UP, DOWN, LEFT, RIGHT keys to navigate around until all of the boxes are places on marked goals. This will clear the level.
-* When all of the boxes are placed on the goal cells, a congratulatory message and stats will be displayed. The user will be asked to play again.
-* The user will be prompted to move to the next level. 
-* The user clicks the next button. A new board will be displayed.
+* When all of the boxes are placed on the goal cells, a congratulatory message.
+* The user will be prompted to move to the next level or jump to a different level.
+* After the user made a choice, a new board will be displayed.
