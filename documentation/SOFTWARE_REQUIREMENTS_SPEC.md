@@ -48,7 +48,6 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 ### Phase 2: New Game Features (Optional)
 * The game should have multi-player option.
 * Each level should have additional element added to the board. For example, conveyor belts, teleporters, boxes that decay when pushed, ice floors that boxes slide on, multiple players that move in tandem, etc.
-* AI generated optimized solution. With the given board, the game should have a hint feature showing the optimal moves to solve the world.
 
 ### System Requirements
 The game shall be run on any browser that supports WASM (Safari, Chrome, Firefox, Edge, Opera, IOS Safari, Firefox for Android)
