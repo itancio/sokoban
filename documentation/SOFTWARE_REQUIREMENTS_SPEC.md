@@ -32,8 +32,8 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 * These movements shall be controlled by key presses. For example: if the user presses the UP button, the character will move one cell to the north, or if the user presses the DOWN button, the character will move one cell to the south. 
 * The character shall be allowed to move one tile at a time if its path is unobstructed. A path is unobstructed if the cell adjacent to the character or the box being pushed is an empty cell.
 * The character shall be able to push on an existing box if its path is unobstructed.
-* The charater shall be able to only occupy an empty cell.
-* The character shall be only allowed to move within the constraints of the world.
+* The charater shall be able to only occupy an empty cell or a goal.
+* The character shall be only allowed to move within the constraints of the board.
 
 ## Functional Requirements
 
@@ -47,13 +47,15 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 
 ### Phase 2: New Game Features (Optional)
 * The game should have multi-player option.
-* Each level should have additional element added to the world. For example, conveyor belts, teleporters, boxes that decay when pushed, ice floors that boxes slide on, multiple players that move in tandem, etc.
-* AI generated optimized solution. With the given world, the game should have a hint feature showing the optimal moves to solve the world.
+* Each level should have additional element added to the board. For example, conveyor belts, teleporters, boxes that decay when pushed, ice floors that boxes slide on, multiple players that move in tandem, etc.
+* AI generated optimized solution. With the given board, the game should have a hint feature showing the optimal moves to solve the world.
 
 ### System Requirements
 The game shall be run on any browser that supports WASM (Safari, Chrome, Firefox, Edge, Opera, IOS Safari, Firefox for Android)
 
 ### Use Cases
 * The user presses the start button to initiate the game. A prompt will display asking for the user to enter level. A static world elements will be displayed on the screen.
-* The user can press any directional keys to move around the board. When the user preses UP on the keyboard, the character will move one cell up if the cell is empty or if there is a box and the adjacent cell of the box is empty. The user uses the UP, DOWN, LEFT, RIGHT keys to navigate around until all of the boxes are places on marked goals. 
+* The user can press any directional keys to move around the board. When the user preses UP on the keyboard, the character will move one cell up if the cell is empty or if there is a box and the adjacent cell of the box is empty. The user uses the UP, DOWN, LEFT, RIGHT keys to navigate around until all of the boxes are places on marked goals. This will clear the level.
+* The user will be prompted to move to the next level. 
+* The user clicks the next button. A new board will be displayed.
 * When all of the boxes are placed on the goal cells, a congratulatory message and stats will be displayed. The user will be asked to play again.
