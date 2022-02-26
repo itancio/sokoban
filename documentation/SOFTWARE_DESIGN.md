@@ -66,8 +66,8 @@ Sokoban constructor(const vec<vec<string>> levels)
 const vec<vec<string>> levels, read-only (could also be vec<vec<vec<Cell>>>)
 uint current_level // index into levels
 vec<string> board // the current board state which is mutated on move/undo/reset (could also be vec<vec<Cell>>)
-unit player_x // the player's column position
-unit player_y // the player's row position
+uint player_x // the player's column position
+uint player_y // the player's row position
 Sokoban *prev_state // linked list of game states to support undoing moves (could also be a vector, and could be more efficient but harder to implement as direction only)
 
 // one of the possible states a cell can be in (could be char or enum)
