@@ -53,7 +53,7 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 The game shall be run on any browser that supports WASM (Safari, Chrome, Firefox, Edge, Opera, IOS Safari, Firefox for Android)
 
 ### Use Cases
-* The user presses the start button to initiate the game. A prompt will display asking for the user to enter level. A static board elements will be displayed on the screen.
+* The user presses the start button to initiate the game. A prompt will display asking for the user to enter level. A static board element will be displayed on the screen.
 * The user can press any directional keys to move around the board. When the user preses UP on the keyboard, the character will move one cell up if the cell is empty or if there is a box and the adjacent cell of the box is empty. The user uses the UP, DOWN, LEFT, RIGHT keys to navigate around until all of the boxes are places on marked goals. This will clear the level.
 * When all of the boxes are placed on the goal cells, a congratulatory message will appear.
 * The user will be prompted to move to the next level or jump to a different level.
