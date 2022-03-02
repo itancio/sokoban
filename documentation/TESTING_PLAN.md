@@ -16,16 +16,7 @@ In general, we're approaching testing bottom-up, with each unit function tested 
 
 ### Unit-level tests
 
-- Test that impassible walls are impassible by the player.
-- Test that the level is complete/congratulatory message when and only when all boxes are moved to designated goal cells.
-- Test when a level is complete, the user is prompted to move to the next level or jump to a different level.
-- Test that all boxes are pushable by the player.
-- Test the score is tracking player movement.
-- Test that the undo button undoes moves.
-- Test the reset button reset’s the board properly.
-- Test that the 'Sart' button initiates the default game by dropping the player into level 1.
-- Test that the drop-down menu is clickable by the player and allows them to jump to different levels.
-- Test that the directional keys move the character in the proper direction up, down, left, and right.
+- TBD 10
 
 ### Integration/E2E-level tests
 
