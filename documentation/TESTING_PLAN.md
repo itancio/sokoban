@@ -16,17 +16,28 @@ In general, we're approaching testing bottom-up, with each unit function tested 
 
 ### Unit-level tests
 
-- Test that impassible walls are impassible by the player.
-- Test that the level is complete/congratulatory message when and only when all boxes are moved to designated goal cells.
-- Test when a level is complete, the user is prompted to move to the next level or jump to a different level.
-- Test that all boxes are pushable by the player.
-- Test the score is tracking player movement.
-- Test that the undo button undoes moves.
-- Test the reset button reset’s the board properly.
-- Test that the 'Sart' button initiates the default game by dropping the player into level 1.
-- Test that the drop-down menu is clickable by the player and allows them to jump to different levels.
-- Test that the directional keys move the character in the proper direction up, down, left, and right.
+- undo() should load the previous game state.
+- reset() should the current level to its original state.
+- move(U) should allow player to move up.
+- move(D) should allow player to move down.
+- move(L) should allow player to move left.
+- move(R) should allow player to move right.
+- player should not be able to pass through impassable walls when move(U).
+- player should not be able to pass through impassable walls when move(D).
+- player should not be able to pass through impassable walls when move(L).
+- player should not be able to pass through impassable walls when move(R).
+- change_level(uint level_number) should allow user to switch levels.
+- moves() should return the number of moves made on the current board.
+- solved() should return true when all the boxes are on top of goal cells.
 
 ### Integration/E2E-level tests
 
-- TBD 10
+- When level is solved() congratulatory message should appear.
+- When level is solved() the user should be prompted to move to the next level or change to a different level.
+- When pushed/clciked reset() should reset the board
+- When pushed/clicked undo() should undo previous game state.
+- When pushed/clicked Start button should initiatie the deafult game by returnting level().
+- When directional key up is pressed player should move up one.
+- When directional key down is pressed player should move down one.
+- When directional key left is pressed player should move left one.
+- When directional key right is pressed player should move right one. 
