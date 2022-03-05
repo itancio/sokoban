@@ -17,8 +17,8 @@ In general, we're approaching testing bottom-up, with each unit function tested 
 ### Unit-level tests
 
 - undo() should load the previous game state.
-- reset() should the current level to its original state.
-- move(U) should allow player to move up.
+- reset() should load the current level to its original state.
+- move(U) should allow the player to move up if it's a valid move.
 - move(D) should allow player to move down.
 - move(L) should allow player to move left.
 - move(R) should allow player to move right.
@@ -36,8 +36,8 @@ In general, we're approaching testing bottom-up, with each unit function tested 
 - When level is solved() the user should be prompted to move to the next level or change to a different level.
 - When pushed/clciked reset() should reset the board
 - When pushed/clicked undo() should undo previous game state.
-- When pushed/clicked Start button should initiatie the deafult game by returnting level().
-- When directional key up is pressed player should move up one.
+- When pushed/clicked, Start button should initiate the default game by returning level().
+- When the directional key up is pressed, the player should move up one cell.
 - When directional key down is pressed player should move down one.
 - When directional key left is pressed player should move left one.
 - When directional key right is pressed player should move right one. 
