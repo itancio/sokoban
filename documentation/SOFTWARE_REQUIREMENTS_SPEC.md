@@ -14,12 +14,10 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 
 ### Phase 1: Basic Gameplay Requirements
 
-#### World
+#### Game Board
 
-* The world shall be approximately 500 pixels tall by 600 pixels wide.
-* The world shall have top view perspective (viewed from above). 
-* Every element in the world shall have a graphical dimensions of 20 pixels by 20 pixels.
-* The world shall contain the following:
+* The board shall have top view perspective (viewed from above). 
+* The board shall contain the following:
     - main character
     - impassable walls
     - floors
@@ -30,7 +28,7 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 
 * The main character shall have four main movements: Upward(U), Downward (D), Left (L) and Right (R).
 * These movements shall be controlled by key presses. For example: if the user presses the UP button, the character will move one cell to the north, or if the user presses the DOWN button, the character will move one cell to the south. 
-* The character shall be allowed to move one tile at a time if its path is unobstructed. A path is unobstructed if the cell adjacent to the character or the box being pushed is an empty cell.
+* The character shall be allowed to move one tile at a time if its path is unobstructed. A path is unobstructed if the cell adjacent to the character or the box being pushed is an empty cell or a goal.
 * The character shall be able to push on an existing box if its path is unobstructed.
 * The charater shall be able to only occupy an empty cell or a goal.
 * The character shall be only allowed to move within the constraints of the board.
@@ -53,8 +51,8 @@ Our web-based Sokoban game will have greater user reachability compared to a mor
 The game shall be run on any browser that supports WASM (Safari, Chrome, Firefox, Edge, Opera, IOS Safari, Firefox for Android)
 
 ### Use Cases
-* The user presses the start button to initiate the game. A prompt will display asking for the user to enter level. A static world elements will be displayed on the screen.
+* The user presses the start button to initiate the default game which starts at Level 1, or a drop-down menu to jump to a different level.
 * The user can press any directional keys to move around the board. When the user preses UP on the keyboard, the character will move one cell up if the cell is empty or if there is a box and the adjacent cell of the box is empty. The user uses the UP, DOWN, LEFT, RIGHT keys to navigate around until all of the boxes are places on marked goals. This will clear the level.
-* When all of the boxes are placed on the goal cells, a congratulatory message and stats will be displayed. The user will be asked to play again.
-* The user will be prompted to move to the next level. 
-* The user clicks the next button. A new board will be displayed.
+* When all of the boxes are placed on the goal cells, a congratulatory message will appear.
+* The user will be prompted to move to the next level or jump to a different level.
+* After the user made a choice, a new board will load.
