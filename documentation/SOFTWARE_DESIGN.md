@@ -63,10 +63,12 @@ The Sokoban game engine will consist of a top-level C++ class, `Sokoban`, which 
 Sokoban constructor(const vec<vec<string>> levels)
 
 // class properties
-const vec<vec<string>> levels, read-only
+const vec<vec<string>> levels, read-only (could also be vec<vec<vec<Cell>>>)
 uint current_level // index into levels
-uint moves
-vec<string> board // the current board state which is mutated on move/undo/reset
+vec<string> board // the current board state which is mutated on move/undo/reset (could also be vec<vec<Cell>>)
+uint player_x // the player's column position
+uint player_y // the player's row position
+Sokoban *prev_state // linked list of game states to support undoing moves (could also be a vector, and could be more efficient but harder to implement as direction only)
 
 // one of the possible states a cell can be in (could be char or enum)
 char (or enum?) {
@@ -95,9 +97,9 @@ void reset()
 void undo()
 
 // return the current board position as a 2d vector of characters or a vector of strings representing each row
-vector<string> board()
+vec<string> board()
 
-// return the number of moves made on the current board
+// return the number of moves made on the current board (or the moves themselves)
 uint moves()
 
 // return the current level number
@@ -107,7 +109,7 @@ uint level()
 bool solved()
 ```
 
-Internally, levels will be a `vector<vector<vector<Cell>>>`, that is, a vector of sequential levels, each of which is a 2d vector representing the game board, with each cell being a character.
+Internally, levels will be a `vec<vec<vec<Cell>>>`, that is, a vector of sequential levels, each of which is a 2d vector representing the game board, with each cell being a character. If easier, this could also be a `vec<vec<string>>`. We need to determine if conversions back and forth between enums and strings are worth it or if it's easiest just to use strings/chars throughout.
 
 ### User interface front-end
 
@@ -116,10 +118,30 @@ The user JS code will be responsible for handling user actions, calling the comp
 - Upon load, JS will start at level 0 and call `board()` to get the starting board state. It will then render it to the DOM using HTML elements.
 - JS will also provide buttons or keypresses to call corresponding reset/undo/change level functions.
 - During level play, arrow keys move the player up/down/left/right. JS will set event listeners on these keys and call the relevant C++ function `move(direction)` Upon a successful move, JS will call `board()` to get the current board state and re-render the UI. It will also call `solved()` to determine if the last move solved the puzzle. If it did, `change_level()` will be called to move the game to the next level.
+- The user interface will also make it possible to reset the board and undo moves, as well as to change the level by clicking on a menu.
+- For mobile viewports, we'll implement square-touches to execute moves and/or offer an on-screen pressable D-pad
 
 ### API layer ("glue" between the front and back ends)
 
 We'll use a wrapper on the game engine to instantate a Sokoban game at runtime and expose WASM-friendly functions for JS to call. This avoids putting burden on the game class to closely match the possibly strangely-defined WASM interface.
+
+The interface may require tweaks to match Emscripten's API, but roughly:
+
+```
+// Populate pre-malloced board
+void board(char **board)
+
+// Execute a move in one of four directions
+bool move(char direction)
+
+// Same API as above:
+moves()
+level()
+solved()
+change_level(uint level_number)
+reset()
+undo()
+```
 
 ## Rough timeline
 
