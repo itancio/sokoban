@@ -118,10 +118,30 @@ The user JS code will be responsible for handling user actions, calling the comp
 - Upon load, JS will start at level 0 and call `board()` to get the starting board state. It will then render it to the DOM using HTML elements.
 - JS will also provide buttons or keypresses to call corresponding reset/undo/change level functions.
 - During level play, arrow keys move the player up/down/left/right. JS will set event listeners on these keys and call the relevant C++ function `move(direction)` Upon a successful move, JS will call `board()` to get the current board state and re-render the UI. It will also call `solved()` to determine if the last move solved the puzzle. If it did, `change_level()` will be called to move the game to the next level.
+- The user interface will also make it possible to reset the board and undo moves, as well as to change the level by clicking on a menu.
+- For mobile viewports, we'll implement square-touches to execute moves and/or offer an on-screen pressable D-pad
 
 ### API layer ("glue" between the front and back ends)
 
 We'll use a wrapper on the game engine to instantate a Sokoban game at runtime and expose WASM-friendly functions for JS to call. This avoids putting burden on the game class to closely match the possibly strangely-defined WASM interface.
+
+The interface may require tweaks to match Emscripten's API, but roughly:
+
+```
+// Populate pre-malloced board
+void board(char **board)
+
+// Execute a move in one of four directions
+bool move(char direction)
+
+// Same API as above:
+moves()
+level()
+solved()
+change_level(uint level_number)
+reset()
+undo()
+```
 
 ## Rough timeline
 
