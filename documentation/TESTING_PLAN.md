@@ -50,3 +50,4 @@ In general, we're approaching testing bottom-up, with each unit function tested 
 - Should move the player right when the right arrow is pressed and the destination square is empty.
 - Should move the player up when the up arrow is pressed and the destination square is empty.
 - Should move the player down when the down arrow is pressed and the destination square is empty.
+- Should allow the player an obvious way to restart or exit the game besides closing the window.
