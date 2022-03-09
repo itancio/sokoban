@@ -1,14 +1,9 @@
 #include "sokoban.hpp"
 
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
-    levels = {{
-        "#####",
-        "#@$.#",
-        "#####",
-
-    }};
-    //this->levels = levels;
-    _board = levels.at(0);
+    this->levels = levels;
+    current_level = 0;
+    _board = levels.at(current_level);
 
 }
 

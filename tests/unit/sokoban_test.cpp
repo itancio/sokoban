@@ -11,15 +11,3 @@ TEST_CASE("returns the board") {
     Sokoban soko(levels);
     CHECK(soko.board() == levels.at(0));
 }
-
-TEST_CASE("Should not return the correct board") {
-    std::vector<std::vector<std::string>> levels = {{
-        "#####",
-        "#@$.#",
-        "#  .#",
-        "#####",
-    }};
-    Sokoban soko(levels);
-    CHECK(soko.board() != levels.at(0));
-}
-
