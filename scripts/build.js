@@ -3,8 +3,8 @@ const path = require("path");
 const {exec} = require("child_process");
 
 const emcc = `
-  emcc src/main.cpp src/counter.cpp
-  -o dist/click-counter.js 
+  emcc src/main.cpp src/sokoban.cpp
+  -o dist/sokoban.js 
   -s NO_EXIT_RUNTIME=1
   -s LINKABLE=1
   -s EXPORT_ALL=1
