@@ -7,7 +7,7 @@
 
 //#include <emscripten/emscripten.h>
 
-Sokoban soko{{{}}};
+static Sokoban soko{{{}}};
 
 extern "C" {
 void sokoban_initialize() {
