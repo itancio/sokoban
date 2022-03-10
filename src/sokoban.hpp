@@ -6,11 +6,12 @@
 
 class Sokoban {
     std::vector<std::vector<std::string>> levels;
-    unsigned int current_level;
     std::vector<std::string> _board;
+    unsigned int current_level;
 public:
     Sokoban(std::vector<std::vector<std::string>> levels);
     unsigned int level();
+    bool solved();
     std::vector<std::string> board();
 };
 
