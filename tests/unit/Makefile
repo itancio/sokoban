@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++17 -ggdb -Wall -Werror -O2 -pedantic
+CFLAGS=-std=c++17 -ggdb3 -Wall -Werror -O2 -pedantic
 TARGET=test_suite
 
 $(TARGET): *.cpp ../../src/sokoban.cpp

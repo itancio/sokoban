@@ -7,27 +7,35 @@
 
 //#include <emscripten/emscripten.h>
 
-/* this file is the interface for JS */
+Sokoban soko{{{}}};
 
 extern "C" {
-const char *board_to_string() {
-    std::vector<std::vector<std::string>> levels = {{
-        "#####",
-        "#@$.#",
-        "#####",
+void sokoban_initialize() {
+    std::vector<std::vector<std::string>> levels{{
+        "#######",
+        "#  $ .#",
+        "#   $.#",
+        "#@    #",
+        "#######",
     }};
-    Sokoban soko(levels);
+    soko = {levels};
+}
+
+const char *sokoban_board_to_string() {
     auto board = soko.board();
-    std::string s = std::accumulate(
+    auto joined = std::accumulate(
         std::begin(board), std::end(board), std::string(),
-            [](std::string &ss, std::string &s)
-            {
-                return ss.empty() ? s : ss + "n/" + s;
-            });
-    return s.c_str();
+        [](std::string &ss, std::string &s)
+        { return ss.empty() ? s : ss + "\n" + s; }
+    );
+    return joined.c_str();
+}
+
+int sokoban_level() {
+    return soko.level();
 }
 }
 
 int main() {
-   std::cout << "Hello Emscripten!\n";
+    std::cout << "Hello Emscripten!\n";
 }
