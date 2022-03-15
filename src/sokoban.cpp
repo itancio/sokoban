@@ -30,12 +30,11 @@ void Sokoban::locate_player() {
     for (int y = 0; y < _board.size(); y++) {
         for (int x = 0; x < _board[y].size(); x++) {
             if (_board[y][x] == '@' || _board[y][x] == '+') {
-			    px = x; 
+                px = x;
                 py = y;
-			    return;
+                return;
             }
         }
     }
-
     throw std::invalid_argument("Player not found...");
 }
