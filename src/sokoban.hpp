@@ -8,6 +8,10 @@ class Sokoban {
     std::vector<std::vector<std::string>> levels;
     std::vector<std::string> _board;
     unsigned int current_level;
+    unsigned int px;
+    unsigned int py;
+    void locate_player();
+	
 public:
     Sokoban(std::vector<std::vector<std::string>> levels);
     unsigned int level();
