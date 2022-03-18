@@ -1,8 +1,6 @@
 #ifndef __SOKOBAN_H__
 #define __SOKOBAN_H__
 
-#include <iostream>
-#include <stdexcept>
 #include <string>
 #include <vector>
 

@@ -1,5 +1,8 @@
 #include "sokoban.hpp"
 
+#include <iostream>
+#include <stdexcept>
+
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     this->levels = levels;
     current_level = 0;
@@ -81,16 +84,16 @@ bool Sokoban::make_move(int dy, int dx) {
 bool Sokoban::move(char direction) {
     direction = toupper(direction);
     if (direction == 'U') {
-        return make_move(-1,0);
+        return make_move(-1, 0);
     }
     else if (direction == 'D') {
-        return make_move(1,0);
+        return make_move(1, 0);
     }
     else if (direction == 'L') {
-        return make_move(0,-1);
+        return make_move(0, -1);
     }
     else if (direction == 'R') {
-        return make_move(0,1);
+        return make_move(0, 1);
     }
     return false;
 }

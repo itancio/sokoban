@@ -39,7 +39,7 @@ TEST_CASE("should not be solved when player is on goal") {
         "#####",
     }};
     Sokoban soko(levels);
-    CHECK(!soko.solved());
+    CHECK_FALSE(soko.solved());
 }
 
 TEST_CASE("should not be solved when empty goal cell is present") {
@@ -66,6 +66,7 @@ TEST_CASE("Should not mutate the board when move is invalid") {
     };
     Sokoban soko(levels);
     CHECK_FALSE(soko.move('U'));
+    CHECK(soko.board() == expected);
 }
 
 TEST_CASE("Should move player down onto a goal cell ") {
