@@ -8,7 +8,7 @@ Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
 }
 
 void Sokoban::print_board() {
-    for(std::string &row : board()) {
+    for (std::string &row : board()) {
         std::cout << row << '\n';
     }
 }
@@ -48,9 +48,9 @@ void Sokoban::locate_player() {
 bool Sokoban::make_move(int dy, int dx) {
     char current_cell;
     char next_cell;
-    //If the player is currently on a goal cell ,'+', then moves
-    //off of the goal cell, the current_cell will revert to an open cell
-    //or a goal cell.
+    // If the player is currently on a goal cell ,'+', then moves
+    // off of the goal cell, the current_cell will revert to an open cell
+    // or a goal cell.
     if (_board[py][px] == '+') {
         current_cell = '.';
     }
@@ -58,17 +58,17 @@ bool Sokoban::make_move(int dy, int dx) {
         current_cell = ' ';
     }
 
-    //If the player moves to a goal cell, then the next_cell
-    //will change the player's state to '+',
-    //if not moved to a goal cell then, '@'.
-    if (_board[py + dy][px + dx] == '.') {
+    // If the player moves to a goal cell, then the next_cell
+    // will change the player's state to '+',
+    // if not moved to a goal cell then, '@'.
+    if (_board[py+dy][px+dx] == '.') {
         next_cell = '+';
     }
     else {
         next_cell = '@';
     }
 
-    if(_board[py+dy][px+dx] == '.' || _board[py+dy][px+dx] == ' ') {
+    if (_board[py+dy][px+dx] == '.' || _board[py+dy][px+dx] == ' ') {
         _board[py][px] = current_cell;
         _board[py+dy][px+dx] = next_cell;
         py += dy;
