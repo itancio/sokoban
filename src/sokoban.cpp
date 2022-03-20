@@ -78,6 +78,41 @@ bool Sokoban::make_move(int dy, int dx) {
         px += dx;
         return true;
     }
+
+    // Player encounters a box or box on goal
+    if (_board[py+dy][px+dx] == '$' ||
+        _board[py+dy][px+dx] == '*') {
+
+        char current_box_cell = (_board[py+dy][px+dx] == '*') ? '.' : ' ';
+        char next_box_cell  = (_board[py+dy+dy][px+dx+dx] == '.') ? 
+        '*' : '$';
+
+        // If the cell next to the box is a goal or empty cell,
+        //     then the player can push to that cell
+        if (_board[py + dy + dy][px + dx + dx] == ' ' ||
+            _board[py + dy + dy][px + dx + dx] == '.') {
+            
+            // Set the box's new and old cells
+            _board[py + dy][px + dx] = current_box_cell;
+            _board[py + dy + dy][px + dx + dx] = next_box_cell;
+
+            //TODO: Refactor this recycled code later
+            current_cell = (_board[py][px] == '+') ? '.' : ' ';
+            next_cell = (_board[py+dy][px+dx] == '.') ? '+' : '@'; 
+            
+            // Set the player's new and old cells
+            _board[py + dy][px + dx] = next_cell;
+            _board[py][px] = current_cell;
+
+            // Update player location
+            py += dy;
+            px += dx;
+
+            return true;
+        }
+    }
+
+
     return false;
 }
 

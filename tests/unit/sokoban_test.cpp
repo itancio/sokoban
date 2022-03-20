@@ -52,7 +52,7 @@ TEST_CASE("should not be solved when empty goal cell is present") {
     CHECK(!soko.solved());
 }
 
-TEST_CASE("Should not mutate the board when move is invalid") {
+TEST_CASE("should not mutate the board when move is invalid") {
     std::vector<std::vector<std::string>> levels = {{
         "####",
         "#@ #",
@@ -69,7 +69,7 @@ TEST_CASE("Should not mutate the board when move is invalid") {
     CHECK(soko.board() == expected);
 }
 
-TEST_CASE("Should move player down onto a goal cell ") {
+TEST_CASE("should move player down onto a goal cell") {
     std::vector<std::vector<std::string>> levels = {{
         "#####",
         "# @ #",
@@ -87,7 +87,7 @@ TEST_CASE("Should move player down onto a goal cell ") {
     CHECK(soko.board() == expected);
 }
 
-TEST_CASE("Should move player off of goal cell to the left") {
+TEST_CASE("should move player off of goal cell to the left") {
     std::vector<std::vector<std::string>> levels = {{
         "#####",
         "#  +#",
@@ -103,7 +103,7 @@ TEST_CASE("Should move player off of goal cell to the left") {
     CHECK(soko.board() == expected);
 }
 
-TEST_CASE("Should move left then up") {
+TEST_CASE("should move left then up") {
     std::vector<std::vector<std::string>> levels = {{
         "####",
         "#  #",
@@ -122,7 +122,7 @@ TEST_CASE("Should move left then up") {
     CHECK(soko.board() == expected);
 }
 
-TEST_CASE("Should move right then down") {
+TEST_CASE("should move right then down") {
     std::vector<std::vector<std::string>> levels = {{
         "####",
         "#@ #",
@@ -138,5 +138,159 @@ TEST_CASE("Should move right then down") {
     Sokoban soko(levels);
     CHECK(soko.move('r'));
     CHECK(soko.move('d'));
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should move player and box to the right on an empty cell") {
+    std::vector<std::vector<std::string>> levels = {{
+        "#####",
+        "#@$ #",
+        "#   #",
+        "#####",
+    }};
+    std::vector<std::string> expected = {
+        "#####",
+        "# @$#",
+        "#   #",
+        "#####",
+    };
+    Sokoban soko(levels);
+    CHECK(soko.move('r'));
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should move player and box-on-goal to the left on an empty cell") {
+    std::vector<std::vector<std::string>> levels = {{
+        "#####",
+        "# *@#",
+        "#####",
+    }};
+    std::vector<std::string> expected = {
+        "#####",
+        "#$+ #",
+        "#####",
+    };
+    Sokoban soko(levels);
+    CHECK(soko.move('l'));
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should move player-on-goal and box-on-goal up on an empty cell") {
+    std::vector<std::vector<std::string>> levels = {{
+        "###",
+        "# #",
+        "#*#",
+        "#+#",
+        "###",
+    }};
+    std::vector<std::string> expected = {
+        "###",
+        "#$#",
+        "#+#",
+        "#.#",
+        "###",
+    };
+    Sokoban soko(levels);
+    soko.move('u');
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should move player-on-goal and box-on-goal down on a goal") {
+    std::vector<std::vector<std::string>> levels = {{
+        "###",
+        "#+#",
+        "#*#",
+        "#.#",
+        "###",
+    }};
+    std::vector<std::string> expected = {
+        "###",
+        "#.#",
+        "#+#",
+        "#*#",
+        "###",
+    };
+    Sokoban soko(levels);
+    soko.move('d');
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should not mutate the board when move is invalid") {
+    std::vector<std::vector<std::string>> levels = {{
+        "####",
+        "#+$#",
+        "####",
+    }};
+
+    std::vector<std::string> expected = {
+        "####",
+        "#+$#",
+        "####",
+    };
+    Sokoban soko(levels);
+    CHECK_FALSE(soko.move('r'));
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should not mutate the board when move is invalid") {
+    std::vector<std::vector<std::string>> levels = {{
+        "###",
+        "#@#",
+        "#$#",
+        "#$#",
+        "###",
+    }};
+
+    std::vector<std::string> expected = {
+        "###",
+        "#@#",
+        "#$#",
+        "#$#",
+        "###",
+    };
+    Sokoban soko(levels);
+    CHECK_FALSE(soko.move('d'));
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should move box to a goal with Left-Up sequence") {
+    std::vector<std::vector<std::string>> levels = {{
+        "####",
+        "#. #",
+        "#$ #",
+        "# @#",
+        "####",
+    }};
+
+    std::vector<std::string> expected = {
+        "####",
+        "#* #",
+        "#@ #",
+        "#  #",
+        "####",
+    };
+    Sokoban soko(levels);
+    CHECK(soko.move('l'));
+    CHECK(soko.move('u'));
+    CHECK(soko.board() == expected);
+}
+
+TEST_CASE("should move box to a goal with Down-Right sequence") {
+    std::vector<std::vector<std::string>> levels = {{
+        "#####",
+        "#@  #",
+        "# $.#",
+        "#####",
+    }};
+
+    std::vector<std::string> expected = {
+        "#####",
+        "#   #",
+        "# @*#",
+        "#####",
+    };
+    Sokoban soko(levels);
+    CHECK(soko.move('d'));
+    CHECK(soko.move('r'));
     CHECK(soko.board() == expected);
 }
