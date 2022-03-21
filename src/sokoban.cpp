@@ -80,11 +80,21 @@ void Sokoban::pull_box(int dy, int dx) {
         Sokoban::Cell::BOX_ON_GOAL : Sokoban::Cell::BOX;
 }
 
-bool Sokoban::make_move(int dy, int dx) {
+bool Sokoban::make_move(Direction direction) {
+    std::vector<int> offsets = dir_offset[direction];
+    int dy = offsets[0];
+    int dx = offsets[1];
+    
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Sokoban::Cell::GOAL || 
         _board[py+dy][px+dx] == Sokoban::Cell::EMPTY) {
+
         move_player(dy, dx);
+
+        // Update stats
+        moves.push_back(direction);
+        steps += 1; 
+
         return true;
     }
 
@@ -94,11 +104,16 @@ bool Sokoban::make_move(int dy, int dx) {
         
         // If the cell next to the box is a goal or empty cell,
         // then the player can push box to that cell
-        if (_board[py + dy + dy][px + dx + dx] == Sokoban::Cell::EMPTY ||
-            _board[py + dy + dy][px + dx + dx] == Sokoban::Cell::GOAL) {
+        if (_board[py+dy+dy][px+dx+dx] == Sokoban::Cell::EMPTY ||
+            _board[py+dy+dy][px+dx+dx] == Sokoban::Cell::GOAL) {
 
             push_box(dy, dx);
             move_player(dy, dx);
+
+            // Update stats
+            moves.push_back(direction);
+            steps += 1; 
+
             return true;
         }
     }
@@ -124,19 +139,10 @@ Sokoban::Direction Sokoban::invert(Direction direction) {
 }
 
 bool Sokoban::move(Direction direction) {
-    // Clear undone moves
+    // TODO: Clears every move that was undone
     undone.clear();
 
-    std::vector<int> offsets = dir_offset[direction];
-    bool moved = make_move(offsets[0], offsets[1]);
-
-    // If move is valid, we add the direction to the moves sequence, MOVES.
-    // Update the steps;
-    if (moved) {
-        moves.push_back(direction);
-        steps += 1;
-    }
-    return moved;
+    return make_move(direction);
 }
 
 bool Sokoban::undo() {
@@ -178,6 +184,6 @@ bool Sokoban::redo() {
     Direction direction = undone.back();
     undone.pop_back();
 
-    return move(direction);
+    return make_move(direction);
 }
 

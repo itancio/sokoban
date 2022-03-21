@@ -583,4 +583,37 @@ TEST_CASE("should return false after move-undo-move") {
     CHECK(soko.board() == expected);
 }
 
+TEST_CASE("should do multiple moves, undo(), and redo()") {
+    std::vector<std::vector<std::string>> levels = {{
+        "######",
+        "#    #",
+        "#+*. #",
+        "#    #",
+        "######",
+    }};
+
+    std::vector<std::string> expected = {
+        "######",
+        "#    #",
+        "#.*. #",
+        "#   @#",
+        "######",
+    };
+    Sokoban soko(levels);
+    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move((Sokoban::Direction)'L'));
+    CHECK(soko.undo());
+    CHECK(soko.undo());
+    CHECK(soko.undo());
+    CHECK(soko.redo());
+    CHECK(soko.redo());
+    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK_FALSE(soko.redo());
+    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.board() == expected);
+}
+
 /**** END TESTS FOR REDO **************/

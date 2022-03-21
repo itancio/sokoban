@@ -44,7 +44,7 @@ private:
     void move_player(int dy, int dx);
     void push_box(int dy, int dx);
     void pull_box(int dy, int dx);
-    bool make_move(int dy, int dx);
+    bool make_move(Direction direction);
     Direction invert(Direction direction);
 
 public:
@@ -52,9 +52,10 @@ public:
     unsigned int level();
     bool solved();
     std::vector<std::string> board();
-    bool move(Direction direction); 
+    bool move(Direction direction);
     bool undo();  
     bool redo();
+    
     void print_board();  
 };
 
