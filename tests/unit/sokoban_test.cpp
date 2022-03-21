@@ -52,6 +52,8 @@ TEST_CASE("should not be solved when empty goal cell is present") {
     CHECK(!soko.solved());
 }
 
+/************** BEGIN TESTS FOR MOVE (PLAYER ONLY) **************/
+
 TEST_CASE("should not mutate the board when move is invalid") {
     std::vector<std::vector<std::string>> levels = {{
         "####",
@@ -140,6 +142,11 @@ TEST_CASE("should move right then down") {
     CHECK(soko.move((Sokoban::Direction)'D'));
     CHECK(soko.board() == expected);
 }
+
+/***************** END TESTS FOR MOVE (PLAYER ONLY) *****************/
+
+
+/*************** BEGIN TESTS FOR MOVE (PLAYER AND BOX) **************/
 
 TEST_CASE("should move player and box to the right on an empty cell") {
     std::vector<std::vector<std::string>> levels = {{
@@ -294,8 +301,11 @@ TEST_CASE("should move box to a goal with Down-Right sequence") {
     CHECK(soko.move((Sokoban::Direction)'R'));
     CHECK(soko.board() == expected);
 }
+/**************** END TESTS FOR MOVE (PLAYER AND BOX) ***************/
 
-/**** BEGIN TESTS FOR UNDO **************/
+
+
+/*********************** BEGIN TESTS FOR UNDO ***********************/
 
 TEST_CASE("should move player down onto a goal cell, then revert to original") {
     std::vector<std::vector<std::string>> levels = {{
@@ -354,7 +364,7 @@ TEST_CASE("should move left then up, then revert to original") {
     CHECK(soko.board() == expected);
 }
 
-TEST_CASE("should move right then down, then revert to original") {
+TEST_CASE("should move right then down, then undo last move") {
     std::vector<std::vector<std::string>> levels = {{
         "####",
         "#@ #",
@@ -518,10 +528,11 @@ TEST_CASE("should return false for an invalid undo()") {
     CHECK(soko.board() == expected);
 }
 
-/**** END TESTS FOR UNDO **************/
+/*********************** END TESTS FOR UNDO ***********************/
 
 
-/**** BEGIN TESTS FOR REDO **************/
+/********************** BEGIN TESTS FOR REDO **********************/
+
 TEST_CASE("should return false for an invalid redo()") {
     std::vector<std::vector<std::string>> levels = {{
         "#####",
@@ -616,4 +627,4 @@ TEST_CASE("should do multiple moves, undo(), and redo()") {
     CHECK(soko.board() == expected);
 }
 
-/**** END TESTS FOR REDO **************/
+/*********************** END TESTS FOR REDO ***********************/
