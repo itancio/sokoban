@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "../../src/sokoban.hpp"
+using Direction = Sokoban::Direction;
 
 TEST_CASE("returns the board") {
     std::vector<std::vector<std::string>> levels = {{
@@ -49,10 +50,11 @@ TEST_CASE("should not be solved when empty goal cell is present") {
         "#####",
     }};
     Sokoban soko(levels);
-    CHECK(!soko.solved());
+    CHECK_FALSE(soko.solved());
 }
 
-/************** BEGIN TESTS FOR MOVE (PLAYER ONLY) **************/
+
+TEST_SUITE_BEGIN("move-player");
 
 TEST_CASE("should not mutate the board when move is invalid") {
     std::vector<std::vector<std::string>> levels = {{
@@ -67,7 +69,7 @@ TEST_CASE("should not mutate the board when move is invalid") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK_FALSE(soko.move((Sokoban::Direction)'U'));
+    CHECK_FALSE(soko.move(Direction::U));
     CHECK(soko.board() == expected);
 }
 
@@ -85,7 +87,7 @@ TEST_CASE("should move player down onto a goal cell") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::D));
     CHECK(soko.board() == expected);
 }
 
@@ -101,7 +103,7 @@ TEST_CASE("should move player off of goal cell to the left") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
+    CHECK(soko.move(Direction::L));
     CHECK(soko.board() == expected);
 }
 
@@ -119,8 +121,8 @@ TEST_CASE("should move left then up") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
-    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move(Direction::L));
+    CHECK(soko.move(Direction::U));
     CHECK(soko.board() == expected);
 }
 
@@ -138,15 +140,15 @@ TEST_CASE("should move right then down") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'R'));
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::R));
+    CHECK(soko.move(Direction::D));
     CHECK(soko.board() == expected);
 }
 
-/***************** END TESTS FOR MOVE (PLAYER ONLY) *****************/
+TEST_SUITE_END();// End Tests fo move-player
 
 
-/*************** BEGIN TESTS FOR MOVE (PLAYER AND BOX) **************/
+TEST_SUITE_BEGIN("move-box");
 
 TEST_CASE("should move player and box to the right on an empty cell") {
     std::vector<std::vector<std::string>> levels = {{
@@ -162,7 +164,7 @@ TEST_CASE("should move player and box to the right on an empty cell") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::R));
     CHECK(soko.board() == expected);
 }
 
@@ -178,7 +180,7 @@ TEST_CASE("should move player and box-on-goal to the left on an empty cell") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
+    CHECK(soko.move(Direction::L));
     CHECK(soko.board() == expected);
 }
 
@@ -198,7 +200,7 @@ TEST_CASE("should move player-on-goal and box-on-goal up on an empty cell") {
         "###",
     };
     Sokoban soko(levels);
-    soko.move((Sokoban::Direction) 'U');
+    CHECK(soko.move(Direction::U));
     CHECK(soko.board() == expected);
 }
 
@@ -218,7 +220,7 @@ TEST_CASE("should move player-on-goal and box-on-goal down on a goal") {
         "###",
     };
     Sokoban soko(levels);
-    soko.move((Sokoban::Direction)'D');
+    CHECK(soko.move(Direction::D));
     CHECK(soko.board() == expected);
 }
 
@@ -235,7 +237,7 @@ TEST_CASE("should not mutate the board when move is invalid") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK_FALSE(soko.move((Sokoban::Direction)'R'));
+    CHECK_FALSE(soko.move(Direction::R));
     CHECK(soko.board() == expected);
 }
 
@@ -256,7 +258,7 @@ TEST_CASE("should not mutate the board when move is invalid") {
         "###",
     };
     Sokoban soko(levels);
-    CHECK_FALSE(soko.move((Sokoban::Direction)'D'));
+    CHECK_FALSE(soko.move(Direction::D));
     CHECK(soko.board() == expected);
 }
 
@@ -277,8 +279,8 @@ TEST_CASE("should move box to a goal with Left-Up sequence") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
-    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move(Direction::L));
+    CHECK(soko.move(Direction::U));
     CHECK(soko.board() == expected);
 }
 
@@ -297,15 +299,15 @@ TEST_CASE("should move box to a goal with Down-Right sequence") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'D'));
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::D));
+    CHECK(soko.move(Direction::R));
     CHECK(soko.board() == expected);
 }
-/**************** END TESTS FOR MOVE (PLAYER AND BOX) ***************/
+
+TEST_SUITE_END(); // End tests for move-box
 
 
-
-/*********************** BEGIN TESTS FOR UNDO ***********************/
+TEST_SUITE_BEGIN("undo");
 
 TEST_CASE("should move player down onto a goal cell, then revert to original") {
     std::vector<std::vector<std::string>> levels = {{
@@ -321,7 +323,7 @@ TEST_CASE("should move player down onto a goal cell, then revert to original") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::D));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -338,7 +340,7 @@ TEST_CASE("should move player off of goal cell to the left, then revert to origi
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
+    CHECK(soko.move(Direction::L));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -357,8 +359,8 @@ TEST_CASE("should move left then up, then revert to original") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
-    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move(Direction::L));
+    CHECK(soko.move(Direction::U));
     CHECK(soko.undo());
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
@@ -378,8 +380,8 @@ TEST_CASE("should move right then down, then undo last move") {
         "####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'R'));
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::R));
+    CHECK(soko.move(Direction::D));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -398,7 +400,7 @@ TEST_CASE("should move player and box to the right on an empty cell, then revert
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::R));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -415,7 +417,7 @@ TEST_CASE("should move player and box-on-goal to the left on an empty cell, then
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
+    CHECK(soko.move(Direction::L));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -436,7 +438,7 @@ TEST_CASE("should move player-on-goal and box-on-goal up on an empty cell, then 
         "###",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move(Direction::U));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -457,7 +459,7 @@ TEST_CASE("should move player-on-goal and box-on-goal down on a goal, then rever
         "###",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::D));
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
 }
@@ -479,8 +481,8 @@ TEST_CASE("should move box to a goal with Left-Up sequence, then revert to origi
         "####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'L'));
-    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move(Direction::L));
+    CHECK(soko.move(Direction::U));
     CHECK(soko.undo());
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
@@ -501,8 +503,8 @@ TEST_CASE("should move box to a goal with Down-Right sequence, then revert to or
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'D'));
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::D));
+    CHECK(soko.move(Direction::R));
     CHECK(soko.undo());
     CHECK(soko.undo());
     CHECK(soko.board() == expected);
@@ -523,15 +525,15 @@ TEST_CASE("should return false for an invalid undo()") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK_FALSE(soko.move((Sokoban::Direction)'U'));
+    CHECK_FALSE(soko.move(Direction::U));
     CHECK_FALSE(soko.undo());
     CHECK(soko.board() == expected);
 }
 
-/*********************** END TESTS FOR UNDO ***********************/
+TEST_SUITE_END(); // End tests for undo
 
 
-/********************** BEGIN TESTS FOR REDO **********************/
+TEST_SUITE_BEGIN("redo");
 
 TEST_CASE("should return false for an invalid redo()") {
     std::vector<std::vector<std::string>> levels = {{
@@ -548,7 +550,7 @@ TEST_CASE("should return false for an invalid redo()") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'U'));
+    CHECK(soko.move(Direction::U));
     CHECK_FALSE(soko.redo());
     CHECK(soko.board() == expected);
 }
@@ -568,7 +570,7 @@ TEST_CASE("should redo the move after undo") {
         "#####",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::D));
     CHECK(soko.undo());
     CHECK(soko.redo());
     CHECK(soko.board() == expected);
@@ -587,9 +589,9 @@ TEST_CASE("should return false after move-undo-move") {
         "######",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::R));
     CHECK(soko.undo());
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::R));
     CHECK_FALSE(soko.redo());
     CHECK(soko.board() == expected);
 }
@@ -611,20 +613,20 @@ TEST_CASE("should do multiple moves, undo(), and redo()") {
         "######",
     };
     Sokoban soko(levels);
-    CHECK(soko.move((Sokoban::Direction)'U'));
-    CHECK(soko.move((Sokoban::Direction)'R'));
-    CHECK(soko.move((Sokoban::Direction)'R'));
-    CHECK(soko.move((Sokoban::Direction)'D'));
-    CHECK(soko.move((Sokoban::Direction)'L'));
+    CHECK(soko.move(Direction::U));
+    CHECK(soko.move(Direction::R));
+    CHECK(soko.move(Direction::R));
+    CHECK(soko.move(Direction::D));
+    CHECK(soko.move(Direction::L));
     CHECK(soko.undo());
     CHECK(soko.undo());
     CHECK(soko.undo());
     CHECK(soko.redo());
     CHECK(soko.redo());
-    CHECK(soko.move((Sokoban::Direction)'D'));
+    CHECK(soko.move(Direction::D));
     CHECK_FALSE(soko.redo());
-    CHECK(soko.move((Sokoban::Direction)'R'));
+    CHECK(soko.move(Direction::R));
     CHECK(soko.board() == expected);
 }
 
-/*********************** END TESTS FOR REDO ***********************/
+TEST_SUITE_END(); // End of tests for redo

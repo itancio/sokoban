@@ -1,17 +1,18 @@
 #ifndef __SOKOBAN_H__
 #define __SOKOBAN_H__
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 class Sokoban {
-public:enum Direction {
-        U = 'U',
-        D = 'D',
-        L = 'L',
-        R = 'R'
-    };
+public:
+    enum Direction {
+            U = 'U',
+            D = 'D',
+            L = 'L',
+            R = 'R'
+        };
 
 private:
     enum Cell {
@@ -25,17 +26,17 @@ private:
     };
 
     std::unordered_map<Direction, std::vector<int>> dir_offset {
-        {Direction::U , {-1,  0}},
-        {Direction::D , { 1,  0}},
-        {Direction::L , { 0, -1}},
-        {Direction::R , { 0,  1}}
+        {Direction::U, {-1,0}},
+        {Direction::D, { 1,0}},
+        {Direction::L, { 0,-1}},
+        {Direction::R, { 0,1}}
     };
 
     std::unordered_map<Direction, Direction> opposite {
-        {Direction::U , Direction::D},
-        {Direction::D , Direction::U},
-        {Direction::R , Direction::L},
-        {Direction::L , Direction::R},
+        {Direction::U, Direction::D},
+        {Direction::D, Direction::U},
+        {Direction::R, Direction::L},
+        {Direction::L, Direction::R},
     };
 
     std::vector<std::vector<std::string>> levels;
