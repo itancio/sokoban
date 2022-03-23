@@ -15,13 +15,16 @@ const dist = "dist";
 
 (async () => {
   await fs.mkdir(dist).catch(err => {});
-  exec(emcc, async (err, stdout) => {
+  exec(emcc, async (err, stdout, stderr) => {
     if (err) {
       console.error(err.message);
       process.exit(1);
     }
     else if (stdout) {
       console.log(stdout);
+    }
+    else if (stderr) {
+      console.log(stderr);
     }
 
     for (const f of await fs.readdir(src)) {
