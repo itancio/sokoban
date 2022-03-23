@@ -7,28 +7,37 @@
 
 //#include <emscripten/emscripten.h>
 
-static Sokoban soko{{{}}};
+static Sokoban soko({{
+    "#######",
+    "#  $ .#",
+    "#@  ###",
+    "#####",
+}});
+static std::string joined_board;
 
 extern "C" {
 void sokoban_initialize() {
     std::vector<std::vector<std::string>> levels{{
         "#######",
         "#  $ .#",
-        "#   $.#",
-        "#@    #",
-        "#######",
+        "#@  ###",
+        "#####",
     }};
     soko = {levels};
 }
 
 const char *sokoban_board_to_string() {
     auto board = soko.board();
-    auto joined = std::accumulate(
+    joined_board = std::accumulate(
         std::begin(board), std::end(board), std::string(),
         [](std::string &ss, std::string &s)
         { return ss.empty() ? s : ss + "\n" + s; }
     );
-    return joined.c_str();
+    return joined_board.c_str();
+}
+
+bool sokoban_move(char *s) {
+    return soko.move(*s);
 }
 
 int sokoban_level() {

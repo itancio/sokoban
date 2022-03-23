@@ -7,7 +7,6 @@
   <title>Sokoban</title>
   <style>
   #board {
-    white-space: pre;
     font-family: monospace;
   }
   </style>
@@ -17,15 +16,51 @@
 
 <script>
 const initializeGame = () => {
+  const levelNumber = Module.cwrap("sokoban_level");
+  const move = Module.cwrap(
+    "sokoban_move", // name of C function
+    "bool",         // return type
+    ["string"],     // argument types
+  );
   const boardToStr = Module.cwrap(
     "sokoban_board_to_string",
-    "string",
+    "string", // return type
   );
+  const buildRowHTML = row => `
+    <tr>
+      ${[...row]
+        .map(cell => `<td class="cell">${cell}</td>`)
+        .join("")}
+    </tr>
+  `;
+  const renderBoard = () => {
+    boardEl.innerHTML = 
+      "<table>" +
+        boardToStr()
+          .split("\n")
+          .map(buildRowHTML)
+          .join("") +
+      "</table>"
+    ;
+  };
+ 
   Module.ccall("sokoban_initialize");
-  const levelNumber = Module.cwrap("sokoban_level");
-  const board = boardToStr();
-  console.log(board, levelNumber());
-  boardEl.textContent = board;
+  renderBoard();
+  const moves = {
+    ArrowLeft: "L",
+    ArrowUp: "U",
+    ArrowRight: "R",
+    ArrowDown: "D",
+  };
+
+  document.addEventListener("keydown", event => {
+    if (event.code in moves) {
+      event.preventDefault();
+      console.log(Boolean(move(moves[event.code])));
+      renderBoard();
+      console.log(boardToStr(), levelNumber());
+    }
+  });
 };
 
 const boardEl = document.getElementById("board");
