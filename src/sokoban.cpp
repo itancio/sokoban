@@ -82,8 +82,8 @@ void Sokoban::pull_box(int dy, int dx) {
 }
 
 bool Sokoban::make_move(Direction direction) {
-    int dy = dir_offset[direction].at(0);
-    int dx = dir_offset[direction].at(1);
+    int dy = dir_offset[direction].first;
+    int dx = dir_offset[direction].second;
     
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Cell::GOAL || 
@@ -137,8 +137,8 @@ bool Sokoban::undo() {
     Direction direction = opposite[moves.back()];
     moves.pop_back();
     
-    int dy = dir_offset[direction].at(0);
-    int dx = dir_offset[direction].at(1);
+    int dy = dir_offset[direction].first;
+    int dx = dir_offset[direction].second;
 
     move_player(dy, dx);
     
