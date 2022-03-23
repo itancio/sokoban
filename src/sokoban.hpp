@@ -26,10 +26,10 @@ private:
     };
 
     std::unordered_map<Direction, std::vector<int>> dir_offset {
-        {Direction::U, {-1,0}},
-        {Direction::D, {1,0}},
-        {Direction::L, {0,-1}},
-        {Direction::R, {0,1}}
+        {Direction::U, {-1, 0}},
+        {Direction::D, {1, 0}},
+        {Direction::L, {0, -1}},
+        {Direction::R, {0, 1}}
     };
 
     std::unordered_map<Direction, Direction> opposite {
