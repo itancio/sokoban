@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 class Sokoban {
@@ -25,18 +26,18 @@ private:
         EMPTY = ' '
     };
 
-    std::unordered_map<Direction, std::vector<int>> dir_offset {
-        {Direction::U, {-1, 0}},
-        {Direction::D, {1, 0}},
-        {Direction::L, {0, -1}},
-        {Direction::R, {0, 1}}
+    std::unordered_map<Direction, std::pair<int, int>> dir_offset {
+        {U, std::make_pair(-1, 0)},
+        {D, std::make_pair(1, 0)},
+        {L, std::make_pair(0, -1)},
+        {R, std::make_pair(0, 1)}
     };
 
     std::unordered_map<Direction, Direction> opposite {
-        {Direction::U, Direction::D},
-        {Direction::D, Direction::U},
-        {Direction::R, Direction::L},
-        {Direction::L, Direction::R},
+        {U, D},
+        {D, U},
+        {R, L},
+        {L, R},
     };
 
     std::vector<std::vector<std::string>> levels;
