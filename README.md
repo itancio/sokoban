@@ -28,7 +28,7 @@ Tests go in `tests/unit` along with [`doctest.h`](https://raw.githubusercontent.
 Make sure you've exported the path using `.\emsdk_env.ps1` described in the above section.
 
 These are the build/run/test commands from `package.json`:
-- `npm run build` compiles the WASM from the `src/click-counter.cpp` file to the `dist` directory and copies all `.html` and `.js` files to the `dist` directory (there's no bundling step for the front-end yet).
+- `npm run build` compiles the WASM from the `src/*.cpp` files to the `dist` directory and copies all `.html` and `.js` files to the `dist` directory (there's no bundling step for the front-end yet).
 - `npm run start` starts the Python web server. Navigate to <http://localhost:8000/dist> to use the application.
 - `npm run test` runs Jest/Puppeteer. This will fail if localhost from the above step isn't running.
 - `npm run watch-backend` runs nodemon and `make test` directly from the main source directory.
