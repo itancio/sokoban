@@ -1,22 +1,50 @@
 #include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
 
-#include "counter.hpp"
+#include "sokoban.hpp"
 
 //#include <emscripten/emscripten.h>
 
-/* this file is the interface for JS */
-
-Counter c;
+static Sokoban soko({{
+    "#######",
+    "#  $ .#",
+    "#@  ###",
+    "#####",
+}});
+static std::string joined_board;
 
 extern "C" {
-int click(int num, char *s) {
-    // pass some random args from JS just to show that it can be done
-    std::cout << "click called with args (" << num << ", " << s << ")\n";
-    c.increment();
-    return c.count;
+void sokoban_initialize() {
+    std::vector<std::vector<std::string>> levels{{
+        "#######",
+        "#  $ .#",
+        "#@  ###",
+        "#####",
+    }};
+    soko = {levels};
+}
+
+const char *sokoban_board_to_string() {
+    auto board = soko.board();
+    joined_board = std::accumulate(
+        std::begin(board), std::end(board), std::string(),
+        [](std::string &ss, std::string &s)
+        { return ss.empty() ? s : ss + "\n" + s; }
+    );
+    return joined_board.c_str();
+}
+
+bool sokoban_move(char *s) {
+    return soko.move(*s);
+}
+
+int sokoban_level() {
+    return soko.level();
 }
 }
 
-//int main() {
-//    std::cout << "Hello Emscripten!\n";
-//}
+int main() {
+    std::cout << "Hello Emscripten!\n";
+}
