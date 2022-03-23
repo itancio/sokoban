@@ -23,7 +23,8 @@ unsigned int Sokoban::level() {
 bool Sokoban::solved() {
     for (const std::string &row : board()) {
         for (const char cell : row) {
-            if (cell == '.' || cell == '+') {
+            if (cell == Cell::GOAL ||
+                cell == Cell::PLAYER_ON_GOAL) {
                 return false;
             }
         }
@@ -38,7 +39,8 @@ std::vector<std::string> Sokoban::board() {
 void Sokoban::locate_player() {
     for (unsigned int y = 0; y < _board.size(); y++) {
         for (unsigned int x = 0; x < _board[y].size(); x++) {
-            if (_board[y][x] == '@' || _board[y][x] == '+') {
+            if (_board[y][x] == Cell::PLAYER ||
+                _board[y][x] == Cell::PLAYER_ON_GOAL) {
                 px = x;
                 py = y;
                 return;
@@ -48,52 +50,116 @@ void Sokoban::locate_player() {
     throw std::invalid_argument("Player not found...");
 }
 
-bool Sokoban::make_move(int dy, int dx) {
-    char current_cell;
-    char next_cell;
-    // If the player is currently on a goal cell ,'+', then moves
-    // off of the goal cell, the current_cell will revert to an open cell
-    // or a goal cell.
-    if (_board[py][px] == '+') {
-        current_cell = '.';
-    }
-    else {
-        current_cell = ' ';
-    }
+void Sokoban::move_player(int dy, int dx) {
+    // Set the cell state when player leaves the current cell
+    _board[py][px] = (_board[py][px] == Cell::PLAYER_ON_GOAL) ? 
+        Cell::GOAL : Cell::EMPTY;
 
-    // If the player moves to a goal cell, then the next_cell
-    // will change the player's state to '+',
-    // if not moved to a goal cell then, '@'.
-    if (_board[py+dy][px+dx] == '.') {
-        next_cell = '+';
-    }
-    else {
-        next_cell = '@';
-    }
+    // Set the cell state when player arrives the new cell
+    _board[py+dy][px+dx] = (_board[py+dy][px+dx] == Cell::GOAL) ? 
+        Cell::PLAYER_ON_GOAL : Cell::PLAYER;
+    py += dy;
+    px += dx;
+}
 
-    if (_board[py+dy][px+dx] == '.' || _board[py+dy][px+dx] == ' ') {
-        _board[py][px] = current_cell;
-        _board[py+dy][px+dx] = next_cell;
-        py += dy;
-        px += dx;
+void Sokoban::push_box(int dy, int dx) {
+    // Set the cell state when box leaves the current cell
+    _board[py+dy][px+dx] = (_board[py+dy][px+dx] == Cell::BOX_ON_GOAL) ? 
+        Cell::GOAL : Cell::EMPTY;
+
+    // Set the cell state when box arrives the new cell
+    _board[py+dy+dy][px+dx+dx] = (_board[py+dy+dy][px+dx+dx] == Cell::GOAL) ? 
+        Cell::BOX_ON_GOAL : Cell::BOX;
+}
+
+void Sokoban::pull_box(int dy, int dx) {
+     // Set the current and next cells when box was pulled
+    _board[py-dy-dy][px-dx-dx] = (_board[py-dy-dy][px-dx-dx] == Cell::BOX_ON_GOAL) ? 
+        Cell::GOAL : Cell::EMPTY;
+    
+    _board[py-dy][px-dx] = (_board[py-dy][px-dx] == Cell::GOAL) ? 
+        Cell::BOX_ON_GOAL : Cell::BOX;
+}
+
+bool Sokoban::make_move(Direction direction) {
+    int dy = dir_offset[direction].first;
+    int dx = dir_offset[direction].second;
+    
+    // Player moves to a goal or empty cell
+    if (_board[py+dy][px+dx] == Cell::GOAL || 
+        _board[py+dy][px+dx] == Cell::EMPTY) {
+
+        move_player(dy, dx);
+
+        // Update moves sequence
+        moves.push_back(direction);
+
         return true;
     }
+
+    // Player encounters a box or box on goal
+    if (_board[py+dy][px+dx] == Cell::BOX ||
+        _board[py+dy][px+dx] == Cell::BOX_ON_GOAL) {
+        
+        // If the cell next to the box is a goal or empty cell,
+        // then the player can push box to that cell
+        if (_board[py+dy+dy][px+dx+dx] == Cell::EMPTY ||
+            _board[py+dy+dy][px+dx+dx] == Cell::GOAL) {
+
+            push_box(dy, dx);
+            move_player(dy, dx);
+
+            // Update moves sequence
+            moves.push_back(direction);
+
+            return true;
+        }
+    }
+
     return false;
 }
 
-bool Sokoban::move(char direction) {
-    direction = toupper(direction);
-    if (direction == 'U') {
-        return make_move(-1, 0);
+bool Sokoban::move(Direction direction) {
+    undone.clear();
+
+    return make_move(direction);
+}
+
+bool Sokoban::undo() {
+    if (moves.empty()) {
+        return false;
     }
-    else if (direction == 'D') {
-        return make_move(1, 0);
+
+    // Store the last move to undone
+    undone.push_back(moves.back());
+
+    // Invert the last move and remove it from moves
+    Direction direction = opposite[moves.back()];
+    moves.pop_back();
+    
+    int dy = dir_offset[direction].first;
+    int dx = dir_offset[direction].second;
+
+    move_player(dy, dx);
+    
+    // Pull box after player moves to the new cell
+    if (_board[py-dy-dy][px-dx-dx] == Cell::BOX ||
+        _board[py-dy-dy][px-dx-dx] == Cell::BOX_ON_GOAL) {
+
+        pull_box(dy, dx);
+        return true;
     }
-    else if (direction == 'L') {
-        return make_move(0, -1);
+
+    return true;
+}
+
+bool Sokoban::redo() {
+    if (undone.empty()) {
+        return false;
     }
-    else if (direction == 'R') {
-        return make_move(0, 1);
-    }
-    return false;
+
+    Direction direction = undone.back();
+    undone.pop_back();
+
+    return make_move(direction);
 }
