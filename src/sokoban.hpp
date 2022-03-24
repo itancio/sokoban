@@ -60,6 +60,7 @@ public:
     bool solved();
     std::vector<std::string> board();
     bool move(Direction direction);
+    bool move(unsigned int y, unsigned int x);
     bool undo();  
     bool redo();
     

@@ -1,6 +1,7 @@
 #include "sokoban.hpp"
 
 #include <iostream>
+#include <queue>
 #include <stdexcept>
 
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
@@ -124,6 +125,54 @@ bool Sokoban::move(Direction direction) {
 
     return make_move(direction);
 }
+
+bool Sokoban::move(unsigned int y, unsigned int x) {
+    // Declare queue of node and parent node
+    std::queue<std::vector<std::pair<int, int>>> queue;
+
+    // Declare unordered_map of visited node-parent pair
+    std::unordered_map<std::string, std::pair<int, int>> visited;
+
+    // create string to (y,x) map
+    std::unordered_map<std::string, std::pair<int, int>> str_to_pair;
+    for (unsigned int y = 0; y < _board.size(); y++) {
+        for (unsigned int x = 0; x < _board[y].size(); y++) {
+            str_to_pair[std::to_string(y) + " " + std::to_string(x)] = std::make_pair(y, x);
+        }
+    }
+ 
+    // Add origin to the visited map
+    visited[]
+
+    // While destination is not found or Queue is not empty
+    // get neighbors
+        // Add to neighbors if not visited or
+        // if node is empty or goal
+    // node = pop from queue
+    // add node to visited_map
+    // if node == destination
+        // destination_found = true
+    
+    // if (!desintation_found)
+        // return false
+    
+    // Build the path
+    // paths = [] . paths is a vector of directions
+    // that contain the connected path from destination to origin
+    // While parent is not null (visited_map(destination))
+        // convert to direction
+        // add to paths
+
+    // Execute move
+    // for every path in paths:
+        // path = pop_back from paths
+        // call move(path)
+
+    // return true
+
+    return false;
+}
+
 
 bool Sokoban::undo() {
     if (moves.empty()) {
