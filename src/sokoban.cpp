@@ -8,6 +8,7 @@ Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     current_level = 0;
     _board = levels.at(current_level);
     locate_player();
+    history.push_back(_board);
 }
 
 void Sokoban::print_board() {
@@ -72,27 +73,22 @@ void Sokoban::push_box(int dy, int dx) {
         Cell::BOX_ON_GOAL : Cell::BOX;
 }
 
-void Sokoban::pull_box(int dy, int dx) {
-     // Set the current and next cells when box was pulled
-    _board[py-dy-dy][px-dx-dx] = (_board[py-dy-dy][px-dx-dx] == Cell::BOX_ON_GOAL) ? 
-        Cell::GOAL : Cell::EMPTY;
-    
-    _board[py-dy][px-dx] = (_board[py-dy][px-dx] == Cell::GOAL) ? 
-        Cell::BOX_ON_GOAL : Cell::BOX;
+/* Update move with associated board state */
+void Sokoban::update(Direction direction) {
+    moves.push_back(direction);
+    history.push_back(_board);
 }
 
 bool Sokoban::make_move(Direction direction) {
-    int dy = dir_offset[direction].first;
-    int dx = dir_offset[direction].second;
+    auto [dy, dx] = dir_offset.at(direction);
+
     
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Cell::GOAL || 
         _board[py+dy][px+dx] == Cell::EMPTY) {
 
         move_player(dy, dx);
-
-        // Update moves sequence
-        moves.push_back(direction);
+        update(direction);
 
         return true;
     }
@@ -108,9 +104,7 @@ bool Sokoban::make_move(Direction direction) {
 
             push_box(dy, dx);
             move_player(dy, dx);
-
-            // Update moves sequence
-            moves.push_back(direction);
+            update(direction);
 
             return true;
         }
@@ -130,25 +124,13 @@ bool Sokoban::undo() {
         return false;
     }
 
-    // Store the last move to undone
-    undone.push_back(moves.back());
+    undone.push_back(std::make_pair(moves.back(), _board));
 
-    // Invert the last move and remove it from moves
-    Direction direction = opposite[moves.back()];
     moves.pop_back();
-    
-    int dy = dir_offset[direction].first;
-    int dx = dir_offset[direction].second;
+    history.pop_back();
 
-    move_player(dy, dx);
-    
-    // Pull box after player moves to the new cell
-    if (_board[py-dy-dy][px-dx-dx] == Cell::BOX ||
-        _board[py-dy-dy][px-dx-dx] == Cell::BOX_ON_GOAL) {
-
-        pull_box(dy, dx);
-        return true;
-    }
+    _board = history.back();
+    locate_player();
 
     return true;
 }
@@ -158,8 +140,13 @@ bool Sokoban::redo() {
         return false;
     }
 
-    Direction direction = undone.back();
+    Direction direction = undone.back().first;
+    _board = undone.back().second;
+    update(direction);
+
     undone.pop_back();
 
-    return make_move(direction);
+    locate_player();
+
+    return true;
 }

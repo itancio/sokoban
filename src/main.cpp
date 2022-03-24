@@ -37,15 +37,7 @@ const char *sokoban_board_to_string() {
 }
 
 bool sokoban_move(char *s) {
-    return soko.move((Sokoban::Direction)*s);
-}
-
-bool sokoban_undo() {
-    return soko.undo();
-}
-
-bool sokoban_redo() {
-    return soko.redo();
+    return soko.move(*s);
 }
 
 int sokoban_level() {

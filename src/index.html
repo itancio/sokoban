@@ -63,32 +63,6 @@ const initializeGame = () => {
   });
 };
 
-const undo = Module.cwrap("sokoban_undo", "bool");
-  function undoClickHandler(event) {
-    event.preventDefault();
-    console.log("undo: ", Boolean(undo()));
-    renderBoard();
-    console.log(boardToStr(), levelNumber());
-  }
-  
-  let undoBtn = document.createElement("button");
-  undoBtn.innerHTML = "undo";
-  document.body.appendChild(undoBtn);
-  undoBtn.addEventListener("click", undoClickHandler);
-
-  const redo = Module.cwrap("sokoban_redo", "bool");
-  function redoClickHandler(event) {
-    event.preventDefault();
-    console.log("redo: ", Boolean(redo()));
-    renderBoard();
-    console.log(boardToStr(), levelNumber());
-  }
-  
-  let redoBtn = document.createElement("button");
-  redoBtn.innerHTML = "redo";
-  document.body.appendChild(redoBtn);
-  redoBtn.addEventListener("click", redoClickHandler);
-
 const boardEl = document.getElementById("board");
 
 var Module = {
