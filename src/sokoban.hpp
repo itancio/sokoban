@@ -12,7 +12,8 @@ public:
             U = 'U',
             D = 'D',
             L = 'L',
-            R = 'R'
+            R = 'R',
+            O = 'O'
         };
 
 private:
@@ -46,12 +47,13 @@ private:
     unsigned int py;
     unsigned int px;
     std::vector<Direction> moves;
-    std::vector<Direction> undone;
+    std::vector<std::vector<std::string>> history;
+    std::vector<std::pair<Direction, std::vector<std::string>>> undone;
 
     void locate_player();
     void move_player(int dy, int dx);
     void push_box(int dy, int dx);
-    void pull_box(int dy, int dx);
+    void update(Direction direction);
     bool make_move(Direction direction);
 
 public:

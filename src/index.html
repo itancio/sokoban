@@ -61,9 +61,9 @@ const initializeGame = () => {
       console.log(boardToStr(), levelNumber());
     }
   });
-};
 
-const undo = Module.cwrap("sokoban_undo", "bool");
+  // **** BEGIN UNDO AND REDO BUTTON ***** 
+  const undo = Module.cwrap("sokoban_undo", "bool");
   function undoClickHandler(event) {
     event.preventDefault();
     console.log("undo: ", Boolean(undo()));
@@ -88,6 +88,8 @@ const undo = Module.cwrap("sokoban_undo", "bool");
   redoBtn.innerHTML = "redo";
   document.body.appendChild(redoBtn);
   redoBtn.addEventListener("click", redoClickHandler);
+  // **** END UNDO AND REDO BUTTON ******
+};
 
 const boardEl = document.getElementById("board");
 
