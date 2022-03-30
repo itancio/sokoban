@@ -1,7 +1,9 @@
 #include "sokoban.hpp"
 
 #include <iostream>
+#include <map>
 #include <queue>
+#include <stack>
 #include <stdexcept>
 
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
@@ -9,6 +11,7 @@ Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     current_level = 0;
     _board = levels.at(current_level);
     locate_player();
+    history.push_back(_board);
 }
 
 void Sokoban::print_board() {
@@ -73,27 +76,22 @@ void Sokoban::push_box(int dy, int dx) {
         Cell::BOX_ON_GOAL : Cell::BOX;
 }
 
-void Sokoban::pull_box(int dy, int dx) {
-     // Set the current and next cells when box was pulled
-    _board[py-dy-dy][px-dx-dx] = (_board[py-dy-dy][px-dx-dx] == Cell::BOX_ON_GOAL) ? 
-        Cell::GOAL : Cell::EMPTY;
-    
-    _board[py-dy][px-dx] = (_board[py-dy][px-dx] == Cell::GOAL) ? 
-        Cell::BOX_ON_GOAL : Cell::BOX;
+/* Update move with associated board state */
+void Sokoban::update(Direction direction) {
+    moves.push_back(direction);
+    history.push_back(_board);
 }
 
 bool Sokoban::make_move(Direction direction) {
-    int dy = dir_offset[direction].first;
-    int dx = dir_offset[direction].second;
-    
+    int dy = dir_offset[direction].y;
+    int dx = dir_offset[direction].x;
+
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Cell::GOAL || 
         _board[py+dy][px+dx] == Cell::EMPTY) {
 
         move_player(dy, dx);
-
-        // Update moves sequence
-        moves.push_back(direction);
+        update(direction);
 
         return true;
     }
@@ -109,9 +107,7 @@ bool Sokoban::make_move(Direction direction) {
 
             push_box(dy, dx);
             move_player(dy, dx);
-
-            // Update moves sequence
-            moves.push_back(direction);
+            update(direction);
 
             return true;
         }
@@ -127,50 +123,113 @@ bool Sokoban::move(Direction direction) {
 }
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
-    // Declare queue of node and parent node
-    std::queue<std::vector<std::pair<int, int>>> queue;
+
+    // TODO: validate if (x, y) position is in the board
+
+    // Declare queue
+    std::queue<Node> queue;
 
     // Declare unordered_map of visited node-parent pair
-    std::unordered_map<std::string, std::pair<int, int>> visited;
-
-    // create string to (y,x) map
-    std::unordered_map<std::string, std::pair<int, int>> str_to_pair;
-    for (unsigned int y = 0; y < _board.size(); y++) {
-        for (unsigned int x = 0; x < _board[y].size(); y++) {
-            str_to_pair[std::to_string(y) + " " + std::to_string(x)] = std::make_pair(y, x);
-        }
-    }
+    std::unordered_map<Node, Node, KeyHash, KeyEqual> visited;
  
-    // Add origin to the visited map
-    visited[]
+    bool destination_found = (py == y && px == x);
+
+    // Add origin to the queue and visited map
+    Node origin(py, px);
+    Node destination(y, x);
+    queue.push(origin);
+    visited[origin] = Node(0, 0);
 
     // While destination is not found or Queue is not empty
-    // get neighbors
-        // Add to neighbors if not visited or
-        // if node is empty or goal
-    // node = pop from queue
-    // add node to visited_map
-    // if node == destination
-        // destination_found = true
+    while (!queue.empty()) {
+        // Get the first node from the queue
+        Node current = queue.front();
+        queue.pop();
+
+        //std::cout << "current: " << current.y << " " << current.x << std::endl;
+
+        // Get neighbors
+        std::vector<Node> neighbors;
+        for (const auto& [key, value] : dir_offset) {
+
+            // Check the cardinal adjacent neighbors if they are a valid path.
+            // A valid path is a path that has not yet been visited, and
+            // a goal or empty cell.
+            Node adj = Node(current.y + value.y, current.x + value.x);
+            // std::cout << "adj: " << adj.y << " " << adj.x << " " << (visited.find(adj) != visited.end()) << " ";
+            if ((visited.find(adj) == visited.end()) &&
+                (_board.at(adj.y).at(adj.x) == Cell::EMPTY || 
+                _board.at(adj.y).at(adj.x) == Cell::GOAL)) {
+                neighbors.push_back(adj);
+            }
+        }
+        //std::cout << std::endl;
+
+        // Add neighbors to visited with its associated parent, and queue
+        for (auto& neighbor : neighbors) {
+            visited[neighbor] = current;
+            queue.push(neighbor);
+        }
     
-    // if (!desintation_found)
-        // return false
+        // Exit the loop once we are currently in the destination
+        if (current == destination) {
+            destination_found = true;
+            break;
+        }
+    }
     
-    // Build the path
-    // paths = [] . paths is a vector of directions
-    // that contain the connected path from destination to origin
-    // While parent is not null (visited_map(destination))
-        // convert to direction
-        // add to paths
+    if (!destination_found) {
+        return false;
+    }
+    
+    //*********** TO DO HERE **************
+    // print visited
+    for (auto& [key, value] : visited) {
+        std::cout << "(" << key.y << ", " << key.x << ") : [" << value.y << ", " << value.x << "]" << std::endl;
+    }
 
-    // Execute move
-    // for every path in paths:
-        // path = pop_back from paths
-        // call move(path)
+    // Build the valid path from the origin to the destination
+    std::stack<Node> paths;
+    Node current = destination;
 
-    // return true
+    while (current != origin) {
+        paths.push(current);
+        std::cout << "(" << paths.top().y << ", " << paths.top().x << ")" << "---> ";
+        std::cout << "(" << origin.y << ", " << origin.x << ")" << std::endl;
+        
+        current = visited[current];
+        
+        std::cout << "condition: " << (current != origin) << std::endl;
+        std::cout << "current: (" << current.y << ", " << current.x << ")" << std::endl;
+    }
 
-    return false;
+
+    // Execute move for every path in paths
+    while (!paths.empty()) {
+        current = origin;
+        Node next = paths.top();
+        Node offset = Node(next.y - origin.y, next.x - origin.x);
+        paths.pop();
+
+        // TODO: Edit
+        if (offset == dir_offset.at(Direction::U)) {
+            move(Direction::U);
+        }
+        else if (offset == dir_offset.at(Direction::D)) {
+            move(Direction::D);
+        }
+        else if (offset == dir_offset.at(Direction::L)) {
+            move(Direction::L);
+        }
+        else if (offset == dir_offset.at(Direction::R)) {
+            move(Direction::R);
+        }
+
+     
+        print_board();
+    }
+
+    return true;
 }
 
 
@@ -179,25 +238,13 @@ bool Sokoban::undo() {
         return false;
     }
 
-    // Store the last move to undone
-    undone.push_back(moves.back());
+    undone.push_back(std::make_pair(moves.back(), _board));
 
-    // Invert the last move and remove it from moves
-    Direction direction = opposite[moves.back()];
     moves.pop_back();
-    
-    int dy = dir_offset[direction].first;
-    int dx = dir_offset[direction].second;
+    history.pop_back();
 
-    move_player(dy, dx);
-    
-    // Pull box after player moves to the new cell
-    if (_board[py-dy-dy][px-dx-dx] == Cell::BOX ||
-        _board[py-dy-dy][px-dx-dx] == Cell::BOX_ON_GOAL) {
-
-        pull_box(dy, dx);
-        return true;
-    }
+    _board = history.back();
+    locate_player();
 
     return true;
 }
@@ -207,8 +254,13 @@ bool Sokoban::redo() {
         return false;
     }
 
-    Direction direction = undone.back();
+    Direction direction = undone.back().first;
+    _board = undone.back().second;
+    update(direction);
+
     undone.pop_back();
 
-    return make_move(direction);
+    locate_player();
+
+    return true;
 }

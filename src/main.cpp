@@ -40,6 +40,14 @@ bool sokoban_move(char *s) {
     return soko.move((Sokoban::Direction)*s);
 }
 
+bool sokoban_undo() {
+    return soko.undo();
+}
+
+bool sokoban_redo() {
+    return soko.redo();
+}
+
 int sokoban_level() {
     return soko.level();
 }

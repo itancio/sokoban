@@ -493,6 +493,43 @@ TEST_SUITE("Test cases for undo()") {
         CHECK_FALSE(soko.undo());
         CHECK(soko.board() == expected);
     }
+
+    TEST_CASE("After RLR-undo, player should have not pulled the box") {
+        Sokoban soko({{
+            "#####",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#@ *#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.undo());
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("After RLR-undo-undo, player should vacate an empty cell") {
+        Sokoban soko({{
+            "#####",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "# @*#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.undo());
+        CHECK(soko.undo());
+        CHECK(soko.board() == expected);
+    }
 }
 
 
@@ -581,6 +618,47 @@ TEST_SUITE("Test cases for redo()") {
         CHECK(soko.move(Direction::D));
         CHECK_FALSE(soko.redo());
         CHECK(soko.move(Direction::R));
+        CHECK(soko.board() == expected);
+    }
+}
+
+TEST_SUITE("Test cases for the bfs version of move(y, x)") {
+
+    TEST_CASE("should move player to specified position") {
+        Sokoban soko({{
+            "######",
+            "#    #",
+            "#+*. #",
+            "#    #",
+            "######",
+        }});
+        std::vector<std::string> expected = {
+            "######",
+            "#    #",
+            "#.*. #",
+            "#   @#",
+            "######",
+        };
+        CHECK(soko.move(3, 4));
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should not mutate board") {
+        Sokoban soko({{
+            "######",
+            "#    #",
+            "#+*. #",
+            "#    #",
+            "######",
+        }});
+        std::vector<std::string> expected = {
+            "######",
+            "#    #",
+            "#+*. #",
+            "#    #",
+            "######",
+        };
+        CHECK_FALSE(soko.move(5, 6));
         CHECK(soko.board() == expected);
     }
 }
