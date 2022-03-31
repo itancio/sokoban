@@ -19,9 +19,9 @@ struct Node {
     }
 
     bool operator!=(const Node &p) {
-        return (x != p.x && y != p.y);
+        return !(x == p.x && y == p.y);
     }
-
+    
 };
 
 struct KeyHash {

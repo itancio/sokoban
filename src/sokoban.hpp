@@ -28,11 +28,11 @@ private:
         EMPTY = ' '
     };
 
-    std::unordered_map<Direction, Node> dir_offsets {
-        {U, Node(-1, 0)},
-        {D, Node(1, 0)},
-        {L, Node(0, -1)},
-        {R, Node(0, 1)}
+    std::unordered_map<Direction, std::pair<int, int>> dir_offsets {
+        {U, std::make_pair(-1, 0)},
+        {D, std::make_pair(1, 0)},
+        {L, std::make_pair(0, -1)},
+        {R, std::make_pair(0, 1)}
     };
 
     std::vector<std::vector<std::string>> levels;

@@ -83,8 +83,7 @@ void Sokoban::update(Direction direction) {
 }
 
 bool Sokoban::make_move(Direction direction) {
-    int dy = dir_offsets[direction].y;
-    int dx = dir_offsets[direction].x;
+    auto [dy, dx] = dir_offsets[direction];
 
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Cell::GOAL || 
@@ -121,7 +120,6 @@ bool Sokoban::move(Direction direction) {
 }
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
-
     // If the specified destination is the same, don't do anything
     if (py == y && px == x) {
         return false;
@@ -149,7 +147,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         std::vector<Node> neighbors;
         for (const auto &[key, value] : dir_offsets) {
 
-            Node adj = Node(current.y + value.y, current.x + value.x);
+            Node adj = Node(current.y + value.first, current.x + value.second);
             if ((visited.find(adj) == visited.end()) &&
                 (_board.at(adj.y).at(adj.x) == Cell::EMPTY || 
                 _board.at(adj.y).at(adj.x) == Cell::GOAL)) {
@@ -178,9 +176,8 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     // Build the valid path from the origin to the destination
     std::stack<Node> paths;
     Node current = destination;
-    std::unordered_map<Node, Node, KeyHash, KeyEqual>::hasher hasher = visited.hash_function();
 
-    while (hasher(origin) != hasher(current)) {
+    while (origin != current) {
         paths.push(current);
         current = visited[current];
     }
@@ -190,7 +187,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     while (!paths.empty()) {
         Node next = paths.top();
-        Node offset = Node(next.y - current.y, next.x - current.x);
+        std::pair<int, int> offset(next.y - current.y, next.x - current.x);
 
         for (const auto &[direction, value] : dir_offsets) {
             if (offset == dir_offsets.at(direction)) {
