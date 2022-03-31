@@ -28,7 +28,7 @@ private:
         EMPTY = ' '
     };
 
-    std::unordered_map<Direction, Node> dir_offset {
+    std::unordered_map<Direction, Node> dir_offsets {
         {U, Node(-1, 0)},
         {D, Node(1, 0)},
         {L, Node(0, -1)},

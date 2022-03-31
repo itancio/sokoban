@@ -59,7 +59,7 @@ void Sokoban::move_player(int dy, int dx) {
     _board[py][px] = (_board[py][px] == Cell::PLAYER_ON_GOAL) ? 
         Cell::GOAL : Cell::EMPTY;
 
-    // Set the cell state when player arrives the new cell
+    // Set the cell state when player arrives to the new cell
     _board[py+dy][px+dx] = (_board[py+dy][px+dx] == Cell::GOAL) ? 
         Cell::PLAYER_ON_GOAL : Cell::PLAYER;
     py += dy;
@@ -71,7 +71,7 @@ void Sokoban::push_box(int dy, int dx) {
     _board[py+dy][px+dx] = (_board[py+dy][px+dx] == Cell::BOX_ON_GOAL) ? 
         Cell::GOAL : Cell::EMPTY;
 
-    // Set the cell state when box arrives the new cell
+    // Set the cell state when box arrives to the new cell
     _board[py+dy+dy][px+dx+dx] = (_board[py+dy+dy][px+dx+dx] == Cell::GOAL) ? 
         Cell::BOX_ON_GOAL : Cell::BOX;
 }
@@ -83,8 +83,8 @@ void Sokoban::update(Direction direction) {
 }
 
 bool Sokoban::make_move(Direction direction) {
-    int dy = dir_offset[direction].y;
-    int dx = dir_offset[direction].x;
+    int dy = dir_offsets[direction].y;
+    int dx = dir_offsets[direction].x;
 
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Cell::GOAL || 
@@ -112,13 +112,11 @@ bool Sokoban::make_move(Direction direction) {
             return true;
         }
     }
-
     return false;
 }
 
 bool Sokoban::move(Direction direction) {
     undone.clear();
-
     return make_move(direction);
 }
 
@@ -131,7 +129,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     std::queue<Node> queue;
     std::unordered_map<Node, Node, KeyHash, KeyEqual> visited;
- 
     bool destination_found = (py == y && px == x);
 
     // Add origin to the queue and visited map
@@ -146,107 +143,67 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         Node current = queue.front();
         queue.pop();
 
-        //std::cout << "current: " << current.y << " " << current.x << std::endl;
-
-        // Get neighbors
+        // Get the cardinal adjacent neighbors if they are a valid path.
+        // A valid path is a path that has not yet been visited, and
+        // a goal or empty cell.
         std::vector<Node> neighbors;
-        for (const auto &[key, value] : dir_offset) {
+        for (const auto &[key, value] : dir_offsets) {
 
-            // Check the cardinal adjacent neighbors if they are a valid path.
-            // A valid path is a path that has not yet been visited, and
-            // a goal or empty cell.
             Node adj = Node(current.y + value.y, current.x + value.x);
-            // std::cout << "adj: " << adj.y << " " << adj.x << " " << (visited.find(adj) != visited.end()) << " ";
             if ((visited.find(adj) == visited.end()) &&
                 (_board.at(adj.y).at(adj.x) == Cell::EMPTY || 
                 _board.at(adj.y).at(adj.x) == Cell::GOAL)) {
                 neighbors.push_back(adj);
             }
         }
-        //std::cout << std::endl;
 
-        // Add neighbors to visited with its associated parent, and then queue
-        for (auto &neighbor : neighbors) {
+        // Add neighbors to visited with its associated parent, and then enqueue
+        for (const auto &neighbor : neighbors) {
             visited[neighbor] = current;
             queue.push(neighbor);
         }
     
-        // Exit the loop once we are currently in the destination
+        // Exit the loop once we found the destination
         if (current == destination) {
             destination_found = true;
             break;
         }
     }
     
+    // Exit if there is no path to the deestination
     if (!destination_found) {
         return false;
     }
     
-    // print visited
-    // for (auto &[key, value] : visited) {
-    //     std::cout << "(" << key.y << ", " << key.x << ") : [" << value.y << ", " << value.x << "]" << std::endl;
-    // }
-
-    // Needed for comparing nodes
-    std::unordered_map<Node, Node, KeyHash, KeyEqual>::hasher hasher = visited.hash_function();
-
     // Build the valid path from the origin to the destination
     std::stack<Node> paths;
     Node current = destination;
+    std::unordered_map<Node, Node, KeyHash, KeyEqual>::hasher hasher = visited.hash_function();
 
     while (hasher(origin) != hasher(current)) {
         paths.push(current);
-        std::cout << "(" << paths.top().y << ", " << paths.top().x << ")" << std::endl;
-        std::cout << hasher(origin) << " : (" << origin.y << ", " << origin.x << ")" << "   ";
-        std::cout << hasher(current) << " : (" << current.y << ", " << current.x << ")" << std::endl;
-        
         current = visited[current];
-        
-        std::cout << "condition: " << (current != origin) << std::endl;
-        std::cout << hasher(current) << " : (" << current.y << ", " << current.x << ")" << std::endl;
     }
-
-    // print paths
-    std::stack<Node> temp;
-    while (!paths.empty()) {
-        temp.push(paths.top());
-        paths.pop();
-    }
-    while (!temp.empty()) {
-        Node n = temp.top();
-        std::cout << "paths : (" << n.y << ", " << n.x << ")" << "  ";
-        paths.push(temp.top());
-        temp.pop();
-    }
-
     
-    // Execute move for every path in paths
+    // Execute move for every node in paths
     current = origin;
 
     while (!paths.empty()) {
         Node next = paths.top();
         Node offset = Node(next.y - current.y, next.x - current.x);
 
-        std::cout << "next : (" << next.y << ", " << next.x << ")" << "  " << std::endl;
-        std::cout << "diff : (" << next.y - current.y << ", " << next.x - current.x << ")" << "  " << std::endl;
-        std::cout << "offset : (" << offset.y << ", " << offset.x << ")" << std::endl;
-
-        // TODO: Edit
-        for (auto &direction : {Direction::U, Direction::D, Direction::L, Direction::R}) {
-            if (offset == dir_offset.at(direction)) {
+        for (const auto &[direction, value] : dir_offsets) {
+            if (offset == dir_offsets.at(direction)) {
                 move(direction);
             }
         }
         
-
         current = next;
         paths.pop();
-        print_board();
     }
 
     return true;
 }
-
 
 bool Sokoban::undo() {
     if (moves.empty()) {
