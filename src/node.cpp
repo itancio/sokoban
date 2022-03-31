@@ -5,34 +5,34 @@
 
 struct Node {
     
-    unsigned int y;
-    unsigned int x;
+    int y;
+    int x;
 
     Node() {}
-    Node(unsigned int y, unsigned int x) {
+    Node(int y, int x) {
         this->y = y;
         this->x = x;
     }
 
-    bool operator==(const Node& p) {
+    bool operator==(const Node &p) {
         return (x == p.x && y == p.y);
     }
 
-    bool operator!=(const Node& p) {
+    bool operator!=(const Node &p) {
         return (x != p.x && y != p.y);
     }
 
 };
 
 struct KeyHash {
-    size_t operator() (const Node& p) const {
-        return std::hash<int>()(p.y) ^
-            (std::hash<int>()(p.x) << 1);
+    size_t operator() (const Node &p) const {
+        return (std::hash<long long>()(p.y) << 16) |
+            std::hash<long long>()(p.x);
     }
 };
 
 struct KeyEqual {
-    bool operator() (const Node& left, const Node& right) const {
+    bool operator() (const Node &left, const Node &right) const {
         return left.y == right.y && left.x == right.x;
     }
 };

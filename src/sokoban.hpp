@@ -15,7 +15,6 @@ public:
             D = 'D',
             L = 'L',
             R = 'R',
-            O = 'O'
         };
 
 private:

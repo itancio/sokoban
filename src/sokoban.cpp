@@ -15,7 +15,7 @@ Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
 }
 
 void Sokoban::print_board() {
-    for (std::string &row : board()) {
+    for (const std::string &row : board()) {
         std::cout << row << '\n';
     }
 }
@@ -124,12 +124,12 @@ bool Sokoban::move(Direction direction) {
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
 
-    // TODO: validate if (x, y) position is in the board
+    // If the specified destination is the same, don't do anything
+    if (py == y && px == x) {
+        return false;
+    }
 
-    // Declare queue
     std::queue<Node> queue;
-
-    // Declare unordered_map of visited node-parent pair
     std::unordered_map<Node, Node, KeyHash, KeyEqual> visited;
  
     bool destination_found = (py == y && px == x);
@@ -140,7 +140,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     queue.push(origin);
     visited[origin] = Node(0, 0);
 
-    // While destination is not found or Queue is not empty
+    // Visit all paths to a destination if possible
     while (!queue.empty()) {
         // Get the first node from the queue
         Node current = queue.front();
@@ -150,7 +150,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
         // Get neighbors
         std::vector<Node> neighbors;
-        for (const auto& [key, value] : dir_offset) {
+        for (const auto &[key, value] : dir_offset) {
 
             // Check the cardinal adjacent neighbors if they are a valid path.
             // A valid path is a path that has not yet been visited, and
@@ -165,8 +165,8 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         }
         //std::cout << std::endl;
 
-        // Add neighbors to visited with its associated parent, and queue
-        for (auto& neighbor : neighbors) {
+        // Add neighbors to visited with its associated parent, and then queue
+        for (auto &neighbor : neighbors) {
             visited[neighbor] = current;
             queue.push(neighbor);
         }
@@ -182,50 +182,65 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         return false;
     }
     
-    //*********** TO DO HERE **************
     // print visited
-    for (auto& [key, value] : visited) {
-        std::cout << "(" << key.y << ", " << key.x << ") : [" << value.y << ", " << value.x << "]" << std::endl;
-    }
+    // for (auto &[key, value] : visited) {
+    //     std::cout << "(" << key.y << ", " << key.x << ") : [" << value.y << ", " << value.x << "]" << std::endl;
+    // }
+
+    // Needed for comparing nodes
+    std::unordered_map<Node, Node, KeyHash, KeyEqual>::hasher hasher = visited.hash_function();
 
     // Build the valid path from the origin to the destination
     std::stack<Node> paths;
     Node current = destination;
 
-    while (current != origin) {
+    while (hasher(origin) != hasher(current)) {
         paths.push(current);
-        std::cout << "(" << paths.top().y << ", " << paths.top().x << ")" << "---> ";
-        std::cout << "(" << origin.y << ", " << origin.x << ")" << std::endl;
+        std::cout << "(" << paths.top().y << ", " << paths.top().x << ")" << std::endl;
+        std::cout << hasher(origin) << " : (" << origin.y << ", " << origin.x << ")" << "   ";
+        std::cout << hasher(current) << " : (" << current.y << ", " << current.x << ")" << std::endl;
         
         current = visited[current];
         
         std::cout << "condition: " << (current != origin) << std::endl;
-        std::cout << "current: (" << current.y << ", " << current.x << ")" << std::endl;
+        std::cout << hasher(current) << " : (" << current.y << ", " << current.x << ")" << std::endl;
     }
 
-
-    // Execute move for every path in paths
+    // print paths
+    std::stack<Node> temp;
     while (!paths.empty()) {
-        current = origin;
-        Node next = paths.top();
-        Node offset = Node(next.y - origin.y, next.x - origin.x);
+        temp.push(paths.top());
         paths.pop();
+    }
+    while (!temp.empty()) {
+        Node n = temp.top();
+        std::cout << "paths : (" << n.y << ", " << n.x << ")" << "  ";
+        paths.push(temp.top());
+        temp.pop();
+    }
+
+    
+    // Execute move for every path in paths
+    current = origin;
+
+    while (!paths.empty()) {
+        Node next = paths.top();
+        Node offset = Node(next.y - current.y, next.x - current.x);
+
+        std::cout << "next : (" << next.y << ", " << next.x << ")" << "  " << std::endl;
+        std::cout << "diff : (" << next.y - current.y << ", " << next.x - current.x << ")" << "  " << std::endl;
+        std::cout << "offset : (" << offset.y << ", " << offset.x << ")" << std::endl;
 
         // TODO: Edit
-        if (offset == dir_offset.at(Direction::U)) {
-            move(Direction::U);
+        for (auto &direction : {Direction::U, Direction::D, Direction::L, Direction::R}) {
+            if (offset == dir_offset.at(direction)) {
+                move(direction);
+            }
         }
-        else if (offset == dir_offset.at(Direction::D)) {
-            move(Direction::D);
-        }
-        else if (offset == dir_offset.at(Direction::L)) {
-            move(Direction::L);
-        }
-        else if (offset == dir_offset.at(Direction::R)) {
-            move(Direction::R);
-        }
+        
 
-     
+        current = next;
+        paths.pop();
         print_board();
     }
 
