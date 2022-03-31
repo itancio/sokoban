@@ -83,8 +83,7 @@ void Sokoban::update(Direction direction) {
 }
 
 bool Sokoban::make_move(Direction direction) {
-    int dy = dir_offsets[direction].y;
-    int dx = dir_offsets[direction].x;
+    auto [dy, dx] = dir_offsets[direction];
 
     // Player moves to a goal or empty cell
     if (_board[py+dy][px+dx] == Cell::GOAL || 
@@ -121,38 +120,38 @@ bool Sokoban::move(Direction direction) {
 }
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
+    std::pair<int, int> origin(py, px);
+    std::pair<int, int> destination(y, x);
 
     // If the specified destination is the same, don't do anything
-    if (py == y && px == x) {
+    if (origin == destination) {
         return false;
     }
 
-    std::queue<Node> queue;
-    std::unordered_map<Node, Node, KeyHash, KeyEqual> visited;
+    std::queue<std::pair<int, int>> queue;
+    std::unordered_map<std::pair<int, int>, std::pair<int, int>, PairHash, PairEqual> visited;
     bool destination_found = (py == y && px == x);
 
     // Add origin to the queue and visited map
-    Node origin(py, px);
-    Node destination(y, x);
     queue.push(origin);
-    visited[origin] = Node(0, 0);
+    visited[origin] = std::pair(0, 0);
 
     // Visit all paths to a destination if possible
     while (!queue.empty()) {
         // Get the first node from the queue
-        Node current = queue.front();
+        std::pair<int, int> current = queue.front();
         queue.pop();
 
         // Get the cardinal adjacent neighbors if they are a valid path.
         // A valid path is a path that has not yet been visited, and
         // a goal or empty cell.
-        std::vector<Node> neighbors;
+        std::vector<std::pair<int, int>> neighbors;
         for (const auto &[key, value] : dir_offsets) {
 
-            Node adj = Node(current.y + value.y, current.x + value.x);
+            std::pair<int, int> adj(current.first + value.first, current.second + value.second);
             if ((visited.find(adj) == visited.end()) &&
-                (_board.at(adj.y).at(adj.x) == Cell::EMPTY || 
-                _board.at(adj.y).at(adj.x) == Cell::GOAL)) {
+                (_board.at(adj.first).at(adj.first) == Cell::EMPTY || 
+                _board.at(adj.second).at(adj.second) == Cell::GOAL)) {
                 neighbors.push_back(adj);
             }
         }
@@ -176,11 +175,10 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     }
     
     // Build the valid path from the origin to the destination
-    std::stack<Node> paths;
-    Node current = destination;
-    std::unordered_map<Node, Node, KeyHash, KeyEqual>::hasher hasher = visited.hash_function();
+    std::stack<std::pair<int, int>> paths;
+    std::pair<int, int> current = destination;
 
-    while (hasher(origin) != hasher(current)) {
+    while (origin != current) {
         paths.push(current);
         current = visited[current];
     }
@@ -189,8 +187,8 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     current = origin;
 
     while (!paths.empty()) {
-        Node next = paths.top();
-        Node offset = Node(next.y - current.y, next.x - current.x);
+        std::pair next = paths.top();
+        std::pair<int, int> offset(next.first - current.first, next.second - current.second);
 
         for (const auto &[direction, value] : dir_offsets) {
             if (offset == dir_offsets.at(direction)) {
