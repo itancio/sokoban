@@ -6,13 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sokoban</title>
   <style>
+  body {
+    margin: 0;
+  }
+  main {
+    padding: 1em;
+  }
   #board {
-    font-family: monospace;
+    font-family: "consolas", monospace;
+    font-size: 20pt;
+  }
+  #board table {
+    border-collapse: collapse;
+  }
+  .cell {
+    cursor: pointer;
+    max-width: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    text-align: center;
+  }
+  .wall {
+    background: black;
+    cursor: default;
+  }
+  .box, .box-on-goal {
+    background: #ddd;
   }
   </style>
 </head>
 <body>
-  <div id="board">Loading...</div>
+  <main>
+    <div id="board">Loading...</div>
+  </main>
 
 <script>
 const initializeGame = () => {
@@ -26,23 +53,51 @@ const initializeGame = () => {
     "sokoban_board_to_string",
     "string", // return type
   );
-  const buildRowHTML = row => `
+  const cellToClass = {
+    " ": "space",
+    "#": "wall",
+    "@": "player",
+    "+": "player-on-goal",
+    "$": "box",
+    "*": "box-on-goal",
+    ".": "goal",
+  };
+  const buildRowHTML = (row, rowIndex) => `
     <tr>
       ${[...row]
-        .map(cell => `<td class="cell">${cell}</td>`)
+        .map((cell, i) => `
+          <td
+            data-row="${rowIndex}"
+            data-col="${i}"
+            class="cell ${cellToClass[cell] || ""}"
+          >
+            ${cell}
+          </td>
+        `)
         .join("")}
     </tr>
   `;
   const renderBoard = () => {
     boardEl.innerHTML = 
-      "<table>" +
+      "<table><tbody>" +
         boardToStr()
           .split("\n")
           .map(buildRowHTML)
           .join("") +
-      "</table>"
+      "</tbody></table>"
     ;
   };
+  boardEl.addEventListener("click", event => {
+    const cell = event.target.closest("td");
+
+    if (!cell || !boardEl.contains(cell)) {
+      return;
+    }
+
+    const row = +cell.getAttribute("data-row");
+    const col = +cell.getAttribute("data-col");
+    console.log(row, col);
+  });
  
   Module.ccall("sokoban_initialize");
   renderBoard();
