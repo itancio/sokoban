@@ -4,6 +4,7 @@ const {exec} = require("child_process");
 
 const emcc = `
   emcc src/main.cpp src/sokoban.cpp
+  -std=c++1z
   -o dist/sokoban.js 
   -s NO_EXIT_RUNTIME=1
   -s LINKABLE=1
@@ -28,7 +29,7 @@ const dist = "dist";
     }
 
     for (const f of await fs.readdir(src)) {
-      if (/\.(?:js|html)$/.test(f)) {
+      if (/\.(?:js|css|html)$/.test(f)) {
         await fs.copyFile(path.join(src, f), path.join(dist, f));
       }
     }
