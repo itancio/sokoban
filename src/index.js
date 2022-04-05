@@ -1,14 +1,24 @@
 const initializeGame = () => {
-  const levelNumber = Module.cwrap("sokoban_level");
-  const move = Module.cwrap(
-    "sokoban_move", // name of C function
-    "bool",         // return type
-    ["string"],     // argument types
-  );
-  const boardToStr = Module.cwrap(
-    "sokoban_board_to_string",
-    "string", // return type
-  );
+  Module.ccall("sokoban_initialize");
+  const soko = {
+    levelNumber: Module.cwrap("sokoban_level"),
+    move: Module.cwrap(
+      "sokoban_move", // name of C function
+      "bool",         // return type
+      ["string"],     // argument types
+    ),
+    boardToStr: Module.cwrap(
+      "sokoban_board_to_string",
+      "string", // return type
+    ),
+    undo: Module.cwrap(
+      "sokoban_undo",
+      "bool", // return type
+    ),
+  };
+
+  const boardEl = document.getElementById("board");
+  const undoEl = document.getElementById("undo");
   const cellToClass = {
     " ": "space",
     "#": "wall",
@@ -36,7 +46,7 @@ const initializeGame = () => {
   const renderBoard = () => {
     boardEl.innerHTML = 
       "<table><tbody>" +
-        boardToStr()
+        soko.boardToStr()
           .split("\n")
           .map(buildRowHTML)
           .join("") +
@@ -54,27 +64,31 @@ const initializeGame = () => {
     const col = +cell.getAttribute("data-col");
     console.log(row, col);
   });
+  undoEl.addEventListener("click", event => {
+    if (soko.undo()) {
+      renderBoard();
+    }
+  });
  
-  Module.ccall("sokoban_initialize");
-  renderBoard();
   const moves = {
     ArrowLeft: "L",
     ArrowUp: "U",
     ArrowRight: "R",
     ArrowDown: "D",
   };
-
   document.addEventListener("keydown", event => {
     if (event.code in moves) {
       event.preventDefault();
-      console.log(Boolean(move(moves[event.code])));
-      renderBoard();
-      console.log(boardToStr(), levelNumber());
+
+      if (soko.move(moves[event.code])) {
+        //console.log(soko.boardToStr(), soko.levelNumber());
+        renderBoard();
+      }
     }
   });
-};
 
-const boardEl = document.getElementById("board");
+  renderBoard();
+};
 
 var Module = {
   preRun: [],

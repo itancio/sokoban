@@ -46,6 +46,10 @@ bool sokoban_move(char *s) {
     return soko.move((Sokoban::Direction)*s);
 }
 
+bool sokoban_undo() {
+    return soko.undo();
+}
+
 int sokoban_level() {
     return soko.level();
 }
