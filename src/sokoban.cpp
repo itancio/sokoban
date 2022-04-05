@@ -1,10 +1,12 @@
 #include "sokoban.hpp"
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <queue>
 #include <stack>
 #include <stdexcept>
+
+#include "print.cpp"    //DELETE LATER
 
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     this->levels = levels;
@@ -134,7 +136,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     // Add origin to the queue and visited map
     queue.push(origin);
-    visited[origin] = std::pair(0, 0);
+    visited[origin] = std::make_pair(0, 0);
 
     // Visit all paths to a destination if possible
     while (!queue.empty()) {
@@ -148,7 +150,8 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         std::vector<std::pair<int, int>> neighbors;
         for (const auto &[key, value] : dir_offsets) {
 
-            std::pair<int, int> adj(current.first + value.first, current.second + value.second);
+            std::pair<int, int> adj = std::make_pair(current.first + value.first, current.second + value.second);
+            
             if ((visited.find(adj) == visited.end()) &&
                 (_board.at(adj.first).at(adj.first) == Cell::EMPTY || 
                 _board.at(adj.second).at(adj.second) == Cell::GOAL)) {
@@ -162,18 +165,24 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
             queue.push(neighbor);
         }
     
+        print(neighbors, "neighbors");
+        print(visited, "visited");
+
         // Exit the loop once we found the destination
         if (current == destination) {
             destination_found = true;
             break;
         }
     }
+    print(origin, "origin");
+    print(destination, "destination");
+    print(visited, "visited??????");
     
-    // Exit if there is no path to the deestination
+    // Exit if there is no path to the destination
     if (!destination_found) {
         return false;
     }
-    
+
     // Build the valid path from the origin to the destination
     std::stack<std::pair<int, int>> paths;
     std::pair<int, int> current = destination;
