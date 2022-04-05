@@ -6,8 +6,6 @@
 #include <utility>
 #include <vector>
 
-#include "node.cpp"
-
 class Sokoban {
 public:
     enum Direction {

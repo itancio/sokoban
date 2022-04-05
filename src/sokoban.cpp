@@ -6,8 +6,6 @@
 #include <stack>
 #include <stdexcept>
 
-#include "print.cpp"    //DELETE LATER
-
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     this->levels = levels;
     current_level = 0;
@@ -122,16 +120,17 @@ bool Sokoban::move(Direction direction) {
 }
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
-    std::pair<int, int> origin(py, px);
-    std::pair<int, int> destination(y, x);
+    auto origin = std::make_pair(py, px);
+    auto destination = std::make_pair(y, x);
 
     // If the specified destination is the same, don't do anything
     if (origin == destination) {
         return false;
     }
 
-    std::queue<std::pair<int, int>> queue;
-    std::unordered_map<std::pair<int, int>, std::pair<int, int>, PairHash, PairEqual> visited;
+    std::queue<std::pair<unsigned int, unsigned int>> queue;
+    std::unordered_map<std::pair<unsigned int, unsigned int>, 
+        std::pair<unsigned int, unsigned int>, PairHash, PairEqual> visited;
     bool destination_found = (py == y && px == x);
 
     // Add origin to the queue and visited map
@@ -141,21 +140,25 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     // Visit all paths to a destination if possible
     while (!queue.empty()) {
         // Get the first node from the queue
-        std::pair<int, int> current = queue.front();
+        auto current = queue.front();
         queue.pop();
 
         // Get the cardinal adjacent neighbors if they are a valid path.
         // A valid path is a path that has not yet been visited, and
         // a goal or empty cell.
-        std::vector<std::pair<int, int>> neighbors;
+        std::vector<std::pair<unsigned int, unsigned int>> neighbors;
         for (const auto &[key, value] : dir_offsets) {
 
-            std::pair<int, int> adj = std::make_pair(current.first + value.first, current.second + value.second);
+            auto adj = std::make_pair(current.first + value.first, current.second + value.second);
             
             if ((visited.find(adj) == visited.end()) &&
-                (_board.at(adj.first).at(adj.first) == Cell::EMPTY || 
-                _board.at(adj.second).at(adj.second) == Cell::GOAL)) {
+                (_board.at(adj.first).at(adj.second) == Cell::EMPTY || 
+                _board.at(adj.first).at(adj.second) == Cell::GOAL)) {
                 neighbors.push_back(adj);
+            }
+
+            if (adj == destination) {
+                break;
             }
         }
 
@@ -164,9 +167,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
             visited[neighbor] = current;
             queue.push(neighbor);
         }
-    
-        print(neighbors, "neighbors");
-        print(visited, "visited");
 
         // Exit the loop once we found the destination
         if (current == destination) {
@@ -174,9 +174,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
             break;
         }
     }
-    print(origin, "origin");
-    print(destination, "destination");
-    print(visited, "visited??????");
     
     // Exit if there is no path to the destination
     if (!destination_found) {
@@ -184,10 +181,10 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     }
 
     // Build the valid path from the origin to the destination
-    std::stack<std::pair<int, int>> paths;
-    std::pair<int, int> current = destination;
+    std::stack<std::pair<unsigned int, unsigned int>> paths;
+    auto current = destination;
 
-    while (origin != current) {
+    while (!(origin == current)) {
         paths.push(current);
         current = visited[current];
     }
