@@ -128,6 +128,16 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         return false;
     }
 
+    // If the specified destination is next to the player,
+    // try to move to that destination
+    
+    for (const auto &[dir, offset] : dir_offsets) {
+        auto delta = std::make_pair(origin.first + offset.first, origin.second + offset.second);
+        if (delta == destination) {
+            return move(dir);
+        }
+    }
+
     std::queue<std::pair<unsigned int, unsigned int>> queue;
     std::unordered_map<std::pair<unsigned int, unsigned int>, 
         std::pair<unsigned int, unsigned int>, PairHash, PairEqual> visited;

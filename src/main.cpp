@@ -50,6 +50,10 @@ bool sokoban_undo() {
     return soko.undo();
 }
 
+bool sokoban_goTo(unsigned int r, unsigned int c) {
+    return soko.move(r, c);
+}
+
 int sokoban_level() {
     return soko.level();
 }
