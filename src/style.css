@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+}
+
+main {
+  padding: 1em;
+}
+
+#board {
+  font-family: "consolas", monospace;
+  font-size: 20pt;
+}
+#board table {
+  border-collapse: collapse;
+}
+#board .cell {
+  cursor: pointer;
+  max-width: 30px;
+  max-height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  text-align: center;
+}
+#board .wall {
+  background: black;
+  cursor: default;
+}
+#board .box, .box-on-goal {
+  background: #ddd;
+}
+
