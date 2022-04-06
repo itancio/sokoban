@@ -18,10 +18,16 @@ static std::string joined_board;
 extern "C" {
 void sokoban_initialize() {
     std::vector<std::vector<std::string>> levels{{
-        "#######",
-        "#  $ .#",
-        "#@  ###",
-        "#####",
+        // GRIGoRusha: Shito-Krito #86
+        "  #########",
+        "  #   #  @#",
+        " ##  .$.# #",
+        " #  ##  $ #",
+        "##  .$*#$##",
+        "#  #$#   # ",
+        "#  . .# ## ",
+        "####    #  ",
+        "   ######  ",
     }};
     soko = {levels};
 }
@@ -44,10 +50,6 @@ bool sokoban_undo() {
     return soko.undo();
 }
 
-bool sokoban_redo() {
-    return soko.redo();
-}
-
 int sokoban_level() {
     return soko.level();
 }
@@ -56,3 +58,4 @@ int sokoban_level() {
 int main() {
     std::cout << "Hello Emscripten!\n";
 }
+
