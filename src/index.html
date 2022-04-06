@@ -5,101 +5,17 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sokoban</title>
-  <style>
-  #board {
-    font-family: monospace;
-  }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="board">Loading...</div>
-  
-<script>
-const initializeGame = () => {
-  const levelNumber = Module.cwrap("sokoban_level");
-  const move = Module.cwrap(
-    "sokoban_move", // name of C function
-    "bool",         // return type
-    ["string"],     // argument types
-  );
-  const boardToStr = Module.cwrap(
-    "sokoban_board_to_string",
-    "string", // return type
-  );
-  const buildRowHTML = row => `
-    <tr>
-      ${[...row]
-        .map(cell => `<td class="cell">${cell}</td>`)
-        .join("")}
-    </tr>
-  `;
-  const renderBoard = () => {
-    boardEl.innerHTML = 
-      "<table>" +
-        boardToStr()
-          .split("\n")
-          .map(buildRowHTML)
-          .join("") +
-      "</table>"
-    ;
-  };
- 
-  Module.ccall("sokoban_initialize");
-  renderBoard();
-  const moves = {
-    ArrowLeft: "L",
-    ArrowUp: "U",
-    ArrowRight: "R",
-    ArrowDown: "D",
-  };
+  <main>
+    <div id="board">Loading...</div>
+    <div id="controls">
+      <button id="undo">Undo</button>
+    </div>
+  </main>
 
-  document.addEventListener("keydown", event => {
-    if (event.code in moves) {
-      event.preventDefault();
-      console.log(Boolean(move(moves[event.code])));
-      renderBoard();
-      console.log(boardToStr(), levelNumber());
-    }
-  });
-
-  // **** BEGIN UNDO AND REDO BUTTON ***** 
-  const undo = Module.cwrap("sokoban_undo", "bool");
-  function undoClickHandler(event) {
-    event.preventDefault();
-    console.log("undo: ", Boolean(undo()));
-    renderBoard();
-    console.log(boardToStr(), levelNumber());
-  }
-  
-  let undoBtn = document.createElement("button");
-  undoBtn.innerHTML = "undo";
-  document.body.appendChild(undoBtn);
-  undoBtn.addEventListener("click", undoClickHandler);
-
-  const redo = Module.cwrap("sokoban_redo", "bool");
-  function redoClickHandler(event) {
-    event.preventDefault();
-    console.log("redo: ", Boolean(redo()));
-    renderBoard();
-    console.log(boardToStr(), levelNumber());
-  }
-  
-  let redoBtn = document.createElement("button");
-  redoBtn.innerHTML = "redo";
-  document.body.appendChild(redoBtn);
-  redoBtn.addEventListener("click", redoClickHandler);
-  // **** END UNDO AND REDO BUTTON ******
-};
-
-const boardEl = document.getElementById("board");
-
-var Module = {
-  preRun: [],
-  postRun: [initializeGame],
-  print: text => console.log(text),
-  printErr: text => console.error(text),
-};
-</script>
+<script src="index.js"></script>
 <script async src="sokoban.js"></script>
 </body>
 </html>

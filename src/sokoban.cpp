@@ -120,9 +120,24 @@ bool Sokoban::move(Direction direction) {
 }
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
+
+    Node origin(py, px);
+    Node destination(y, x);
+
     // If the specified destination is the same, don't do anything
-    if (py == y && px == x) {
+    if (origin == destination) {
         return false;
+    }
+
+    // If the specified destination is next to the player,
+    // try to move to that destination
+
+    for (const auto &[dir, offset] : dir_offsets) {
+        Node delta = Node(origin.y + offset.first, origin.x + offset.second);
+        if (delta == destination) {
+            std::cout << (char) dir;
+            return move(dir);
+        }
     }
 
     std::queue<Node> queue;
@@ -130,8 +145,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     bool destination_found = (py == y && px == x);
 
     // Add origin to the queue and visited map
-    Node origin(py, px);
-    Node destination(y, x);
     queue.push(origin);
     visited[origin] = Node(0, 0);
 
@@ -145,9 +158,8 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         // A valid path is a path that has not yet been visited, and
         // a goal or empty cell.
         std::vector<Node> neighbors;
-        for (const auto &[key, value] : dir_offsets) {
-
-            Node adj = Node(current.y + value.first, current.x + value.second);
+        for (const auto &[dir, offset] : dir_offsets) {
+            Node adj = Node(current.y + offset.first, current.x + offset.second);
             if ((visited.find(adj) == visited.end()) &&
                 (_board.at(adj.y).at(adj.x) == Cell::EMPTY || 
                 _board.at(adj.y).at(adj.x) == Cell::GOAL)) {
