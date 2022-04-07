@@ -32,6 +32,10 @@ main {
   background: url("assets/box.png") center no-repeat;
   image-rendering: pixelated;
 }
+#board .goal {
+  background: url("assets/goal.png") center no-repeat;
+  image-rendering: pixelated;
+}
 #board .box-on-goal {
   background: url("assets/box_on_goal.png") center no-repeat;
   image-rendering: pixelated;
