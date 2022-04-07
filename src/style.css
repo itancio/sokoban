@@ -27,13 +27,20 @@ main {
   image-rendering: pixelated;
   /* cursor: default; */
 }
-#board .box, .box-on-goal {
+#board .box {
   /* background: #ddd; */
   background: url("assets/box.png") center no-repeat;
   image-rendering: pixelated;
 }
-
-#board .player, .player-on-goal {
+#board .box-on-goal {
+  background: url("assets/box_on_goal.png") center no-repeat;
+  image-rendering: pixelated;
+}
+#board .player {
   background: url("assets/player.png") center no-repeat;
+  image-rendering: pixelated;
+}
+#board .player-on-goal {
+  background: url("assets/player_on_goal.png") center no-repeat;
   image-rendering: pixelated;
 }
