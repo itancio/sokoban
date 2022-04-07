@@ -11,6 +11,7 @@ main {
   font-size: 20pt;
 }
 #board table {
+  background: url("assets/floor.png") center;
   border-collapse: collapse;
 }
 #board .cell {
@@ -22,10 +23,17 @@ main {
   text-align: center;
 }
 #board .wall {
-  background: black;
-  cursor: default;
+  background: url("assets/wall.png") center;
+  image-rendering: pixelated;
+  /* cursor: default; */
 }
 #board .box, .box-on-goal {
-  background: #ddd;
+  /* background: #ddd; */
+  background: url("assets/box.png") center no-repeat;
+  image-rendering: pixelated;
 }
 
+#board .player, .player-on-goal {
+  background: url("assets/player.png") center no-repeat;
+  image-rendering: pixelated;
+}
