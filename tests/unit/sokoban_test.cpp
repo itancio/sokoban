@@ -493,6 +493,43 @@ TEST_SUITE("Test cases for undo()") {
         CHECK_FALSE(soko.undo());
         CHECK(soko.board() == expected);
     }
+
+    TEST_CASE("After RLR-undo, player should have not pulled the box") {
+        Sokoban soko({{
+            "#####",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#@ *#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.undo());
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("After RLR-undo-undo, player should vacate an empty cell") {
+        Sokoban soko({{
+            "#####",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "# @*#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.undo());
+        CHECK(soko.undo());
+        CHECK(soko.board() == expected);
+    }
 }
 
 

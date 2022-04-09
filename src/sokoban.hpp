@@ -12,7 +12,7 @@ public:
             U = 'U',
             D = 'D',
             L = 'L',
-            R = 'R'
+            R = 'R',
         };
 
 private:
@@ -33,25 +33,19 @@ private:
         {R, std::make_pair(0, 1)}
     };
 
-    std::unordered_map<Direction, Direction> opposite {
-        {U, D},
-        {D, U},
-        {R, L},
-        {L, R},
-    };
-
     std::vector<std::vector<std::string>> levels;
     std::vector<std::string> _board;
     unsigned int current_level;
     unsigned int py;
     unsigned int px;
     std::vector<Direction> moves;
-    std::vector<Direction> undone;
+    std::vector<std::vector<std::string>> history;
+    std::vector<std::pair<Direction, std::vector<std::string>>> undone;
 
     void locate_player();
     void move_player(int dy, int dx);
     void push_box(int dy, int dx);
-    void pull_box(int dy, int dx);
+    void update(Direction direction);
     bool make_move(Direction direction);
 
 public:
