@@ -21,10 +21,15 @@ const initializeGame = () => {
       "sokoban_undo",
       "bool", // return type
     ),
+    redo: Module.cwrap(
+      "sokoban_redo",
+      "bool", // return type
+    ),
   };
 
   const boardEl = document.getElementById("board");
   const undoEl = document.getElementById("undo");
+  const redoEl = document.getElementById("redo");
   const cellToClass = {
     " ": "space",
     "#": "wall",
@@ -76,6 +81,11 @@ const initializeGame = () => {
   });
   undoEl.addEventListener("click", event => {
     if (soko.undo()) {
+      renderBoard();
+    }
+  });
+  redoEl.addEventListener("click", event => {
+    if (soko.redo()) {
       renderBoard();
     }
   });
