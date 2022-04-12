@@ -21,8 +21,11 @@ button {
   transition: background-color 0.2s;
 }
 button[disabled] {
-  background: #444;
+  background: #111;
   cursor: default;
+}
+button[disabled]:hover {
+  background: #111;
 }
 button:hover {
   background: #444;
@@ -35,25 +38,23 @@ main {
   justify-content: center;
 }
 
-#loading {
-  background: url("https://generative-placeholders.glitch.me/image?width=500&height=500&style=cellular-automata&cells=50&colors=83");
+#menu {
   font-family: "consolas", monospace;
   font-size: 22pt;
   text-align: center;
   padding: 3em;
 }
-#loading button {
+#menu button {
   border-radius: 10px;
   border: 0;
   outline: 0;
   font-size: 18pt;
 }
-#loading h1 {
+#menu h1 {
   -webkit-text-stroke: 2px #111;
 }
 
 #game {
-  display: none;
   flex-direction: column;
   align-items: center;
 }
@@ -106,10 +107,9 @@ main {
   background: #865;
   color: #111;
 }
-
 #board .player,
 #board .player-on-goal {
-  background: #916;
+  background: #a16;
   color: #222;
 }
 

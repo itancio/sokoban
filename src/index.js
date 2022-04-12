@@ -1,11 +1,11 @@
 const onLoaded = () => {
-  const loadingEl = document.getElementById("loading");
-  const statusEl = document.getElementById("loading-status");
+  const loadingEl = document.getElementById("menu");
+  const statusEl = document.getElementById("status");
   statusEl.innerHTML = "<button>start</button>";
   statusEl.querySelector("button").addEventListener("click", () => {
     const gameEl = document.getElementById("game");
     gameEl.classList.remove("hide");
-    loadingEl.style.display = "none";
+    loadingEl.classList.add("hide");
     initializeGame();
   });
 };
