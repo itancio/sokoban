@@ -1,17 +1,82 @@
 body {
   margin: 0;
+  padding: 1em;
+  background: #000;
+  color: #eee;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  background: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  padding: 0.5em;
+  border-radius: 4px;
+  background: #222;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+button[disabled] {
+  background: #444;
+  cursor: default;
+}
+button:hover {
+  background: #444;
 }
 
 main {
   padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#loading {
+  background: url("https://generative-placeholders.glitch.me/image?width=500&height=500&style=cellular-automata&cells=50&colors=83");
+  font-family: "consolas", monospace;
+  font-size: 22pt;
+  text-align: center;
+  padding: 3em;
+}
+#loading button {
+  border-radius: 10px;
+  border: 0;
+  outline: 0;
+  font-size: 18pt;
+}
+#loading h1 {
+  -webkit-text-stroke: 2px #111;
+}
+
+#game {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#controls {
+  margin: 2em;
+  font-family: "consolas", monospace;
+  font-size: 12pt;
+  display: flex;
+  flex-flow: row wrap;
+}
+#controls button {
+  margin: 0.3em;
 }
 
 #board {
+  margin: 0 auto;
   font-family: "consolas", monospace;
   font-size: 20pt;
 }
 #board table {
   border-collapse: collapse;
+  margin: auto;
 }
 #board .cell {
   cursor: pointer;
@@ -20,12 +85,34 @@ main {
   min-width: 30px;
   min-height: 30px;
   text-align: center;
+  color: #222;
+  background: #999;
 }
 #board .wall {
-  background: black;
+  background: #202122;
+  color: #202122;
   cursor: default;
 }
-#board .box, .box-on-goal {
-  background: #ddd;
+#board .floor {
+  background: #999;
+}
+#board .floor-outside {
+  background: transparent;
+  color: transparent;
+  cursor: default;
+}
+#board .box,
+#board .box-on-goal {
+  background: #865;
+  color: #111;
 }
 
+#board .player,
+#board .player-on-goal {
+  background: #916;
+  color: #222;
+}
+
+.hide {
+  display: none;
+}

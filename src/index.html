@@ -9,9 +9,19 @@
 </head>
 <body>
   <main>
-    <div id="board">Loading...</div>
-    <div id="controls">
-      <button id="undo">Undo</button>
+    <div id="loading">
+      <h1>Sokoban</h1>
+      <div id="loading-status">
+        <p>loading...</p>
+      </div>
+    </div>
+    <div id="game">
+      <div id="controls">
+        <button id="undo">undo (<kbd>z</kbd>)</button>
+        <button id="redo" disabled>redo</button>
+        <button id="change-level" disabled>change level</button>
+      </div>
+      <div id="board"></div>
     </div>
   </main>
 
