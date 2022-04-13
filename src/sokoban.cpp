@@ -5,10 +5,7 @@
 
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     this->levels = levels;
-    current_level = 0;
-    _board = levels.at(current_level);
-    locate_player();
-    history.push_back(_board);
+    change_level(0);
 }
 
 void Sokoban::print_board() {
@@ -149,4 +146,17 @@ bool Sokoban::redo() {
     locate_player();
 
     return true;
+}
+
+void Sokoban::reset() {
+    change_level(current_level);
+}
+
+void Sokoban::change_level(unsigned int level_number) {
+    current_level = level_number;
+    _board = levels.at(current_level);
+    moves.clear();
+    undone.clear();
+    history.push_back(_board);
+    locate_player();
 }
