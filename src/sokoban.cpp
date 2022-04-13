@@ -1,10 +1,10 @@
 #include "sokoban.hpp"
 
 #include <iostream>
-#include <unordered_map>
 #include <queue>
 #include <stack>
 #include <stdexcept>
+#include <unordered_map>
 
 Sokoban::Sokoban(std::vector<std::vector<std::string>> levels) {
     this->levels = levels;
@@ -120,6 +120,7 @@ bool Sokoban::move(Direction direction) {
 }
 
 bool Sokoban::move(unsigned int y, unsigned int x) {
+
     auto origin = std::make_pair(py, px);
     auto destination = std::make_pair(y, x);
 
@@ -130,7 +131,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     // If the specified destination is next to the player,
     // try to move to that destination
-    
     for (const auto &[dir, offset] : dir_offsets) {
         auto delta = std::make_pair(origin.first + offset.first, origin.second + offset.second);
         if (delta == destination) {
@@ -141,7 +141,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     std::queue<std::pair<unsigned int, unsigned int>> queue;
     std::unordered_map<std::pair<unsigned int, unsigned int>, 
         std::pair<unsigned int, unsigned int>, PairHash, PairEqual> visited;
-    bool destination_found = (py == y && px == x);
+    bool destination_found = false;
 
     // Add origin to the queue and visited map
     queue.push(origin);

@@ -1,5 +1,5 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <time.h>
+
 #include "doctest.h"
 #include "../../src/sokoban.hpp"
 using Direction = Sokoban::Direction;

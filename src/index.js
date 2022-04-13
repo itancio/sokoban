@@ -7,8 +7,8 @@ const initializeGame = () => {
       "bool",         // return type
       ["string"],     // argument types
     ),
-    goTo: Module.cwrap(
-      "sokoban_goTo",
+    goto: Module.cwrap(
+      "sokoban_goto",
       "bool",
       ["unsigned int",
       "unsigned int"]
@@ -74,10 +74,9 @@ const initializeGame = () => {
     const row = +cell.getAttribute("data-row");
     const col = +cell.getAttribute("data-col");
 
-    if (soko.goTo(row, col)) {
+    if (soko.goto(row, col)) {
       renderBoard();
     }
-    console.log(row, col);
   });
   undoEl.addEventListener("click", event => {
     if (soko.undo()) {
