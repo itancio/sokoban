@@ -203,7 +203,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     current = origin;
 
     while (!paths.empty()) {
-        std::pair next = paths.top();
+        std::pair<int, int> next = paths.top();
         std::pair<int, int> offset(next.first - current.first, next.second - current.second);
 
         for (const auto &[direction, value] : dir_offsets) {
