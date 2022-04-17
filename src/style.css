@@ -76,6 +76,7 @@ main {
   font-size: 20pt;
 }
 #board table {
+  background: url("assets/floor.png") center;
   border-collapse: collapse;
   margin: auto;
 }
@@ -88,11 +89,13 @@ main {
   text-align: center;
   color: #222;
   background: #999;
+  image-rendering: pixelated;
 }
 #board .wall {
   background: #202122;
   color: #202122;
   cursor: default;
+  background: url("assets/wall.png") center;
 }
 #board .floor {
   background: #999;
@@ -102,15 +105,17 @@ main {
   color: transparent;
   cursor: default;
 }
-#board .box,
-#board .box-on-goal {
-  background: #865;
-  color: #111;
+#board .box {
+  background: url("assets/box.png") center no-repeat;
 }
-#board .player,
+#board .box-on-goal {
+  background: url("assets/box_on_goal.png") center no-repeat;
+}
+#board .player {
+  background: url("assets/player.png") center no-repeat;
+}
 #board .player-on-goal {
-  background: #a16;
-  color: #222;
+  background: url("assets/player_on_goal.png") center no-repeat;
 }
 
 .hide {
