@@ -9,11 +9,11 @@
 class Sokoban {
 public:
     enum Direction {
-            U = 'U',
-            D = 'D',
-            L = 'L',
-            R = 'R',
-        };
+        U = 'U',
+        D = 'D',
+        L = 'L',
+        R = 'R',
+    };
 
 private:
     enum Cell {
