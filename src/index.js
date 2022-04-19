@@ -48,7 +48,6 @@ const initializeGame = () => {
             data-col="${i}"
             class="cell ${cellToClass[cell] || ""}"
           >
-            ${cell}
           </td>
         `)
         .join("")}
