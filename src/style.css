@@ -1,50 +1,124 @@
 body {
   margin: 0;
+  padding: 1em;
+  background: #000;
+  color: #eee;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  background: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  padding: 0.5em;
+  border-radius: 4px;
+  background: #222;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+button[disabled] {
+  background: #111;
+  cursor: default;
+}
+button[disabled]:hover {
+  background: #111;
+}
+button:hover {
+  background: #444;
 }
 
 main {
   padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#menu {
+  font-family: "consolas", monospace;
+  font-size: 22pt;
+  text-align: center;
+  padding: 3em;
+}
+#menu button {
+  border-radius: 10px;
+  border: 0;
+  outline: 0;
+  font-size: 18pt;
+}
+#menu h1 {
+  -webkit-text-stroke: 2px #111;
+}
+
+#game {
+  flex-direction: column;
+  align-items: center;
+}
+
+#controls {
+  margin: 2em;
+  font-family: "consolas", monospace;
+  font-size: 12pt;
+  display: flex;
+  flex-flow: row wrap;
+}
+#controls button {
+  margin: 0.3em;
 }
 
 #board {
+  margin: 0 auto;
   font-family: "consolas", monospace;
   font-size: 20pt;
 }
 #board table {
-  background: url("assets/floor.png") center;
   border-collapse: collapse;
+  margin: auto;
 }
 #board .cell {
+  padding: 0;
   cursor: pointer;
-  max-width: 30px;
-  max-height: 30px;
-  min-width: 30px;
-  min-height: 30px;
-  text-align: center;
+  width: 30px;
+  height: 30px;
+}
+#board .floor {
+  background: url("assets/floor.png") ;
 }
 #board .wall {
-  background: url("assets/wall.png") center;
+  background: url("assets/wall.png");
   image-rendering: pixelated;
-  /* cursor: default; */
-}
-#board .box {
-  /* background: #ddd; */
-  background: url("assets/box.png") center no-repeat;
-  image-rendering: pixelated;
+  cursor: default;
 }
 #board .goal {
-  background: url("assets/goal.png") center no-repeat;
+  background: url("assets/goal.png");
+  image-rendering: pixelated;
+}
+#board .floor-outside {
+  background: transparent;
+  color: transparent;
+  cursor: default;
+}
+#board .box {
+  background: url("assets/box.png");
   image-rendering: pixelated;
 }
 #board .box-on-goal {
-  background: url("assets/box_on_goal.png") center no-repeat;
+  background: url("assets/box_on_goal.png");
   image-rendering: pixelated;
 }
 #board .player {
-  background: url("assets/player.png") center no-repeat;
+  background: url("assets/player.png");
   image-rendering: pixelated;
 }
 #board .player-on-goal {
-  background: url("assets/player_on_goal.png") center no-repeat;
+  background: url("assets/player_on_goal.png");
   image-rendering: pixelated;
+}
+
+.hide {
+  display: none;
 }

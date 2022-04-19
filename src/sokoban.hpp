@@ -9,11 +9,11 @@
 class Sokoban {
 public:
     enum Direction {
-            U = 'U',
-            D = 'D',
-            L = 'L',
-            R = 'R',
-        };
+        U = 'U',
+        D = 'D',
+        L = 'L',
+        R = 'R',
+    };
 
 private:
     enum Cell {
@@ -51,12 +51,14 @@ private:
 public:
     Sokoban(std::vector<std::vector<std::string>> levels);
     unsigned int level();
+    void change_level(unsigned int level_number);
     bool solved();
     std::vector<std::string> board();
     bool move(Direction direction);
     bool undo();  
     bool redo();
-    
+    void reset();
+
     void print_board();  
 };
 

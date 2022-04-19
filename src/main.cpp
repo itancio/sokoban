@@ -17,18 +17,32 @@ static std::string joined_board;
 
 extern "C" {
 void sokoban_initialize() {
-    std::vector<std::vector<std::string>> levels{{
-        // GRIGoRusha: Shito-Krito #86
-        "  #########",
-        "  #   #  @#",
-        " ##  .$.# #",
-        " #  ##  $ #",
-        "##  .$*#$##",
-        "#  #$#   # ",
-        "#  . .# ## ",
-        "####    #  ",
-        "   ######  ",
-    }};
+    std::vector<std::vector<std::string>> levels{
+        {
+            // greg messing around
+            "   ####",
+            "####. ##",
+            "#.##$ .##",
+            "# ##    #",
+            "#    $  #",
+            "# #### ##",
+            "#@ $   #",
+            "#####  #",
+            "    ####",
+        },
+        {
+            // GRIGoRusha: Shito-Krito #86
+            "  #########",
+            "  #   #  @#",
+            " ##  .$.# #",
+            " #  ##  $ #",
+            "##  .$*#$##",
+            "#  #$#   # ",
+            "#  . .# ## ",
+            "####    #  ",
+            "   ######  ",
+        }
+    };
     soko = {levels};
 }
 
@@ -44,6 +58,10 @@ const char *sokoban_board_to_string() {
 
 bool sokoban_move(char *s) {
     return soko.move((Sokoban::Direction)*s);
+}
+
+bool sokoban_solved() {
+    return soko.solved();
 }
 
 bool sokoban_undo() {
