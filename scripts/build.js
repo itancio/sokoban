@@ -29,8 +29,8 @@ const dist = "dist";
     }
 
     for (const f of await fs.readdir(src)) {
-      if (/\.(?:js|css|html)$/.test(f)) {
-        await fs.copyFile(path.join(src, f), path.join(dist, f));
+      if (/\.(?:js|css|html)$/.test(f) || f === "assets") {
+        await fs.cp(path.join(src, f), path.join(dist, f), {recursive: true});
       }
     }
   });
