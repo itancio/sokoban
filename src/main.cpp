@@ -14,10 +14,11 @@ static Sokoban soko({{
     "#####",
 }});
 static std::string joined_board;
+static std::vector<std::vector<std::string>> levels;
 
 extern "C" {
 void sokoban_initialize() {
-    std::vector<std::vector<std::string>> levels{
+    levels = {
         {
             // greg messing around
             "   ####",
@@ -70,6 +71,14 @@ bool sokoban_undo() {
 
 int sokoban_level() {
     return soko.level();
+}
+
+void sokoban_change_level(int level) {
+    soko.change_level(level);
+}
+
+int sokoban_levels_size() {
+    return levels.size();
 }
 }
 

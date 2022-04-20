@@ -76,44 +76,37 @@ main {
   font-size: 20pt;
 }
 #board table {
-  background: url("assets/floor.png") center;
   border-collapse: collapse;
   margin: auto;
 }
 #board .cell {
   cursor: pointer;
-  max-width: 30px;
-  max-height: 30px;
-  min-width: 30px;
-  min-height: 30px;
+  width: 30px;
+  height: 30px;
   text-align: center;
-  color: #222;
   background: #999;
 }
 #board .wall {
-  background: #202122;
-  color: #202122;
+  background: #444;
   cursor: default;
 }
 #board .floor {
   background: #999;
 }
+#board .goal {
+  background: #f99;
+}
 #board .floor-outside {
   background: transparent;
-  color: transparent;
   cursor: default;
 }
-#board .box,
-#board .box-on-goal {
+#board .box {
   background: #865;
-  color: #111;
+}
+#board .box-on-goal {
+  background: #665;
 }
 #board .player,
 #board .player-on-goal {
   background: #a16;
-  color: #222;
-}
-
-.hide {
-  display: none;
 }
