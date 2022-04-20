@@ -138,7 +138,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
     std::queue<std::pair<unsigned int, unsigned int>> queue;
     std::unordered_map<std::pair<unsigned int, unsigned int>, 
         std::pair<unsigned int, unsigned int>, PairHash, PairEqual> visited;
-    bool destination_found = false;
 
     // Add origin to the queue and visited map
     queue.push(origin);
@@ -150,23 +149,55 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         auto current = queue.front();
         queue.pop();
 
-        // Get the cardinal adjacent neighbors if they are a valid path.
-        // A valid path is a path that has not yet been visited, and
-        // a goal or empty cell.
+        if (current == destination) {
+            // Build the valid path from the origin to the destination
+            std::stack<std::pair<unsigned int, unsigned int>> paths;
+
+            while (!(origin == current)) {
+                paths.push(current);
+                current = visited[current];
+            }
+            
+            // Execute move for every path in paths
+            while (!paths.empty()) {
+                std::pair<int, int> next = paths.top();
+                std::pair<int, int> offset(next.first - current.first, next.second - current.second);
+                bool moved = false;
+
+                for (const auto &[direction, value] : dir_offsets) {
+                    if (offset == dir_offsets.at(direction)) {
+                        moved = move(direction);
+                    }
+                }
+                
+                if (!moved) {
+                    return false;
+                }
+
+                current = next;
+                paths.pop();
+            }
+
+            // Player has been moved to the destination.
+            return true;
+        }
+
+        // If destination has not yet been found, get the cardinal adjacent neighbors 
         std::vector<std::pair<unsigned int, unsigned int>> neighbors;
         for (const auto &[key, value] : dir_offsets) {
 
             auto adj = std::make_pair(current.first + value.first, current.second + value.second);
             
-            if ((visited.find(adj) == visited.end()) &&
-                (_board.at(adj.first).at(adj.second) == Cell::EMPTY || 
-                _board.at(adj.first).at(adj.second) == Cell::GOAL)) {
-                neighbors.push_back(adj);
+            if (visited.find(adj) == visited.end()) {
+                if (_board.at(adj.first).at(adj.second) == Cell::EMPTY || 
+                    _board.at(adj.first).at(adj.second) == Cell::GOAL) {
+                    neighbors.push_back(adj);
+                }
+                else if (adj == destination) {
+                    neighbors.push_back(adj);
+                }
             }
 
-            if (adj == destination) {
-                break;
-            }
         }
 
         // Add neighbors to visited with its associated parent, and then enqueue
@@ -175,45 +206,10 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
             queue.push(neighbor);
         }
 
-        // Exit the loop once we found the destination
-        if (current == destination) {
-            destination_found = true;
-            break;
-        }
     }
     
-    // Exit if there is no path to the destination
-    if (!destination_found) {
-        return false;
-    }
-
-    // Build the valid path from the origin to the destination
-    std::stack<std::pair<unsigned int, unsigned int>> paths;
-    auto current = destination;
-
-    while (!(origin == current)) {
-        paths.push(current);
-        current = visited[current];
-    }
-    
-    // Execute move for every node in paths
-    current = origin;
-
-    while (!paths.empty()) {
-        std::pair<int, int> next = paths.top();
-        std::pair<int, int> offset(next.first - current.first, next.second - current.second);
-
-        for (const auto &[direction, value] : dir_offsets) {
-            if (offset == dir_offsets.at(direction)) {
-                move(direction);
-            }
-        }
-        
-        current = next;
-        paths.pop();
-    }
-
-    return true;
+    // No valid path to the destionation has been found
+    return false;
 }
 
 bool Sokoban::undo() {

@@ -728,7 +728,67 @@ TEST_SUITE("Test cases for the bfs version of move(y, x)") {
             "######",
         };
         CHECK(soko.move(3, 2));
-        soko.print_board();
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("player should move box to the valid adjacent cell") {
+        Sokoban soko({{
+            "######",
+            "#    #",
+            "#.$  #",
+            "#    #",
+            "#   @#",
+            "######",
+        }});
+        std::vector<std::string> expected = {
+            "######",
+            "#    #",
+            "#*@  #",
+            "#    #",
+            "#    #",
+            "######",
+        };
+        CHECK(soko.move(2, 2));
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("player should move the box down") {
+        Sokoban soko({{
+            "########",
+            "#      #",
+            "# ####$#",
+            "#   @$ #",
+            "########",
+        }});
+        std::vector<std::string> expected = {
+            "########",
+            "#      #",
+            "# ####@#",
+            "#    $$#",
+            "########",
+        };
+        CHECK(soko.move(2, 6));
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("player should move the box up") {
+        Sokoban soko({{
+            "  ###",
+            "  #.#",
+            "  #$#",
+            "### #",
+            "#@  #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "  ###",
+            "  #*#",
+            "  #@#",
+            "### #",
+            "#   #",
+            "#####",
+        };
+        CHECK(soko.move(2, 3));
         CHECK(soko.board() == expected);
     }
 
@@ -761,23 +821,6 @@ TEST_SUITE("Test cases for the bfs version of move(y, x)") {
             "#####",
         };
         CHECK_FALSE(soko.move(5, 6));
-        CHECK(soko.board() == expected);
-    }
-
-    TEST_CASE("should not move player to a destination with a box") {
-        Sokoban soko({{
-            "######",
-            "#.*. #",
-            "#   @#",
-            "######",
-        }});
-        std::vector<std::string> expected = {
-            "######",
-            "#.*. #",
-            "#   @#",
-            "######",
-        };
-        CHECK_FALSE(soko.move(1, 2));
         CHECK(soko.board() == expected);
     }
 
@@ -832,4 +875,109 @@ TEST_SUITE("Test cases for the bfs version of move(y, x)") {
         CHECK(soko.board() == expected);
     }
 
+}
+
+TEST_SUITE("Test cases for change_level") {
+    
+    TEST_CASE("Should change level") {
+        Sokoban soko({
+            {
+                "######",
+                "#@$. #",
+                "######",
+            },
+            {
+                "######",
+                "#    #",
+                "#.*. #",
+                "#   @#",
+                "######",
+            }
+        });
+        std::vector<std::string> expected = {
+            "######",
+            "#    #",
+            "#.*. #",
+            "#   @#",
+            "######",
+        };
+        soko.change_level(1);
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("Should change level after player moves") {
+        Sokoban soko({
+            {
+                "######",
+                "#@$. #",
+                "######",
+            },
+            {
+                "######",
+                "#    #",
+                "#.*. #",
+                "#   @#",
+                "######",
+            }
+        });
+        std::vector<std::string> expected = {
+            "######",
+            "#    #",
+            "#.*. #",
+            "#   @#",
+            "######",
+        };
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::R));
+        soko.change_level(1);
+        CHECK_FALSE(soko.undo());
+        CHECK(soko.board() == expected);
+    }
+    TEST_CASE("Should change level back and forth") {
+        Sokoban soko({
+            {
+                "######",
+                "#@$. #",
+                "######",
+            },
+            {
+                "######",
+                "#    #",
+                "#.*. #",
+                "#   @#",
+                "######",
+            }
+        });
+        std::vector<std::string> expected = {
+            "######",
+            "# @* #",
+            "######",
+        };
+        soko.change_level(1);
+        soko.change_level(0);
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.board() == expected);
+    }
+}
+
+TEST_SUITE("Tests reset") {
+
+    TEST_CASE("Should reset board") {
+        Sokoban soko({{
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        };
+        soko.move(Direction::U);
+        soko.move(Direction::R);
+        soko.reset();
+        CHECK(soko.board() == expected);
+    }
 }

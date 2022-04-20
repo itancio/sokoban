@@ -12,10 +12,24 @@ public:
         U = 'U',
         D = 'D',
         L = 'L',
-        R = 'R',
+        R = 'R'
     };
 
 private:
+    struct PairHash {
+        size_t operator() (const std::pair<unsigned int, unsigned int> &p) const {
+            return (std::hash<long>()(p.first) << 16) |
+                std::hash<long>()(p.second);
+        }
+    };
+
+    struct PairEqual {
+        bool operator() (const std::pair<unsigned int, unsigned int> &left, 
+            const std::pair<unsigned int, unsigned int> &right) const {
+            return left.first == right.first && left.second == right.second;
+        }
+    };
+    
     enum Cell {
         PLAYER = '@',
         PLAYER_ON_GOAL = '+',
@@ -27,10 +41,10 @@ private:
     };
 
     std::unordered_map<Direction, std::pair<int, int>> dir_offsets {
-        {U, std::make_pair(-1, 0)},
-        {D, std::make_pair(1, 0)},
         {L, std::make_pair(0, -1)},
-        {R, std::make_pair(0, 1)}
+        {R, std::make_pair(0, 1)},
+        {U, std::make_pair(-1, 0)},
+        {D, std::make_pair(1, 0)}
     };
 
     std::vector<std::vector<std::string>> levels;
@@ -62,20 +76,4 @@ public:
 
     void print_board();  
 };
-
-struct PairHash {
-    template <class T1, class T2>
-    size_t operator() (const std::pair<T1, T2> &p) const {
-        return (std::hash<long long>()(p.first) << 16) |
-            std::hash<long long>()(p.second);
-    }
-};
-
-struct PairEqual {
-    template <class T1, class T2>
-    bool operator() (const std::pair<T1, T2> &left, const std::pair<T1, T2> &right) const {
-        return left.first == right.first && left.second == right.second;
-    }
-};
-
 #endif
