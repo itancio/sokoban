@@ -1,3 +1,15 @@
+const onLoaded = () => {
+  const loadingEl = document.getElementById("menu");
+  const statusEl = document.getElementById("status");
+  statusEl.innerHTML = "<button>start</button>";
+  statusEl.querySelector("button").addEventListener("click", () => {
+    const gameEl = document.getElementById("game");
+    gameEl.classList.remove("hide");
+    loadingEl.classList.add("hide");
+    initializeGame();
+  });
+};
+
 const initializeGame = () => {
   Module.ccall("sokoban_initialize");
   const soko = {
@@ -17,21 +29,16 @@ const initializeGame = () => {
       "sokoban_board_to_string",
       "string", // return type
     ),
-    undo: Module.cwrap(
-      "sokoban_undo",
-      "bool", // return type
-    ),
-    redo: Module.cwrap(
-      "sokoban_redo",
-      "bool", // return type
-    ),
+    undo: Module.cwrap("sokoban_undo", "bool"),
+    solved: Module.cwrap("sokoban_solved", "bool"),
   };
 
   const boardEl = document.getElementById("board");
   const undoEl = document.getElementById("undo");
   const redoEl = document.getElementById("redo");
   const cellToClass = {
-    " ": "space",
+    "_": "floor-outside",
+    " ": "floor",
     "#": "wall",
     "@": "player",
     "+": "player-on-goal",
@@ -41,14 +48,13 @@ const initializeGame = () => {
   };
   const buildRowHTML = (row, rowIndex) => `
     <tr>
-      ${[...row]
+      ${[...row.replace(/^ +/g, m => "_".repeat(m.length))]
         .map((cell, i) => `
           <td
             data-row="${rowIndex}"
             data-col="${i}"
             class="cell ${cellToClass[cell] || ""}"
           >
-            ${cell}
           </td>
         `)
         .join("")}
@@ -102,7 +108,14 @@ const initializeGame = () => {
       if (soko.move(moves[event.code])) {
         //console.log(soko.boardToStr(), soko.levelNumber());
         renderBoard();
+
+        if (soko.solved()) {
+          console.log("solved!");
+        }
       }
+    }
+    else if (event.code === "KeyZ" && soko.undo()) {
+      renderBoard();
     }
   });
 
@@ -111,7 +124,7 @@ const initializeGame = () => {
 
 var Module = {
   preRun: [],
-  postRun: [initializeGame],
+  postRun: [onLoaded],
   print: text => console.log(text),
   printErr: text => console.error(text),
 };
