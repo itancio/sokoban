@@ -6,10 +6,21 @@ const renderMenu = root => {
   const menuHTML = `
   <div id="menu">
     <h1>Sokoban</h1>
+    <div class="attribution">
+      <em>by Irvin, Juan, Severin & Greg</em>
+    </div>
     <ul>
-      ${[...Array(2)].map((_, i) =>
-        `<li><a href="#${i + 1}">${i + 1}</a></li>`
-      ).join("")}
+      ${[...Array(5/* TODO get levels from soko */)].map((_, i) => `
+        <li>
+          <a href="#${i + 1}">
+            <span class="material-symbols-outlined">
+              ${Math.random() > 0.5 ? "check_box_outline_blank" : "check_box"}
+            </span>
+            <span>level ${i + 1}</span>
+            <span>best: ${~~(Math.random() * 2050)}</span>
+          </a>
+        </li>
+      `).join("")}
     </ul>
   </div>
   `;
@@ -39,9 +50,11 @@ const renderLevel = (root, levelNumber) => {
   const gameHTML = `
   <div id="game" class="hide">
     <div id="controls">
-      <button id="undo">undo (<kbd>z</kbd>)</button>
-      <button id="redo" disabled>redo</button>
-      <button id="change-level">change level</button>
+      <button title="Undo (z key)" id="undo"><span class="material-symbols-outlined">undo</span></button>
+      <button title="Redo (r key)" id="redo" disabled><span class="material-symbols-outlined">redo</span></button>
+      <button title="Home" id="change-level"><span class="material-symbols-outlined">home</span></button>
+      <button title="Settings" disabled><span class="material-symbols-outlined">settings</span></button>
+      <button title="Help" disabled><span class="material-symbols-outlined">help</span></button>
     </div>
     <div id="board"></div>
   </div>
@@ -109,7 +122,7 @@ const renderLevel = (root, levelNumber) => {
     </tr>
   `;
   const renderBoard = () => {
-    boardEl.innerHTML = 
+    boardEl.innerHTML =
       "<table><tbody>" +
         soko.boardToStr()
           .split("\n")
@@ -141,7 +154,7 @@ const renderLevel = (root, levelNumber) => {
     ArrowRight: "R",
     ArrowDown: "D",
   };
-  document.addEventListener("keydown", event => {
+  document.onkeydown = event => {
     if (event.code in moves) {
       event.preventDefault();
 
@@ -156,7 +169,7 @@ const renderLevel = (root, levelNumber) => {
     else if (event.code === "KeyZ" && soko.undo()) {
       renderBoard();
     }
-  });
+  };
 
   renderBoard();
 };
