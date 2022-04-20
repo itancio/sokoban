@@ -73,7 +73,11 @@ const char *sokoban_board_to_string() {
 }
 
 bool sokoban_move(char *s) {
-    return soko.move((Sokoban::Direction)*s);
+    return soko.move((Sokoban::Direction) *s);
+}
+
+bool sokoban_goto(int row, int col) {
+    return soko.move(row, col);
 }
 
 bool sokoban_solved() {
@@ -82,6 +86,10 @@ bool sokoban_solved() {
 
 bool sokoban_undo() {
     return soko.undo();
+}
+
+bool sokoban_redo() {
+    return soko.redo();
 }
 
 int sokoban_level() {

@@ -76,6 +76,12 @@ const renderLevel = (root, levelNumber) => {
       "bool",         // return type
       ["string"],     // argument types
     ),
+    goto: Module.cwrap(
+      "sokoban_goto",
+      "bool",
+      ["unsigned int",
+      "unsigned int"]
+    ),
     boardToStr: Module.cwrap(
       "sokoban_board_to_string",
       "string", // return type
@@ -98,6 +104,7 @@ const renderLevel = (root, levelNumber) => {
 
   const boardEl = document.getElementById("board");
   const undoEl = document.getElementById("undo");
+  const redoEl = document.getElementById("redo");
   const cellToClass = {
     "_": "floor-outside",
     " ": "floor",
@@ -140,10 +147,18 @@ const renderLevel = (root, levelNumber) => {
 
     const row = +cell.getAttribute("data-row");
     const col = +cell.getAttribute("data-col");
-    console.log(row, col);
+
+    if (soko.goto(row, col)) {
+      renderBoard();
+    }
   });
   undoEl.addEventListener("click", event => {
     if (soko.undo()) {
+      renderBoard();
+    }
+  });
+  redoEl.addEventListener("click", event => {
+    if (soko.redo()) {
       renderBoard();
     }
   });
