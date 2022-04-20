@@ -731,6 +731,26 @@ TEST_SUITE("Test cases for the bfs version of move(y, x)") {
         CHECK(soko.board() == expected);
     }
 
+    TEST_CASE("player should move to the closest valid cell") {
+        Sokoban soko({{
+            "####",
+            "#. #",
+            "#$ ###",
+            "#@$  #",
+            "######",
+        }});
+        std::vector<std::string> expected = {
+            "####",
+            "#. #",
+            "#$@###",
+            "#  $ #",
+            "######",
+        };
+        CHECK(soko.move(3, 2));
+        CHECK(soko.move(2, 1));
+        CHECK(soko.board() == expected);
+    }
+
     TEST_CASE("player should move box to the valid adjacent cell") {
         Sokoban soko({{
             "######",

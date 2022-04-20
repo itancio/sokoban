@@ -169,10 +169,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
                         moved = move(direction);
                     }
                 }
-                
-                if (!moved) {
-                    return false;
-                }
 
                 current = next;
                 paths.pop();
