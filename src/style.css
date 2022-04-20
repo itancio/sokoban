@@ -80,18 +80,22 @@ main {
   margin: auto;
 }
 #board .cell {
+  padding: 0;
   cursor: pointer;
   width: 30px;
   height: 30px;
-  text-align: center;
-  background: #999;
-}
-#board .wall {
-  background: #444;
-  cursor: default;
 }
 #board .floor {
-  background: #999;
+  background: url("assets/floor.png") ;
+}
+#board .wall {
+  background: url("assets/wall.png");
+  image-rendering: pixelated;
+  cursor: default;
+}
+#board .goal {
+  background: url("assets/goal.png");
+  image-rendering: pixelated;
 }
 #board .goal {
   background: #f99;
@@ -101,12 +105,23 @@ main {
   cursor: default;
 }
 #board .box {
-  background: #865;
+  background: url("assets/box.png");
+  image-rendering: pixelated;
+}
+#board .floor-outside {
+  background: transparent;
+  color: transparent;
+  cursor: default;
 }
 #board .box-on-goal {
-  background: #665;
+  background: url("assets/box_on_goal.png");
+  image-rendering: pixelated;
 }
-#board .player,
+#board .player {
+  background: url("assets/player.png");
+  image-rendering: pixelated;
+}
 #board .player-on-goal {
-  background: #a16;
+  background: url("assets/player_on_goal.png");
+  image-rendering: pixelated;
 }
