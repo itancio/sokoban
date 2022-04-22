@@ -1001,3 +1001,190 @@ TEST_SUITE("Tests reset") {
         CHECK(soko.board() == expected);
     }
 }
+
+TEST_SUITE("Test cases for rewind()") {
+
+    TEST_CASE("should revert to original") {
+        Sokoban soko({{
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        };
+        CHECK(soko.move(4, 1));
+        CHECK(soko.rewind());
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should revert to original after two rewind()") {
+        Sokoban soko({{
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        };
+        CHECK(soko.move(4, 1));
+        CHECK(soko.move(2, 3));
+        CHECK(soko.rewind());
+        CHECK(soko.rewind());
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should undo once") {
+        Sokoban soko({{
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#@  #",
+            "#####",
+        };
+        CHECK(soko.move(4, 1));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.rewind());
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should revert to original") {
+        Sokoban soko({{
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#@  #",
+            "#####",
+        };
+        CHECK(soko.move(4, 1));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.rewind());
+        CHECK(soko.board() == expected);
+    }
+}
+
+TEST_SUITE("Test cases for sequence()") {
+    
+    TEST_CASE("should return an empty string") {
+        Sokoban soko({{
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::U));
+        CHECK(soko.undo());
+        CHECK(soko.sequence() == "");
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should return 'URRLLD'") {
+        Sokoban soko({{
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::U));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::D));
+        CHECK(soko.sequence() == "URRLLD");
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should return 'URRLL'") {
+        Sokoban soko({{
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#@  #",
+            "# $.#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::U));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.move(Direction::D));
+        CHECK(soko.undo());
+        CHECK(soko.sequence() == "URRLL");
+        CHECK(soko.board() == expected);
+    }
+
+    TEST_CASE("should return 'URRL'") {
+        Sokoban soko({{
+            "#####",
+            "#   #",
+            "#@$.#",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "# @ #",
+            "# $.#",
+            "#####",
+        };
+        CHECK(soko.move(Direction::U));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.move(Direction::R));
+        CHECK(soko.undo());
+        CHECK(soko.redo());
+        CHECK(soko.move(Direction::L));
+        CHECK(soko.sequence() == "URRL");
+        CHECK(soko.board() == expected);
+    }
+}

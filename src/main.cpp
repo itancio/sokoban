@@ -14,6 +14,7 @@ static Sokoban soko({{
     "#####",
 }});
 static std::string joined_board;
+static std::string sequence_str;
 static std::vector<std::vector<std::string>> levels;
 
 extern "C" {
@@ -85,11 +86,16 @@ bool sokoban_solved() {
 }
 
 bool sokoban_undo() {
-    return soko.undo();
+    return soko.rewind();
 }
 
 bool sokoban_redo() {
     return soko.redo();
+}
+
+const char *sokoban_sequence() {
+    sequence_str = soko.sequence();
+    return sequence_str.c_str();
 }
 
 int sokoban_level() {
