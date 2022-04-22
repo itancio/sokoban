@@ -126,15 +126,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         return false;
     }
 
-    // If the specified destination is next to the player,
-    // try to move to that destination
-    for (const auto &[dir, offset] : dir_offsets) {
-        auto delta = std::make_pair(origin.first + offset.first, origin.second + offset.second);
-        if (delta == destination) {
-            return move(dir);
-        }
-    }
-
     std::queue<std::pair<unsigned int, unsigned int>> queue;
     std::unordered_map<std::pair<unsigned int, unsigned int>, 
         std::pair<unsigned int, unsigned int>, PairHash, PairEqual> visited;
@@ -145,6 +136,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     // Visit all paths to a destination if possible
     while (!queue.empty()) {
+        
         // Get the first node from the queue
         auto current = queue.front();
         queue.pop();
@@ -266,7 +258,7 @@ bool Sokoban::rewind() {
 
     undo();
 
-    while (!history.empty()) {
+    while (!moves.empty()) {
         bool fast_forward = history.back().second;
 
         if (!fast_forward) {
@@ -284,7 +276,7 @@ bool Sokoban::rewind() {
 
 std::string Sokoban::sequence() {
     std::string sequence = "";
-    for (const auto direction : moves) {
+    for (const auto& direction : moves) {
         sequence += (char) direction;
     }
     return sequence;

@@ -1095,6 +1095,30 @@ TEST_SUITE("Test cases for rewind()") {
         CHECK(soko.rewind());
         CHECK(soko.board() == expected);
     }
+
+    TEST_CASE("should only move back one step") {
+        Sokoban soko({{
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "#   #",
+            "# @ #",
+            "#   #",
+            "#####",
+        };
+        CHECK(soko.move(2, 2));
+        CHECK(soko.move(3, 2));
+        CHECK(soko.move(4, 2));
+        CHECK(soko.rewind());
+        CHECK(soko.board() == expected);
+    }
 }
 
 TEST_SUITE("Test cases for sequence()") {
