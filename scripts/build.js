@@ -10,6 +10,7 @@ const emcc = `
   -s LINKABLE=1
   -s EXPORT_ALL=1
   -s "EXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']"
+  --preload-file "dist/levels"
 `.replace(/\n/g, " ");
 const src = "src";
 const dist = "dist";
