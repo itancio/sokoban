@@ -277,7 +277,7 @@ bool Sokoban::rewind() {
 std::string Sokoban::sequence() {
     std::string sequence = "";
     for (const auto& direction : moves) {
-        sequence += (char) direction;
+        sequence.push_back((char) direction);
     }
     return sequence;
 }
