@@ -46,6 +46,24 @@ const onLoaded = () => {
   handleRouting();
 };
 
+const renderLevelComplete = root => {
+  const completeHTML = `
+  <div id="complete">
+    <h1>Level Complete!</h1>
+      <div id="controls">
+        <button title="Home" id="change-level"><span class="material-symbols-outlined">home</span></button>
+    </div>
+  `;
+  root.innerHTML = completeHTML;
+  document
+    .querySelector("#change-level")
+    .addEventListener("click", () => {
+      location.hash = "";
+     renderMenu(root);
+    })
+  ;
+};
+
 const renderLevel = (root, levelNumber) => {
   const gameHTML = `
   <div id="game" class="hide">
@@ -182,6 +200,7 @@ const renderLevel = (root, levelNumber) => {
         renderBoard();
 
         if (soko.solved()) {
+          setTimeout(() => { renderLevelComplete(root); }, 100);
           console.log("solved!");
         }
       }
@@ -200,4 +219,3 @@ var Module = {
   print: text => console.log(text),
   printErr: text => console.error(text),
 };
-
