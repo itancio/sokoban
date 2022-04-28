@@ -53,7 +53,7 @@ private:
     unsigned int py;
     unsigned int px;
     std::vector<Direction> moves;
-    std::vector<std::vector<std::string>> history;
+    std::vector<std::pair<std::vector<std::string>, bool>> history;
     std::vector<std::pair<Direction, std::vector<std::string>>> undone;
 
     void locate_player();
@@ -73,6 +73,8 @@ public:
     bool undo();  
     bool redo();
     void reset();
+    bool rewind();
+    std::string sequence();
 
     void print_board();  
 };

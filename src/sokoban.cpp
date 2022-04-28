@@ -76,7 +76,7 @@ void Sokoban::push_box(int dy, int dx) {
 /* Update move with associated board state */
 void Sokoban::update(Direction direction) {
     moves.push_back(direction);
-    history.push_back(_board);
+    history.push_back(std::make_pair(_board, true));
 }
 
 bool Sokoban::make_move(Direction direction) {
@@ -126,15 +126,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         return false;
     }
 
-    // If the specified destination is next to the player,
-    // try to move to that destination
-    for (const auto &[dir, offset] : dir_offsets) {
-        auto delta = std::make_pair(origin.first + offset.first, origin.second + offset.second);
-        if (delta == destination) {
-            return move(dir);
-        }
-    }
-
     std::queue<std::pair<unsigned int, unsigned int>> queue;
     std::unordered_map<std::pair<unsigned int, unsigned int>, 
         std::pair<unsigned int, unsigned int>, PairHash, PairEqual> visited;
@@ -145,11 +136,15 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     // Visit all paths to a destination if possible
     while (!queue.empty()) {
+        
         // Get the first node from the queue
         auto current = queue.front();
         queue.pop();
 
         if (current == destination) {
+            // Mark the origin with fast-forward
+            //history.back().second = true;
+
             // Build the valid path from the origin to the destination
             std::stack<std::pair<unsigned int, unsigned int>> paths;
 
@@ -167,6 +162,13 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
                 for (const auto &[direction, value] : dir_offsets) {
                     if (offset == dir_offsets.at(direction)) {
                         moved = move(direction);
+                        // Unmark fast-forward
+                        history.back().second = false;
+
+                        // Mark the destination with fast-forward
+                        if (paths.size() == 1) {
+                            history.back().second = true;
+                        }
                     }
                 }
 
@@ -193,7 +195,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
                     neighbors.push_back(adj);
                 }
             }
-
         }
 
         // Add neighbors to visited with its associated parent, and then enqueue
@@ -218,7 +219,7 @@ bool Sokoban::undo() {
     moves.pop_back();
     history.pop_back();
 
-    _board = history.back();
+    _board = history.back().first;
     locate_player();
 
     return true;
@@ -249,6 +250,37 @@ void Sokoban::change_level(unsigned int level_number) {
     _board = levels.at(current_level);
     moves.clear();
     undone.clear();
-    history.push_back(_board);
+    history.push_back(std::make_pair(_board, false));
     locate_player();
+}
+
+bool Sokoban::rewind() {
+    if (moves.empty()) {
+        return false;
+    }
+
+    undo();
+
+    while (!moves.empty()) {
+        bool fast_forward = history.back().second;
+
+        if (!fast_forward) {
+            undo();
+        }
+        else {
+            // Unmark the fast-forward
+            history.back().second = false;
+            break;
+        }
+    }
+
+    return true;
+}
+
+std::string Sokoban::sequence() {
+    std::string sequence = "";
+    for (const auto& direction : moves) {
+        sequence.push_back((char) direction);
+    }
+    return sequence;
 }

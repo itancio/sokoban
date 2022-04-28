@@ -86,6 +86,10 @@ const renderLevel = (root, levelNumber) => {
       "sokoban_board_to_string",
       "string", // return type
     ),
+    sequence: Module.cwrap(
+      "sokoban_sequence",
+      "string", // return type
+    ),
     undo: Module.cwrap("sokoban_undo", "bool"),
     solved: Module.cwrap("sokoban_solved", "bool"),
     changeLevel: Module.cwrap(
@@ -129,6 +133,7 @@ const renderLevel = (root, levelNumber) => {
     </tr>
   `;
   const renderBoard = () => {
+    console.log(soko.sequence());
     boardEl.innerHTML =
       "<table><tbody>" +
         soko.boardToStr()
