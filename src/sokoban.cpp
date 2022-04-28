@@ -76,7 +76,7 @@ void Sokoban::push_box(int dy, int dx) {
 /* Update move with associated board state */
 void Sokoban::update(Direction direction) {
     moves.push_back(direction);
-    history.push_back(std::make_pair(_board, false));
+    history.push_back(std::make_pair(_board, true));
 }
 
 bool Sokoban::make_move(Direction direction) {
@@ -143,7 +143,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
         if (current == destination) {
             // Mark the origin with fast-forward
-            history.back().second = true;
+            //history.back().second = true;
 
             // Build the valid path from the origin to the destination
             std::stack<std::pair<unsigned int, unsigned int>> paths;
@@ -162,6 +162,9 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
                 for (const auto &[direction, value] : dir_offsets) {
                     if (offset == dir_offsets.at(direction)) {
                         moved = move(direction);
+                        // Unmark fast-forward
+                        history.back().second = false;
+
                         // Mark the destination with fast-forward
                         if (paths.size() == 1) {
                             history.back().second = true;
