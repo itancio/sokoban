@@ -7,7 +7,7 @@
     "build": "node scripts/build",
     "deploy": "node scripts/deploy",
     "start": "python -m http.server 8000",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "devDependencies": {
     "jest": "^26.1.0",
