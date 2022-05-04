@@ -1,9 +1,10 @@
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <numeric>
+#include <regex>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <filesystem>
 
 #include "sokoban.hpp"
 
@@ -20,79 +21,31 @@ static std::vector<std::vector<std::string>> levels;
 
 extern "C" {
 void sokoban_initialize() {
-    /*levels = {
-        {
-            // greg messing around
-            "   ####",
-            "####. ##",
-            "#.##$ .##",
-            "# ##    #",
-            "#    $  #",
-            "# #### ##",
-            "#@ $   #",
-            "#####  #",
-            "    ####",
-        },
-        {
-            // GRIGoRusha: Shito-Krito #86
-            "  #########",
-            "  #   #  @#",
-            " ##  .$.# #",
-            " #  ##  $ #",
-            "##  .$*#$##",
-            "#  #$#   # ",
-            "#  . .# ## ",
-            "####    #  ",
-            "   ######  ",
-        },
-        {
-            "######",
-            "#@ $.#",
-            "######",
-        },
-        {
-            "######",
-            "#@ $.#",
-            "######",
-        },
-        {
-            "######",
-            "#@ $.#",
-            "######",
-        },
-    };
-    soko = {levels};*/
-    //std::vector <std::vector<std::string>> levels;
-    std::filesystem::path getLevelsDir = std::filesystem::directory_entry("dist/levels");
-    std::vector<std::filesystem::path> getMapPath; // save path into vector element
+    std::filesystem::path getLevelsDir = std::filesystem::directory_entry("src/assets/levels");
+    std::vector<std::filesystem::path> get_map_path; // save path into vector element
 
     for (const auto& entry : std::filesystem::directory_iterator(getLevelsDir)) {
-        getMapPath.push_back(entry.path());
+        get_map_path.push_back(entry.path());
     }
 
-    // removes every other instance of a file found in the directory, namely the .data file since they are every other in the directory, to leave only .txt files in the vector
-    for (unsigned int i = 0; i < getMapPath.size(); i++) {
-        getMapPath.erase(getMapPath.begin() + i);
-    }
+    std::cout << "LOOK HERE: " << get_map_path.size() << std::endl;
 
     // opening map files stored in vector directory
-    for (unsigned int i = 0; i < getMapPath.size(); i++) {
-        std::ifstream openMapFile(getMapPath[i].c_str());
+    for (unsigned int i = 0; i < get_map_path.size(); i++) {
+        std::ifstream openMapFile(get_map_path[i].c_str());
         std::string store_line;
         std::vector<std::string> storeMap;
 
         if (!openMapFile) {
-            std::cerr << "Cannot open the File : " << getMapPath[i] << std::endl;
+            std::cerr << "Cannot open the File : " << get_map_path[i] << std::endl;
         }
 
-        for (unsigned int i = 0; i < 1; i++) {
-            while (std::getline(openMapFile, store_line)) {
-                if (store_line.find("#") == false || store_line.find(" ") == false) {
-                    storeMap.push_back(store_line);
-                }
+        while (std::getline(openMapFile, store_line)) {
+            if (std::regex_match(store_line, std::regex("[@$*.+]+[#]{2,}"))) {
+                storeMap.push_back(store_line);
             }
-            levels.push_back(storeMap);
         }
+        levels.push_back(storeMap);
     };
 
     soko = { levels };
