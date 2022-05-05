@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+#include <exception>
+>>>>>>> Stashed changes
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -20,7 +24,9 @@ static std::string joined_board;
 static std::vector<std::vector<std::string>> levels;
 
 extern "C" {
+
 void sokoban_initialize() {
+<<<<<<< Updated upstream
     std::filesystem::path getLevelsDir = std::filesystem::directory_entry("src/assets/levels");
     std::vector<std::filesystem::path> get_map_path; // save path into vector element
 
@@ -46,6 +52,27 @@ void sokoban_initialize() {
             }
         }
         levels.push_back(storeMap);
+=======
+    /* Read files from directory */
+    const std::string source_path = "src/assets/levels";
+    std::filesystem::path levels_dir = std::filesystem::directory_entry(source_path);
+
+    for (const auto& entry : std::filesystem::directory_iterator(levels_dir)) {
+        std::ifstream open_map_file(entry.path());
+        std::string line;
+        std::vector<std::string> level;
+
+        std::regex valid_elems("[#@$*.+]+");
+        while (std::getline(open_map_file, line)) {
+            if (std::regex_search(line, valid_elems)) {
+                level.push_back(line);
+            }
+            else if (!level.empty()) {
+                break;
+            }
+        }
+        levels.push_back(level);
+>>>>>>> Stashed changes
     };
 
     soko = { levels };
