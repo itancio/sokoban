@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-=======
 #include <exception>
->>>>>>> Stashed changes
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -26,33 +23,6 @@ static std::vector<std::vector<std::string>> levels;
 extern "C" {
 
 void sokoban_initialize() {
-<<<<<<< Updated upstream
-    std::filesystem::path getLevelsDir = std::filesystem::directory_entry("src/assets/levels");
-    std::vector<std::filesystem::path> get_map_path; // save path into vector element
-
-    for (const auto& entry : std::filesystem::directory_iterator(getLevelsDir)) {
-        get_map_path.push_back(entry.path());
-    }
-
-    std::cout << "LOOK HERE: " << get_map_path.size() << std::endl;
-
-    // opening map files stored in vector directory
-    for (unsigned int i = 0; i < get_map_path.size(); i++) {
-        std::ifstream openMapFile(get_map_path[i].c_str());
-        std::string store_line;
-        std::vector<std::string> storeMap;
-
-        if (!openMapFile) {
-            std::cerr << "Cannot open the File : " << get_map_path[i] << std::endl;
-        }
-
-        while (std::getline(openMapFile, store_line)) {
-            if (std::regex_match(store_line, std::regex("[@$*.+]+[#]{2,}"))) {
-                storeMap.push_back(store_line);
-            }
-        }
-        levels.push_back(storeMap);
-=======
     /* Read files from directory */
     const std::string source_path = "src/assets/levels";
     std::filesystem::path levels_dir = std::filesystem::directory_entry(source_path);
@@ -61,6 +31,10 @@ void sokoban_initialize() {
         std::ifstream open_map_file(entry.path());
         std::string line;
         std::vector<std::string> level;
+
+        if(!open_map_file) {
+            throw "Cannot open file";
+        }
 
         std::regex valid_elems("[#@$*.+]+");
         while (std::getline(open_map_file, line)) {
@@ -72,7 +46,6 @@ void sokoban_initialize() {
             }
         }
         levels.push_back(level);
->>>>>>> Stashed changes
     };
 
     soko = { levels };

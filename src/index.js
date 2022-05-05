@@ -10,7 +10,7 @@ const renderMenu = root => {
       <em>by Irvin, Juan, Severin & Greg</em>
     </div>
     <ul>
-      ${[...Array(5/* TODO get levels from soko */)].map((_, i) => `
+      ${[...Array(10/* TODO get levels from soko */)].map((_, i) => `
         <li>
           <a href="#${i + 1}">
             <span class="material-symbols-outlined">
