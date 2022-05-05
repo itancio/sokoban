@@ -27,16 +27,16 @@ void sokoban_initialize() {
     std::filesystem::path levels_dir = std::filesystem::directory_entry(source_path);
 
     for (const auto& entry : std::filesystem::directory_iterator(levels_dir)) {
-        std::ifstream open_map_file(entry.path());
+        std::ifstream level_file(entry.path());
         std::string line;
         std::vector<std::string> level;
 
-        if(!open_map_file) {
-            throw "Cannot open file";
+        if (!level_file) {
+            throw std::invalid_argument("Cannot open file");
         }
 
         std::regex valid_elems("[#@$*.+]+");
-        while (std::getline(open_map_file, line)) {
+        while (std::getline(level_file, line)) {
             if (std::regex_search(line, valid_elems)) {
                 level.push_back(line);
             }
@@ -95,6 +95,5 @@ int sokoban_levels_size() {
 }
 
 int main() {
-    std::cout << "Hello Emscripten!\n";
 }
 
