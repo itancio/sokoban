@@ -1,5 +1,8 @@
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <numeric>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -18,49 +21,34 @@ static std::string sequence_str;
 static std::vector<std::vector<std::string>> levels;
 
 extern "C" {
+
 void sokoban_initialize() {
-    levels = {
-        {
-            // greg messing around
-            "   ####",
-            "####. ##",
-            "#.##$ .##",
-            "# ##    #",
-            "#    $  #",
-            "# #### ##",
-            "#@ $   #",
-            "#####  #",
-            "    ####",
-        },
-        {
-            // GRIGoRusha: Shito-Krito #86
-            "  #########",
-            "  #   #  @#",
-            " ##  .$.# #",
-            " #  ##  $ #",
-            "##  .$*#$##",
-            "#  #$#   # ",
-            "#  . .# ## ",
-            "####    #  ",
-            "   ######  ",
-        },
-        {
-            "######",
-            "#@ $.#",
-            "######",
-        },
-        {
-            "######",
-            "#@ $.#",
-            "######",
-        },
-        {
-            "######",
-            "#@ $.#",
-            "######",
-        },
+    /* Read files from directory */
+    const std::string source_path = "src/assets/levels";
+    std::filesystem::path levels_dir = std::filesystem::directory_entry(source_path);
+
+    for (const auto& entry : std::filesystem::directory_iterator(levels_dir)) {
+        std::ifstream level_file(entry.path());
+        std::string line;
+        std::vector<std::string> level;
+
+        if (!level_file) {
+            throw std::invalid_argument("Cannot open file");
+        }
+
+        std::regex valid_elems("[#@$*.+]+");
+        while (std::getline(level_file, line)) {
+            if (std::regex_search(line, valid_elems)) {
+                level.push_back(line);
+            }
+            else if (!level.empty()) {
+                break;
+            }
+        }
+        levels.push_back(level);
     };
-    soko = {levels};
+
+    soko = { levels };
 }
 
 const char *sokoban_board_to_string() {
@@ -72,6 +60,7 @@ const char *sokoban_board_to_string() {
     );
     return joined_board.c_str();
 }
+
 
 bool sokoban_move(char *s) {
     return soko.move((Sokoban::Direction) *s);
@@ -112,6 +101,5 @@ int sokoban_levels_size() {
 }
 
 int main() {
-    std::cout << "Hello Emscripten!\n";
 }
 
