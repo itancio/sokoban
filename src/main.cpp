@@ -1,14 +1,12 @@
 #include <filesystem>
 #include <fstream>
-#include <iostream>
+#include <map>
 #include <numeric>
 #include <regex>
 #include <string>
 #include <vector>
 
 #include "sokoban.hpp"
-
-//#include <emscripten/emscripten.h>
 
 static Sokoban soko({{
     "#######",
@@ -20,35 +18,55 @@ static std::string joined_board;
 static std::string sequence_str;
 static std::vector<std::vector<std::string>> levels;
 
-extern "C" {
-
-void sokoban_initialize() {
-    /* Read files from directory */
-    const std::string source_path = "src/assets/levels";
-    std::filesystem::path levels_dir = std::filesystem::directory_entry(source_path);
+void read_levels(const std::string path = "src/assets/levels") {
+    std::map<int, std::vector<std::string>> ordered_levels;
+    std::filesystem::path levels_dir =
+        std::filesystem::directory_entry(path);
 
     for (const auto& entry : std::filesystem::directory_iterator(levels_dir)) {
         std::ifstream level_file(entry.path());
-        std::string line;
-        std::vector<std::string> level;
 
         if (!level_file) {
             throw std::invalid_argument("Cannot open file");
         }
 
-        std::regex valid_elems("[#@$*.+]+");
-        while (std::getline(level_file, line)) {
-            if (std::regex_search(line, valid_elems)) {
+        std::regex soko_elems("[#@$*.+]+");
+        std::vector<std::string> level;
+
+        for (std::string line; std::getline(level_file, line);) {
+            if (std::regex_search(line, soko_elems)) {
                 level.push_back(line);
             }
             else if (!level.empty()) {
                 break;
             }
         }
-        levels.push_back(level);
-    };
 
-    soko = { levels };
+        if (level.size() > 2) {
+            std::string path = entry.path().u8string();
+            std::regex level_num_reg("(\\d+)\\.xsb$");
+            std::smatch match;
+
+            if (std::regex_search(path, match, level_num_reg)) {
+                ordered_levels[std::stoi(match[1])] = level;
+            }
+            else {
+                auto msg = "Could not parse level number from " + path;
+                throw std::invalid_argument(msg);
+            }
+        }
+    }
+
+    for (auto &[_, level] : ordered_levels) {
+        levels.push_back(level);
+    }
+}
+
+extern "C" {
+
+void sokoban_initialize() {
+    read_levels();
+    soko = {levels};
 }
 
 const char *sokoban_board_to_string() {
@@ -60,7 +78,6 @@ const char *sokoban_board_to_string() {
     );
     return joined_board.c_str();
 }
-
 
 bool sokoban_move(char *s) {
     return soko.move((Sokoban::Direction) *s);
@@ -98,7 +115,8 @@ void sokoban_change_level(int level) {
 int sokoban_levels_size() {
     return levels.size();
 }
-}
+
+} // extern "C"
 
 int main() {
 }
