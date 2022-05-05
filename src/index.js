@@ -151,7 +151,6 @@ const renderLevel = (root, levelNumber) => {
     </tr>
   `;
   const renderBoard = () => {
-    console.log(soko.sequence());
     boardEl.innerHTML =
       "<table><tbody>" +
         soko.boardToStr()
@@ -201,7 +200,6 @@ const renderLevel = (root, levelNumber) => {
 
         if (soko.solved()) {
           setTimeout(() => { renderLevelComplete(root); }, 100);
-          console.log("solved!");
         }
       }
     }
