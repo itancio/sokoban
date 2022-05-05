@@ -30,11 +30,11 @@ void read_levels(const std::string path = "src/assets/levels") {
             throw std::invalid_argument("Cannot open file");
         }
 
-        std::regex soko_elems("[#@$*.+]+");
+        std::regex soko_elems_reg("[#@$*.+ ]+");
         std::vector<std::string> level;
 
         for (std::string line; std::getline(level_file, line);) {
-            if (std::regex_search(line, soko_elems)) {
+            if (std::regex_match(line, soko_elems_reg)) {
                 level.push_back(line);
             }
             else if (!level.empty()) {
