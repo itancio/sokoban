@@ -11,7 +11,17 @@
 </head>
 <body>
   <div id="app"></div>
-<script src="index.js"></script>
+<script>
+const moduleReady = new Promise((resolve, reject) => {
+  window.Module = {
+    preRun: [],
+    postRun: [resolve],
+    print: text => console.log(text),
+    printErr: text => console.error(text),
+  };
+});
+</script>
+<script src="js/index.js" type="module"></script>
 <script async src="sokoban.js"></script>
 </body>
 </html>

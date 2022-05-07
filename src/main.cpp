@@ -25,12 +25,13 @@ void read_levels(const std::string path = "src/assets/levels") {
 
     for (const auto& entry : std::filesystem::directory_iterator(levels_dir)) {
         std::ifstream level_file(entry.path());
+        const std::string path = entry.path().u8string();
 
         if (!level_file) {
-            throw std::invalid_argument("Cannot open file");
+            throw std::invalid_argument("Cannot open file " + path);
         }
 
-        std::regex soko_elems_reg("[#@$*.+ ]+");
+        const std::regex soko_elems_reg("[#@$*.+ ]+");
         std::vector<std::string> level;
 
         for (std::string line; std::getline(level_file, line);) {
@@ -43,8 +44,7 @@ void read_levels(const std::string path = "src/assets/levels") {
         }
 
         if (level.size() > 2) {
-            std::string path = entry.path().u8string();
-            std::regex level_num_reg("(\\d+)\\.xsb$");
+            const std::regex level_num_reg("(\\d+)\\.xsb$");
             std::smatch match;
 
             if (std::regex_search(path, match, level_num_reg)) {
@@ -66,6 +66,20 @@ extern "C" {
 
 void sokoban_initialize() {
     read_levels();
+    std::vector<std::string> test_level = {
+        "#####  ###",
+        "#.  ####.#",
+        "#$       #",
+        "#   ##   #",
+        "##      ##",
+        " #  *   #",
+        "##      ##",
+        "# @  $$$ #",
+        "#        #",
+        "#.#### . #",
+        "###  #####",
+    };
+    levels.push_back(test_level);
     soko = {levels};
 }
 
@@ -95,8 +109,8 @@ bool sokoban_undo() {
     return soko.rewind();
 }
 
-bool sokoban_redo() {
-    return soko.redo();
+void sokoban_reset() {
+    soko.reset();
 }
 
 const char *sokoban_sequence() {
