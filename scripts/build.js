@@ -1,18 +1,20 @@
 const fs = require("fs").promises;
 const path = require("path");
 const {exec} = require("child_process");
+const cp = require("./cp");
 
 const emcc = `
-  emcc src/main.cpp src/sokoban.cpp
+  emcc src/engine/main.cpp src/engine/sokoban.cpp
   -std=c++1z
   -o dist/sokoban.js 
   -s NO_EXIT_RUNTIME=1
   -s LINKABLE=1
   -s EXPORT_ALL=1
   -s "EXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']"
-  --preload-file "src/assets/levels"
+  --preload-file "src/engine/levels"
 `.replace(/\n/g, " ");
-const src = "src";
+
+const src = path.join("src", "ui");
 const dist = "dist";
 
 (async () => {
@@ -22,36 +24,16 @@ const dist = "dist";
       console.error(err.message);
       process.exit(1);
     }
-    else if (stdout) {
+
+    if (stdout) {
       console.log(stdout);
     }
-    else if (stderr) {
+
+    if (stderr) {
       console.log(stderr);
     }
 
-    for (const f of await fs.readdir(src)) {
-      if (/\.(?:js|css|html)$/.test(f) || f === "assets" || f === "js") {
-        await cp(path.join(src, f), path.join(dist, f));
-      }
-    }
+    await cp(src, dist);
   });
 })();
-
-const cp = async (src, dest) => {
-  const lstat = await fs.lstat(src).catch(err => false);
-
-  if (!lstat) {
-    return;
-  }
-  else if (await lstat.isFile()) {
-    await fs.copyFile(src, dest);
-  }
-  else if (await lstat.isDirectory()) {
-    await fs.mkdir(dest).catch(err => {});
-
-    for (const f of await fs.readdir(src)) {
-      await cp(path.join(src, f), path.join(dest, f));
-    }
-  }
-};
 

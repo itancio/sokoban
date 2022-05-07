@@ -18,7 +18,7 @@ static std::string joined_board;
 static std::string sequence_str;
 static std::vector<std::vector<std::string>> levels;
 
-void read_levels(const std::string path = "src/assets/levels") {
+void read_levels(const std::string path = "src/engine/levels") {
     std::map<int, std::vector<std::string>> ordered_levels;
     std::filesystem::path levels_dir =
         std::filesystem::directory_entry(path);
