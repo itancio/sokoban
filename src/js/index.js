@@ -15,6 +15,7 @@ moduleReady.then(() => {
       Level.render(root, level);
     }
     else {
+      location.hash = "";
       Menu.render(root);
     }
   };
