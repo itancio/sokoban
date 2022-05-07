@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer");
 
-const baseURL = "http://localhost:8001/dist";
+const baseURL = "http://localhost:8000/dist";
 jest.setTimeout(9000);
 
 describe("index.html", () => {
