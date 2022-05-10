@@ -1,0 +1,42 @@
+#board {
+  margin: 0 auto;
+}
+#board table {
+  border-collapse: collapse;
+  margin: auto;
+}
+#board .cell {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  image-rendering: pixelated;
+}
+#board .floor {
+  background: url("assets/images/floor.png") ;
+}
+#board .floor-outside {
+  background: transparent;
+  cursor: default;
+}
+#board .wall {
+  background: url("assets/images/wall.png");
+  cursor: default;
+}
+#board .goal {
+  background: url("assets/images/goal.png");
+}
+#board .box {
+  background: url("assets/images/box.png");
+}
+#board .box-on-goal {
+  background: url("assets/images/box_on_goal.png");
+}
+#board .player {
+  background: url("assets/images/player.png");
+}
+#board .player-on-goal {
+  background: url("assets/images/player_on_goal.png");
+}
+
