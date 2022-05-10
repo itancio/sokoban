@@ -35,6 +35,7 @@ void read_levels(const std::string path = "src/engine/levels") {
             throw std::invalid_argument("Cannot open file " + path);
         }
 
+        // Consider a line part of the level if it's comprised solely of Sokoban characters
         const std::regex soko_elems_reg("[#@$*.+ ]+");
         std::vector<std::string> level;
 
@@ -42,7 +43,8 @@ void read_levels(const std::string path = "src/engine/levels") {
             if (std::regex_match(line, soko_elems_reg)) {
                 level.push_back(line);
             }
-            else if (!level.empty()) {
+            else if (!level.empty()) { 
+                // The line wasn't all Sokoban characters and we've already found some level
                 break;
             }
         }
