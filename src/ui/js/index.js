@@ -4,10 +4,14 @@ import Menu from "./components/Menu.js";
 import soko from "./soko.js";
 
 
+// The root element for the entire single page app
 const root = document.getElementById("app");
 Loading.render(root);
 
 moduleReady.then(() => {
+  /**
+   * Handler function for when routing changes, e.g. onhashchange and initial page load
+  */
   const handleRouting = () => {
     const level = +location.hash.replace(/^#/, "") - 1;
   

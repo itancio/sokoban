@@ -1,3 +1,7 @@
+/**
+ * This module provides an interface into the game engine.
+ * No methods are available until Emscripten has completed loading.
+*/
 const soko = {};
 
 moduleReady.then(() => {
