@@ -1,9 +1,9 @@
 {
   "name": "cs195-project",
   "version": "1.0.0",
-  "description": "yet another sokoban clone, this time with Emscripten",
+  "description": "Yet another Sokoban clone, this time with Emscripten",
   "scripts": {
-    "watch-backend": "cd tests/unit && nodemon -w . -w ../../src -e cpp,hpp,cc -x make test",
+    "watch-backend": "cd tests/engine && nodemon -w . -w ../../src/engine -e cpp,hpp,cc -x make test",
     "build": "node scripts/build",
     "deploy": "node scripts/deploy",
     "start": "python -m http.server 8000",
@@ -14,7 +14,7 @@
     "nodemon": "^2.0.15",
     "puppeteer": "^13.3.1"
   },
-  "author": "ggorlen",
+  "author": "ggorlen, itancio, Nireves333, jrange10",
   "license": "unlicense"
 }
 

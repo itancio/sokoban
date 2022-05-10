@@ -1,13 +1,12 @@
 const fs = require("fs").promises;
 const path = require("path");
+const cp = require("./cp");
 
 const dist = "dist";
 const docs = "docs";
 
 (async () => {
   await fs.mkdir(docs).catch(err => {});
-
-  for (const f of await fs.readdir(dist)) {
-    await fs.copyFile(path.join(dist, f), path.join(docs, f));
-  }
+  await cp(dist, docs);
 })();
+

@@ -157,11 +157,10 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
             while (!paths.empty()) {
                 std::pair<int, int> next = paths.top();
                 std::pair<int, int> offset(next.first - current.first, next.second - current.second);
-                bool moved = false;
 
                 for (const auto &[direction, value] : dir_offsets) {
                     if (offset == dir_offsets.at(direction)) {
-                        moved = move(direction);
+                        move(direction);
                         // Unmark fast-forward
                         history.back().second = false;
 

@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "doctest.h"
-#include "../../src/sokoban.hpp"
+#include "../../src/engine/sokoban.hpp"
 using Direction = Sokoban::Direction;
 
 TEST_CASE("returns the board") {
