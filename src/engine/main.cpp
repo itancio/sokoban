@@ -18,6 +18,10 @@ static std::string joined_board;
 static std::string sequence_str;
 static std::vector<std::vector<std::string>> levels;
 
+/**
+ * Reads all levels from a directory into the levels vector
+ * @param path the path to the directory
+*/
 void read_levels(const std::string path = "src/engine/levels") {
     std::map<int, std::vector<std::string>> ordered_levels;
     std::filesystem::path levels_dir =
@@ -31,6 +35,7 @@ void read_levels(const std::string path = "src/engine/levels") {
             throw std::invalid_argument("Cannot open file " + path);
         }
 
+        // Consider a line part of the level if it's comprised solely of Sokoban characters
         const std::regex soko_elems_reg("[#@$*.+ ]+");
         std::vector<std::string> level;
 
@@ -38,7 +43,8 @@ void read_levels(const std::string path = "src/engine/levels") {
             if (std::regex_match(line, soko_elems_reg)) {
                 level.push_back(line);
             }
-            else if (!level.empty()) {
+            else if (!level.empty()) { 
+                // The line wasn't all Sokoban characters and we've already found some level
                 break;
             }
         }
@@ -62,8 +68,13 @@ void read_levels(const std::string path = "src/engine/levels") {
     }
 }
 
+// Glue code to be called by the JS UI
+// to interact with the game engine
 extern "C" {
 
+/**
+ * Initializes the Sokoban game by reading the levels
+*/
 void sokoban_initialize() {
     read_levels();
     std::vector<std::string> test_level = {
@@ -83,6 +94,10 @@ void sokoban_initialize() {
     soko = {levels};
 }
 
+/**
+ * Stringifies the current Sokoban board
+ * @return const char * the board delimited by newlines
+*/
 const char *sokoban_board_to_string() {
     auto board = soko.board();
     joined_board = std::accumulate(
@@ -93,39 +108,78 @@ const char *sokoban_board_to_string() {
     return joined_board.c_str();
 }
 
+/**
+ * Moves the player in a direction relative to their current location
+ * @param char *s "u", "d", "l", "r" corresponding to the 4 directions
+ * @return bool true if the move modified the board, false otherwise
+*/
 bool sokoban_move(char *s) {
     return soko.move((Sokoban::Direction) *s);
 }
 
+/**
+ * Moves the player to row, col if possible
+ * @param int row the row to move to
+ * @param int col the column to move to
+ * @return bool true if the move modified the board, false otherwise
+*/
 bool sokoban_goto(int row, int col) {
     return soko.move(row, col);
 }
 
+/**
+ * Determine if the board is in a solved state
+ * @return bool true if solved false otherwise
+*/
 bool sokoban_solved() {
     return soko.solved();
 }
 
+/**
+ * Undo the last move, if possible
+ * @return bool true if the undo modified the board, false otherwise
+*/
 bool sokoban_undo() {
     return soko.undo();
 }
 
+/**
+ * Reset the current level to its original state
+*/
 void sokoban_reset() {
     soko.reset();
 }
 
+/**
+ * Return the sequence of moves ("u", "d", "l", "r") 
+ * applied so far on the level
+ * @return const char * the moves string
+*/
 const char *sokoban_sequence() {
     sequence_str = soko.sequence();
     return sequence_str.c_str();
 }
 
+/**
+ * Return the current level number being played
+ * int level the level number
+*/
 int sokoban_level() {
     return soko.level();
 }
 
+/**
+ * Set the current level if possible
+ * @param int level the level number to switch to
+*/
 void sokoban_change_level(int level) {
     soko.change_level(level);
 }
 
+/**
+ * Return the number of levels in the levels vector
+ * @return int the size of the levels vector
+*/
 int sokoban_levels_size() {
     return levels.size();
 }

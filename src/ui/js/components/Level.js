@@ -3,6 +3,9 @@ import storage from "../storage.js";
 import soko from "../soko.js";
 
 
+/**
+ * Renders and handles events associated with playing a level
+*/
 const Level = {
   html: `
     <div id="game">
@@ -33,6 +36,11 @@ const Level = {
     ".": "goal",
   },
 
+  /**
+   * This function renders 
+   * @param root HTMLElement the root element to render into
+   * @param levelNumber number the level to play
+  */
   render(root, levelNumber) {
     root.innerHTML = this.html;
     document
@@ -54,6 +62,13 @@ const Level = {
     const undoEl = document.getElementById("undo");
     const resetEl = document.getElementById("reset");
     const statusEl = document.querySelector("#status");
+
+    /**
+     * Maps a row to its HTML string
+     * @param row the row to render
+     * @param rowIndex the index of the row
+     * @return the row string
+    */
     const buildRowHTML = (row, rowIndex) => `
       <tr>
         ${[...row.replace(/(?:^ +)|(?: +$)/g, m => "_".repeat(m.length))]
@@ -67,6 +82,10 @@ const Level = {
           .join("")}
       </tr>
     `;
+
+    /**
+     * Renders the current Sokoban game board to the DOM
+    */
     const renderBoard = () => {
       boardEl.innerHTML =
         "<table><tbody>" +
@@ -78,18 +97,25 @@ const Level = {
       ;
     };
 
+    /**
+     * Renders the status bar showing information about the game to the player
+    */
     const renderStatusBar = () => {
       statusEl.innerHTML = `
         <div>Moves: ${soko.sequence().length}</div>
       `;
     };
 
+    /**
+     * Perform a full rerender of the game board, including status bar
+    */
     const render = () => {
       renderBoard();
       renderStatusBar();
       undoEl.disabled = soko.sequence().length === 0;
     };
 
+    // Converts event.code to a Sokoban Direction string
     const moves = {
       ArrowLeft: "L",
       ArrowUp: "U",
@@ -121,12 +147,19 @@ const Level = {
       }
     };
 
+    /**
+     * Handler for level completion, displaying a 
+     * victory message and saving the best score
+    */
     const handleLevelCompleted = () => {
       statusEl.textContent = `Solved in ${soko.sequence().length} moves`;
       storage.saveBestScore(levelNumber, soko.sequence().length);
       undoEl.disabled = true;
     };
 
+    /**
+     * Handler for mouse click events on the board, triggering a long move
+    */
     boardEl.addEventListener("click", event => {
       const cell = event.target.closest("td");
 
@@ -146,11 +179,18 @@ const Level = {
       }
     });
 
+    /**
+     * Handler for click events on the undo button
+    */
     undoEl.addEventListener("click", event => {
       if (soko.undo()) {
         render();
       }
     });
+
+    /**
+     * Handler for click events on the reset button
+    */
     resetEl.addEventListener("click", event => {
       soko.reset();
       render();

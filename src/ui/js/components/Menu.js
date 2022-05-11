@@ -1,6 +1,9 @@
 import storage from "../storage.js";
 
 
+/**
+ * This interface represents the main landing title and level selection screen.
+*/
 const Menu = {
   render(root) {
     const menuHTML = `
