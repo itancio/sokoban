@@ -1168,6 +1168,31 @@ TEST_SUITE("Test cases for rewind()") {
         CHECK(soko.rewind());
         CHECK(soko.board() == expected);
     }
+
+    TEST_CASE("should rewind after a few moves") {
+        Sokoban soko({{
+            "#####",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#   #",
+            "#####",
+        }});
+        std::vector<std::string> expected = {
+            "#####",
+            "#   #",
+            "# @ #",
+            "#   #",
+            "#   #",
+            "#####",
+        };
+        CHECK(soko.move(Direction::D));
+        CHECK(soko.move(Direction::D));
+        CHECK(soko.rewind());
+        CHECK(soko.move(Direction::D));
+        CHECK(soko.rewind());
+        CHECK(soko.board() == expected);
+    }
 }
 
 TEST_SUITE("Test cases for sequence()") {

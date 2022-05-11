@@ -140,7 +140,7 @@ bool sokoban_solved() {
  * @return bool true if the undo modified the board, false otherwise
 */
 bool sokoban_undo() {
-    return soko.rewind();
+    return soko.undo();
 }
 
 /**
