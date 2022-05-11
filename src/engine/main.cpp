@@ -106,7 +106,7 @@ bool sokoban_solved() {
 }
 
 bool sokoban_undo() {
-    return soko.rewind();
+    return soko.undo();
 }
 
 void sokoban_reset() {
