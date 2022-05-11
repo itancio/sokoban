@@ -112,7 +112,8 @@ const Level = {
     const render = () => {
       renderBoard();
       renderStatusBar();
-      undoEl.disabled = soko.sequence().length === 0;
+      undoEl.disabled = resetEl.disabled = soko.sequence().length === 0;
+      document.activeElement.blur();
     };
 
     // Converts event.code to a Sokoban Direction string
