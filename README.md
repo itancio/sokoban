@@ -45,7 +45,7 @@ git merge main
 npm run build
 npm run deploy
 git add docs*
-git pull
 git commit -m "Deploy something"
+git pull
 git push
 ```
