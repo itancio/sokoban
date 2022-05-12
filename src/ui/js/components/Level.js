@@ -38,8 +38,8 @@ const Level = {
 
   /**
    * This function renders 
-   * @param root HTMLElement the root element to render into
-   * @param levelNumber number the level to play
+   * @param HTMLElement root the root element to render into
+   * @param number levelNumber the level to play
   */
   render(root, levelNumber) {
     root.innerHTML = this.html;
@@ -65,14 +65,13 @@ const Level = {
 
     /**
      * Maps a row to its HTML string
-     * @param row the row to render
-     * @param rowIndex the index of the row
-     * @return the row string
+     * @param string[] row the row to render
+     * @param number rowIndex the index of the row
+     * @return string the row
     */
     const buildRowHTML = (row, rowIndex) => `
       <tr>
-        ${[...row.replace(/(?:^ +)|(?: +$)/g, m => "_".repeat(m.length))]
-          .map((cell, i) => `
+        ${row.map((cell, i) => `
             <td
               data-row="${rowIndex}"
               data-col="${i}"
@@ -83,18 +82,73 @@ const Level = {
       </tr>
     `;
 
+    let outsideTiles = null;
+
+    /**
+     * This function detects which floor tiles are outside of the walls.
+     * Mutates outsideTiles for performance purposes.
+     * @param string[] board the board to detect tiles on
+    */
+    const detectOutsideTiles = board => {
+      const flood = (board, row, col) => {
+        if (board[row] && board[row][col] === " ") {
+          board[row][col] = "_";
+          outsideTiles.push([row, col]);
+          flood(board, row - 1, col);
+          flood(board, row + 1, col);
+          flood(board, row, col - 1);
+          flood(board, row, col + 1);
+        }
+      };
+
+      outsideTiles = [];
+
+      // left edge
+      for (let i = 0; i < board.length; i++) {
+        flood(board, i, 0);
+      }
+
+      // top edge
+      for (let i = 0; i < board[0].length; i++) {
+        flood(board, 0, i);
+      }
+
+      // bottom edge
+      for (let i = 0; i < board.at(-1).length; i++) {
+        flood(board, board.length - 1, i);
+      }
+
+      // right edge
+      for (let i = 0; i < board.length; i++) {
+        flood(board, i, board[i].length - 1);
+      }
+    };
+
     /**
      * Renders the current Sokoban game board to the DOM
     */
     const renderBoard = () => {
-      boardEl.innerHTML =
-        "<table><tbody>" +
-          soko.boardToStr()
-            .split("\n")
-            .map(buildRowHTML)
-            .join("") +
-        "</tbody></table>"
-      ;
+      const board = soko.boardToStr().split("\n").map(e => [...e]);
+      const longestRow = Math.max(...board.map(e => e.length));
+
+      for (const row of board) {
+        row.push(..." ".repeat(longestRow - row.length));
+      }
+
+      if (outsideTiles) {
+        for (const [row, col] of outsideTiles) {
+          board[row][col] = "_";
+        }
+      }
+      else {
+        detectOutsideTiles(board);
+      }
+
+      boardEl.innerHTML = `
+        <table><tbody>
+          ${board.map(buildRowHTML).join("")}
+        </tbody></table>
+      `;
     };
 
     /**
@@ -113,7 +167,10 @@ const Level = {
       renderBoard();
       renderStatusBar();
       undoEl.disabled = resetEl.disabled = soko.sequence().length === 0;
-      document.activeElement.blur();
+
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
     };
 
     // Converts event.code to a Sokoban Direction string
