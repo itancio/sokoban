@@ -12,6 +12,7 @@
 <body>
   <div id="app"></div>
 <script>
+// This promise resolves when the Emscripten module is loaded
 const moduleReady = new Promise((resolve, reject) => {
   window.Module = {
     preRun: [],
