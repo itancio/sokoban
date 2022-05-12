@@ -212,7 +212,6 @@ const Level = {
     const handleLevelCompleted = () => {
       statusEl.textContent = `Solved in ${soko.sequence().length} moves`;
       storage.saveBestScore(levelNumber, soko.sequence().length);
-      undoEl.disabled = true;
     };
 
     /**
