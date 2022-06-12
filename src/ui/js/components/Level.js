@@ -175,9 +175,13 @@ const Level = {
 
     // Converts event.code to a Sokoban Direction string
     const moves = {
+      KeyA: "L",
       ArrowLeft: "L",
+      KeyW: "U",
       ArrowUp: "U",
+      KeyD: "R",
       ArrowRight: "R",
+      KeyS: "D",
       ArrowDown: "D",
     };
     document.onkeydown = event => {

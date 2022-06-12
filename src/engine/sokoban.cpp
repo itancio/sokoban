@@ -142,9 +142,6 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
         queue.pop();
 
         if (current == destination) {
-            // Mark the origin with fast-forward
-            //history.back().second = true;
-
             // Build the valid path from the origin to the destination
             std::stack<std::pair<unsigned int, unsigned int>> paths;
 
@@ -204,7 +201,7 @@ bool Sokoban::move(unsigned int y, unsigned int x) {
 
     }
     
-    // No valid path to the destionation has been found
+    // No valid path to the destination has been found
     return false;
 }
 
@@ -267,8 +264,6 @@ bool Sokoban::rewind() {
             undo();
         }
         else {
-            // Unmark the fast-forward
-            history.back().second = false;
             break;
         }
     }
