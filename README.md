@@ -1,7 +1,7 @@
-# cs195-project
-Team project for the Software Engineering course at CCSF, an implementation of [Sokoban](https://en.wikipedia.org/wiki/Sokoban) using Emscripten to generate [WASM](https://webassembly.org/) from C++ with a HTML5 front-end, [Puppeteer](https://github.com/puppeteer/puppeteer) for end-to-end testing and [doctest](https://github.com/doctest/doctest/) for unit testing.
+# Modified Sokoban project
+This is a modified version of the original team-project for the Software Engineering course at CCSF, an implementation of [Sokoban](https://en.wikipedia.org/wiki/Sokoban) using Emscripten to generate [WASM](https://webassembly.org/) from C++ with a HTML5 front-end, [Puppeteer](https://github.com/puppeteer/puppeteer) for end-to-end testing and [doctest](https://github.com/doctest/doctest/) for unit testing.
 
-Play the game at <https://ggorlen.github.io/cs195-project/>.
+Play the original game at <https://ggorlen.github.io/cs195-project/>.
 
 ## Windows installation
 The main dependency is [Emscripten](https://emscripten.org/), which happens to depend on Node and Python which are also used in this project. On Windows, I used [Chocolatey](https://community.chocolatey.org/packages/emscripten) to install Emscripten with [this script](https://github.com/aminya/chocolatey-emscripten), running `choco install emscripten -y`. The script can also be used without Chocolatey. Once `emsdk` is available, I followed the setup shown [in the Emscripten docs](https://emscripten.org/docs/getting_started/downloads.html):
