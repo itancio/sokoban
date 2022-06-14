@@ -184,6 +184,19 @@ const Level = {
       KeyS: "D",
       ArrowDown: "D",
     };
+
+    // Converts Direction to Degree of Rotations
+    const dirToDegree = {
+      KeyA: 270,
+      ArrowLeft: 270,
+      KeyW: 0,
+      ArrowUp: 0,
+      KeyD: 90,
+      ArrowRight: 90,
+      KeyS: 180,
+      ArrowDown: 180
+    };
+
     document.onkeydown = event => {
       if (event.code in moves) {
         if (soko.solved()) {
@@ -199,6 +212,9 @@ const Level = {
             handleLevelCompleted();
           }
         }
+        // Rotate player orientation icon on the board
+        const playerEl = document.querySelector(".player, .player-on-goal");
+        playerEl.style.transform = `rotate(${dirToDegree[event.code]}deg)`;
       }
       else if (event.code === "KeyZ" && soko.undo()) {
         render();
@@ -233,6 +249,12 @@ const Level = {
  
       if (soko.goto(row, col)) {
         render();
+
+        // Change the player's face orientations
+        const playerEl = document.querySelector(".player, .player-on-goal");
+        const lastMove = soko.sequence().charAt(soko.sequence().length - 1);
+        const key = Object.keys(moves).find(key => moves[key] === lastMove);
+        playerEl.style.transform = `rotate(${dirToDegree[key]}deg)`;
 
         if (soko.solved()) {
           handleLevelCompleted();
