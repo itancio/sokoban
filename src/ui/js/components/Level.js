@@ -212,9 +212,7 @@ const Level = {
             handleLevelCompleted();
           }
         }
-        // Rotate player orientation icon on the board
-        const playerEl = document.querySelector(".player, .player-on-goal");
-        playerEl.style.transform = `rotate(${dirToDegree[event.code]}deg)`;
+
       }
       else if (event.code === "KeyZ" && soko.undo()) {
         render();
@@ -223,6 +221,9 @@ const Level = {
         soko.reset();
         render();
       }
+      // Rotate player orientation icon on the board
+      const playerEl = document.querySelector(".player, .player-on-goal");
+      playerEl.style.transform = `rotate(${dirToDegree[event.code]}deg)`;
     };
 
     /**
@@ -266,8 +267,17 @@ const Level = {
      * Handler for click events on the undo button
     */
     undoEl.addEventListener("click", event => {
+      
+      
       if (soko.undo()) {
         render();
+        
+        // Change the player's face orientations
+        const playerEl = document.querySelector(".player, .player-on-goal");
+        const lastMove = soko.sequence().charAt(soko.sequence().length - 1);
+        const key = Object.keys(moves).find(key => moves[key] === lastMove);
+        console.log(key, dirToDegree[key]);
+        playerEl.style.transform = `rotate(${dirToDegree[key]}deg)`;
       }
     });
 
