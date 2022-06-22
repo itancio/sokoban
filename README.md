@@ -37,7 +37,8 @@ These are the build/run/test commands from `package.json`:
 The typical UI development workflow is to run `npm run start`, then run `nodemon` to automatically execute `npm run build && npm run test` whenever a source file changes.
 
 ## Deploying to GitHub pages
-I'm using the `gh-pages` branch and the `docs` folder to deploy to <https://ggorlen.github.io/cs195-project>. Here's the deployent workflow:
+First, create a new branch named gh-pages. Then go to Settings > Pages. Set the `source` branch to `gh-pages` and `folder` to `/docs`.
+This will deploy to <https://itancio.github.io/sokoban>. Here's the deployent workflow:
 
 ```
 git checkout gh-pages
