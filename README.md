@@ -1,11 +1,15 @@
 # Sokoban
 
+[demo]
+
 ## Project Description
 Sokoban app is a digital recreation of the traditional Sokoban game, where players must navigate a warehouse operative (the player) to push boxes to their designated storage locations. Designed with robustness in mind, the game is initialized with multiple levels and ensures that players can seamlessly switch between them.
 
+<img src="sokoban-title.png" width="80%"/>
 
 The core of the game revolves around grid-based movements, where players can push boxes, move to an empty space, or navigate towards a goal. The app is has an undo and redo feature, ensuring mistakes can be corrected without starting over. Beyond simple movements, the game boasts an automatic pathfinding system, where given a set of coordinates, it calculates and moves the player along the optimal path.
 
+<img src="sokoban-game.png" width="80%" />
 
 An essential tool for learning and strategizing, the game offers a 'rewind' feature, allowing players to revert multiple moves until a significant game event occurs. To assist with pattern recognition and strategy development, the simulator provides a move sequence tracker, presenting moves in a string format.
 
