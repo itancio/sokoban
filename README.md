@@ -1,4 +1,34 @@
-# Modified Sokoban project
+# Sokoban
+
+## Project Description
+Sokoban app is a digital recreation of the traditional Sokoban game, where players must navigate a warehouse operative (the player) to push boxes to their designated storage locations. Designed with robustness in mind, the game is initialized with multiple levels and ensures that players can seamlessly switch between them.
+
+
+The core of the game revolves around grid-based movements, where players can push boxes, move to an empty space, or navigate towards a goal. The app is has an undo and redo feature, ensuring mistakes can be corrected without starting over. Beyond simple movements, the game boasts an automatic pathfinding system, where given a set of coordinates, it calculates and moves the player along the optimal path.
+
+
+An essential tool for learning and strategizing, the game offers a 'rewind' feature, allowing players to revert multiple moves until a significant game event occurs. To assist with pattern recognition and strategy development, the simulator provides a move sequence tracker, presenting moves in a string format.
+
+Under the hood, the game leverages data structures like queues, stacks, and unordered maps to efficiently handle game states, movements, and level histories. The Sokoban Simulator not only offers nostalgic gameplay but also stands as a testament to the seamless integration of classic games with modern-day programming techniques.
+
+Potential Areas of Improvements
+Level Design and Complexity: Introduce a diverse set of levels that vary in complexity, ensuring that both new players and Sokoban veterans are catered to.
+Save and Load Feature: Allow players to save their current progress and load it at a later time, offering more flexibility in gameplay.
+Custom Level Creation: Implement a level editor that lets users design and share their custom levels with the community.
+Hint System: Incorporate a hint system for players who get stuck, providing clues or suggesting possible moves.
+Leaderboards and Scoring: Introduce a scoring system based on the number of moves or time taken to complete a level. This could be coupled with leaderboards to encourage competitive gameplay.
+Animations: Add smooth transitions and animations for movements, box pushes, and level completions to enhance the game's visual feedback.
+Sound Effects and Music: Incorporate background music and sound effects for actions like box pushes, player moves, and level completions to enhance immersion.
+Multiplayer Mode: Allow players to compete or collaborate in real-time, adding a new dimension to the gameplay.
+Performance Optimization: Continually profile and optimize the code, especially the pathfinding algorithm, to ensure smooth gameplay even on large or complex levels.
+Adaptive Difficulty: Implement a system that adjusts the game's difficulty based on a player's performance, offering a tailored challenge.
+Mobile Integration: With the rising popularity of mobile games, developing a mobile-friendly version or app could reach a broader audience.
+
+
+
+-----
+
+# Instructions
 This is a modified version of the original team-project for the Software Engineering course at CCSF, an implementation of [Sokoban](https://en.wikipedia.org/wiki/Sokoban) using Emscripten to generate [WASM](https://webassembly.org/) from C++ with a HTML5 front-end, [Puppeteer](https://github.com/puppeteer/puppeteer) for end-to-end testing and [doctest](https://github.com/doctest/doctest/) for unit testing.
 
 Play the original game at <https://ggorlen.github.io/cs195-project/>.
